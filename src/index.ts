@@ -1,26 +1,21 @@
 import { width, aspectRatio } from "./config";
 import { Camera } from "./core/camera";
 import { Ray } from "./core/ray";
+import { Sphere } from "./shape/sphere";
 import "./style.css";
-import { Canvas, Color, Point3, sleep } from './utils';
+import { Canvas, Color, Point3, sleep, Vec3 } from './utils';
 
 const height = width / aspectRatio;
 const canvas = new Canvas(width, height);
 
 const camera = new Camera(width, aspectRatio);
 
-const hitSphere = (center: Point3, radius: number, r: Ray) => {
-  const oc = r.origin.clone().sub(center);
-  const a = r.direction.dot(r.direction);
-  const b = 2 * oc.dot(r.direction);
-  const c = oc.dot(oc) - radius * radius;
-  const discriminant = b * b - 4 * a * c;
-  return discriminant > 0;
-}
+const sphere = new Sphere(new Point3(0, 0, -1), 0.5);
 
 const rayColor = (ray: Ray) => {
-  if (hitSphere(new Point3(0, 0, -1), 0.5, ray)) {
-    return new Color(1, 0, 0);
+  const intersection = sphere.intersect(ray, 0.01, 10000);
+  if (intersection.valid) {
+    return intersection.n.addScaled(new Vec3(1, 1, 1), 0.5);
   }
   const t = 0.5 * (ray.direction.y + 1.0);
   const color = new Color(1.0, 1.0, 1.0)
