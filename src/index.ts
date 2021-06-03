@@ -11,17 +11,23 @@ const height = width / aspectRatio;
 const canvas = new Canvas(width, height);
 
 const camera = new Camera(width, aspectRatio);
-const spp = 10;
+const spp = 100;
 
 const scene = new Scene();
 const sphere = new Sphere(new Point3(0, 0, -1), 0.5);
 const ground = new Sphere(new Point3(0, -100.5, -1), 100);
 scene.addShape(ground, sphere);
 
-const rayColor = (ray: Ray) => {
-  const intersection = scene.intersect(ray, 0.01, 10000);
+const rayColor = (ray: Ray, depth = 5): Color => {
+  if (depth <= 0) {
+    return new Color(0, 0, 0);
+  }
+  const intersection = scene.intersect(ray, 0.01, Infinity);
   if (intersection.valid) {
-    return intersection.n.addScaled(new Vec3(1, 1, 1), 0.5);
+    const { p, n } = intersection;
+    const targetDir = n.add(Vec3.randomInUnitSphere());
+    const targetRay = new Ray(p, targetDir);
+    return rayColor(targetRay, depth - 1).multScalar(0.5);
   }
   const t = 0.5 * (ray.direction.y + 1.0);
   const color = new Color(1.0, 1.0, 1.0)
@@ -36,9 +42,9 @@ const processPixel = (x: number, y: number) => {
     const u = (x + random() * 0.5 - 0.5) / (width - 1);
     const v = (y + random() * 0.5 - 0.5) / (height - 1);
     const ray = camera.generateRay(u, v);
-    color.addScaled(rayColor(ray), 1 / spp);
+    color.add(rayColor(ray));
   }
-  canvas.setPixel(x, height - y - 1, color);
+  canvas.setPixel(x, height - y - 1, color.multScalar(1 / spp));
 }
 
 const tileSize = 50;

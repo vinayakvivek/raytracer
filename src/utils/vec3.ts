@@ -120,9 +120,15 @@ class Vec3 {
     return this;
   }
 
-  random() {
+  static random() {
     const randomNum = () => Math.random() * 2 - 1;
     return new Vec3(randomNum(), randomNum(), randomNum());
+  }
+
+  static randomInUnitSphere() {
+    const v = Vec3.random().normalize();
+    const c = Math.cbrt(Math.random());
+    return v.multScalar(c);
   }
 }
 

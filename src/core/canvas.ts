@@ -26,9 +26,15 @@ class Canvas {
   // all between 0 -> 1
   setPixel(x: number, y: number, color: Color, a = 1.0) {
     const index = (y * this.width + x) * 4;
-    this.imageData.data[index] = 255 * clamp(color.r, 0, 1);
-    this.imageData.data[index + 1] = 255 * clamp(color.g, 0, 1);
-    this.imageData.data[index + 2] = 255 * clamp(color.b, 0, 1);
+
+    // remove gamma correction
+    const r = Math.sqrt(color.r);
+    const g = Math.sqrt(color.g);
+    const b = Math.sqrt(color.b);
+
+    this.imageData.data[index] = 255 * clamp(r, 0, 1);
+    this.imageData.data[index + 1] = 255 * clamp(g, 0, 1);
+    this.imageData.data[index + 2] = 255 * clamp(b, 0, 1);
     this.imageData.data[index + 3] = 255 * a;
   }
 
