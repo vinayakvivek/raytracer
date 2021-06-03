@@ -1,4 +1,2 @@
-export const size = {
-  width: 256,
-  height: 256,
-};
+export const width = 400;
+export const aspectRatio = 16 / 9;

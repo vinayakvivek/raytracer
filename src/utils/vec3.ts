@@ -13,6 +13,10 @@ class Vec3 {
     this.z = z;
   }
 
+  clone() {
+    return new Vec3(this.x, this.y, this.z);
+  }
+
   add(v: Vec3) {
     this.x += v.x;
     this.y += v.y;
@@ -24,6 +28,13 @@ class Vec3 {
     this.x += s;
     this.y += s;
     this.z += s;
+    return this;
+  }
+
+  addScaled(v: Vec3, s: number) {
+    this.x += v.x * s;
+    this.y += v.y * s;
+    this.z += v.z * s;
     return this;
   }
 
@@ -41,6 +52,13 @@ class Vec3 {
     return this;
   }
 
+  subScaled(v: Vec3, s: number) {
+    this.x -= v.x * s;
+    this.y -= v.y * s;
+    this.z -= v.z * s;
+    return this;
+  }
+
   mult(v: Vec3) {
     this.x *= v.x;
     this.y *= v.y;
@@ -55,6 +73,13 @@ class Vec3 {
     return this;
   }
 
+  multScaled(v: Vec3, s: number) {
+    this.x *= v.x * s;
+    this.y *= v.y * s;
+    this.z *= v.z * s;
+    return this;
+  }
+
   divScalar(s: number) {
     return this.multScalar(1 / s);
   }
@@ -65,6 +90,27 @@ class Vec3 {
 
   length() {
     return Math.sqrt(this.lengthSq());
+  }
+
+  normalize() {
+    return this.divScalar(this.length());
+  }
+
+  dot(v: Vec3) {
+    return (this.x * v.x + this.y * v.y + this.z * v.z);
+  }
+
+  cross(v: Vec3) {
+    return this.crossVectors(this, v);
+  }
+
+  crossVectors(a: Vec3, b: Vec3) {
+    const ax = a.x, ay = a.y, az = a.z;
+    const bx = b.x, by = b.y, bz = b.z;
+    this.x = ay * bz - az * by;
+    this.y = az * bx - ax * bz;
+    this.z = ax * by - ay * bx;
+    return this;
   }
 }
 
