@@ -1,5 +1,5 @@
 import { CANVAS_ID } from "../constants";
-import { Color } from './vec3';
+import { Color } from '../utils';
 
 class Canvas {
 

@@ -2,9 +2,10 @@ import { width, aspectRatio } from "./config";
 import { Camera } from "./core/camera";
 import { Ray } from "./core/ray";
 import { Scene } from "./core/scene";
+import { Canvas } from "./core/canvas";
 import { Sphere } from "./shape/sphere";
 import "./style.css";
-import { Canvas, Color, Point3, sleep, Vec3 } from './utils';
+import { Color, Point3, Vec3 } from './utils';
 
 const height = width / aspectRatio;
 const canvas = new Canvas(width, height);
@@ -13,7 +14,9 @@ const camera = new Camera(width, aspectRatio);
 
 const scene = new Scene();
 const sphere = new Sphere(new Point3(0, 0, -1), 0.5);
+const ground = new Sphere(new Point3(0, -100.5, -1), 100);
 scene.addShape(sphere);
+scene.addShape(ground);
 
 const rayColor = (ray: Ray) => {
   const intersection = scene.intersect(ray, 0.01, 10000);
