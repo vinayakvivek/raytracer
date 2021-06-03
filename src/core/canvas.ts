@@ -25,6 +25,9 @@ class Canvas {
 
   // all between 0 -> 1
   setPixel(x: number, y: number, color: Color, a = 1.0) {
+    // invert y
+    y = this.height - y - 1;
+
     const index = (y * this.width + x) * 4;
 
     // remove gamma correction
