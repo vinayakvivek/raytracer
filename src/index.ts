@@ -25,7 +25,11 @@ const rayColor = (ray: Ray, depth = 5): Color => {
   const intersection = scene.intersect(ray, 0.01, Infinity);
   if (intersection.valid) {
     const { p, n } = intersection;
-    const targetDir = n.add(Vec3.randomInUnitSphere());
+
+    // const targetDir = n.add(Vec3.randomInUnitSphere());  // simple diffuse
+    // const targetDir = n.add(Vec3.random().normalize());  // true lambertian
+    const targetDir = Vec3.randomInHemisphere(n);  // diffuse (hemispherical)
+
     const targetRay = new Ray(p, targetDir);
     return rayColor(targetRay, depth - 1).multScalar(0.5);
   }

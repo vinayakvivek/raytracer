@@ -130,6 +130,12 @@ class Vec3 {
     const c = Math.cbrt(Math.random());
     return v.multScalar(c);
   }
+
+  static randomInHemisphere(normal: Vec3) {
+    const v = Vec3.randomInUnitSphere();
+    if (v.dot(normal) < 0) v.negate();
+    return v;
+  }
 }
 
 export { Vec3, Vec3 as Color, Vec3 as Point3 };
