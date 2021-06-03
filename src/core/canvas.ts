@@ -1,5 +1,5 @@
 import { CANVAS_ID } from "../constants";
-import { Color } from '../utils';
+import { clamp, Color } from '../utils';
 
 class Canvas {
 
@@ -26,9 +26,9 @@ class Canvas {
   // all between 0 -> 1
   setPixel(x: number, y: number, color: Color, a = 1.0) {
     const index = (y * this.width + x) * 4;
-    this.imageData.data[index] = 255 * color.r;
-    this.imageData.data[index + 1] = 255 * color.g;
-    this.imageData.data[index + 2] = 255 * color.b;
+    this.imageData.data[index] = 255 * clamp(color.r, 0, 1);
+    this.imageData.data[index + 1] = 255 * clamp(color.g, 0, 1);
+    this.imageData.data[index + 2] = 255 * clamp(color.b, 0, 1);
     this.imageData.data[index + 3] = 255 * a;
   }
 

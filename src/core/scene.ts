@@ -7,8 +7,8 @@ export class Scene {
 
   constructor() {}
 
-  addShape(shape: Shape) {
-    this.shapes.push(shape);
+  addShape(...shapes: Shape[]) {
+    this.shapes.push(...shapes);
   }
 
   clearShapes() {

@@ -119,6 +119,11 @@ class Vec3 {
     this.z = ax * by - ay * bx;
     return this;
   }
+
+  random() {
+    const randomNum = () => Math.random() * 2 - 1;
+    return new Vec3(randomNum(), randomNum(), randomNum());
+  }
 }
 
 export { Vec3, Vec3 as Color, Vec3 as Point3 };
