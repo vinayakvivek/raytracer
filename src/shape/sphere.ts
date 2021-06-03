@@ -35,6 +35,10 @@ class Sphere extends Shape {
     }
     const p = ray.at(t);
     const n = this.normal(p);
+    // check normal direction
+    if (ray.direction.dot(n) > 0) {
+      n.negate();
+    }
     return { valid: true, t, p, n };
   }
 

@@ -1,6 +1,7 @@
 import { width, aspectRatio } from "./config";
 import { Camera } from "./core/camera";
 import { Ray } from "./core/ray";
+import { Scene } from "./core/scene";
 import { Sphere } from "./shape/sphere";
 import "./style.css";
 import { Canvas, Color, Point3, sleep, Vec3 } from './utils';
@@ -10,10 +11,12 @@ const canvas = new Canvas(width, height);
 
 const camera = new Camera(width, aspectRatio);
 
+const scene = new Scene();
 const sphere = new Sphere(new Point3(0, 0, -1), 0.5);
+scene.addShape(sphere);
 
 const rayColor = (ray: Ray) => {
-  const intersection = sphere.intersect(ray, 0.01, 10000);
+  const intersection = scene.intersect(ray, 0.01, 10000);
   if (intersection.valid) {
     return intersection.n.addScaled(new Vec3(1, 1, 1), 0.5);
   }

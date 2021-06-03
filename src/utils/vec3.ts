@@ -17,6 +17,13 @@ class Vec3 {
     return new Vec3(this.x, this.y, this.z);
   }
 
+  negate() {
+    this.x = -this.x;
+		this.y = -this.y;
+		this.z = -this.z;
+		return this;
+  }
+
   add(v: Vec3) {
     this.x += v.x;
     this.y += v.y;
