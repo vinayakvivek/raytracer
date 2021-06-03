@@ -8,6 +8,7 @@ class Canvas {
   context: CanvasRenderingContext2D;
   imageData: ImageData;  // ImageData.data
 
+
   constructor(width: number, height: number) {
     const canvas = <HTMLCanvasElement>document.getElementById(CANVAS_ID);
     canvas.width = width;

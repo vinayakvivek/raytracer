@@ -5,7 +5,7 @@ import { Scene } from "./core/scene";
 import { Canvas } from "./core/canvas";
 import { Sphere } from "./shape/sphere";
 import "./style.css";
-import { Color, Point3, Vec3 } from './utils';
+import { Color, Point3, sleep, Vec3 } from './utils';
 
 const height = width / aspectRatio;
 const canvas = new Canvas(width, height);
@@ -30,14 +30,32 @@ const rayColor = (ray: Ray) => {
   return color;
 }
 
+const tileSize = 10;
+
 const sampleScene = async () => {
-  for (let x = 0; x < width; ++x) {
-    for (let y = 0; y < height; ++y) {
-      const ray = camera.generateRay(x / (width - 1), y / (height - 1));
-      canvas.setPixel(x, height - y - 1, rayColor(ray));
+  const wt = Math.ceil(width / tileSize);
+  const ht = Math.ceil(height / tileSize);
+  for (let j = ht - 1; j >= 0; --j) {
+    for (let i = 0; i < wt; ++i) {
+
+      // process tile
+      for (let x = i * tileSize; x < (i + 1) * tileSize && x < width; ++x) {
+        for (let y = j * tileSize; y < (j + 1) * tileSize && y < height; ++y) {
+          const ray = camera.generateRay(x / (width - 1), y / (height - 1));
+          canvas.setPixel(x, height - y - 1, rayColor(ray));
+        }
+      }
+      canvas.writeImage();
     }
-    canvas.writeImage();
   }
+
+  // for (let x = 0; x < width; ++x) {
+  //   for (let y = 0; y < height; ++y) {
+  //     const ray = camera.generateRay(x / (width - 1), y / (height - 1));
+  //     canvas.setPixel(x, height - y - 1, rayColor(ray));
+  //   }
+  //   canvas.writeImage();
+  // }
 }
 
 sampleScene();
