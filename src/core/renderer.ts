@@ -46,17 +46,13 @@ export class Renderer {
   }
 
   processPixel(x: number, y: number) {
-    const color = new Color();
-    for (let i = 0; i < this.spp; ++i) {
-      const u = (x + random() * 0.5 - 0.5) / (this.width - 1);
-      const v = (y + random() * 0.5 - 0.5) / (this.height - 1);
-      const ray = this.camera.generateRay(u, v);
-      color.add(this.rayColor(ray, this.maxDepth));
-    }
-    this.canvas.setPixel(x, y, color.multScalar(1 / this.spp));
+    const u = (x + random() * 0.5 - 0.5) / (this.width - 1);
+    const v = (y + random() * 0.5 - 0.5) / (this.height - 1);
+    const ray = this.camera.generateRay(u, v);
+    return this.rayColor(ray, this.maxDepth);
   }
 
-  async render() {
+  async processTiles(callback: (x: number, y: number) => void) {
     const tileSize = this.tileSize;
     const wt = Math.ceil(this.width / tileSize);
     const ht = Math.ceil(this.height / tileSize);
@@ -72,12 +68,38 @@ export class Renderer {
         // process tile
         for (let x = i * tileSize; xLimit(x, i); ++x) {
           for (let y = j * tileSize; yLimit(y, j); ++y) {
-            this.processPixel(x, y);
+            callback(x, y);
           }
         }
         this.canvas.writeImage();
         await sleep(0);
       }
+    }
+  }
+
+  async renderByPixels() {
+    await this.processTiles((x, y) => {
+      const color = new Color();
+      for (let i = 0; i < this.spp; ++i) {
+        // each time x, y will be offsetted by a small random amount
+        color.add(this.processPixel(x, y));
+      }
+      this.canvas.setPixel(x, y, color.multScalar(1 / this.spp));
+    });
+  }
+
+  async render() {
+    for (let nspp = 0; nspp < this.spp; ++nspp) {
+      await this.processTiles((x, y) => {
+        const color = this.processPixel(x, y);
+        const currColor = this.canvas.getPixel(x, y);
+        currColor
+          .multScalar(nspp)
+          .add(color)
+          .divScalar(nspp + 1);
+        this.canvas.setPixel(x, y, currColor);
+      });
+      console.log(`spp: ${nspp + 1}`);
     }
   }
 }

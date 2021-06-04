@@ -1,5 +1,5 @@
 import "./style.css";
-import { aspectRatio, width } from "./config";
+import { aspectRatio, renderByPixels, width } from "./config";
 import { Camera } from "./core/camera";
 import { Canvas } from "./core/canvas";
 import { Renderer } from "./core/renderer";
@@ -8,7 +8,7 @@ import { DielectricMaterial } from "./materials/dielectric";
 import { LambertianMaterial } from "./materials/lambertian";
 import { MetalMaterial } from "./materials/metal";
 import { Sphere } from "./shape/sphere";
-import { Color, Point3, Vec3 } from "./utils";
+import { Color, Point3, random, randomBetween, Vec3 } from "./utils";
 
 // set canvas
 const canvas = new Canvas(width, Math.round(width / aspectRatio));
@@ -37,8 +37,14 @@ const groundMaterial = new LambertianMaterial(new Color(0.5, 0.5, 0.5));
 const ground = new Sphere(new Point3(0, -1000, 0), 1000, groundMaterial);
 scene.addShape(ground);
 
-const random = () => Math.random();
 const randomColor = () => new Color(random(), random(), random());
+const randomColorBetween = (min: number, max: number) =>
+  new Color(
+    randomBetween(min, max),
+    randomBetween(min, max),
+    randomBetween(min, max)
+  );
+
 for (let a = -11; a < 11; ++a) {
   for (let b = -11; b < 11; ++b) {
     const chooseMaterial = random();
@@ -48,12 +54,19 @@ for (let a = -11; a < 11; ++a) {
       continue;
     }
 
+    let material;
     if (chooseMaterial < 0.8) {
       const albedo = randomColor().mult(randomColor());
-      const material = new LambertianMaterial(albedo);
-      const sphere = new Sphere(center, 0.2, material);
-      scene.addShape(sphere);
+      material = new LambertianMaterial(albedo);
+    } else if (chooseMaterial < 0.95) {
+      const albedo = randomColorBetween(0.5, 1);
+      const fuzz = randomBetween(0, 0.5);
+      material = new MetalMaterial(albedo, fuzz);
+    } else {
+      material = new DielectricMaterial(randomBetween(1.3, 2));
     }
+    const sphere = new Sphere(center, 0.2, material);
+    scene.addShape(sphere);
   }
 }
 
@@ -69,4 +82,8 @@ const sphere3 = new Sphere(new Point3(4, 1, 0), 1.0, material3);
 scene.addShape(sphere1, sphere2, sphere3);
 
 const renderer = new Renderer(canvas, scene, camera);
-renderer.render();
+if (renderByPixels) {
+  renderer.renderByPixels();
+} else {
+  renderer.render();
+}
