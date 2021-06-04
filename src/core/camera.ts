@@ -4,34 +4,43 @@ import { Ray } from "./ray";
 class Camera {
   viewPortHeight: number;
   viewPortWidth: number;
-  focalLength = 1.0;
 
   origin: Point3;
   horizontal: Vec3;
   vertical: Vec3;
   lowerLeftCorner: Point3;
 
-  constructor(vfov: number, aspectRatio: number) {
+  constructor(
+    position: Point3,
+    lookAt: Point3,
+    up: Vec3,
+    vfov: number,
+    aspectRatio: number
+  ) {
     const theta = degToRad(vfov);
     const h = Math.tan(theta / 2);
     this.viewPortHeight = 2 * h;
     this.viewPortWidth = aspectRatio * this.viewPortHeight;
 
-    this.origin = new Point3();
-    this.horizontal = new Vec3(this.viewPortWidth, 0, 0);
-    this.vertical = new Vec3(0, this.viewPortHeight, 0);
+    const w = new Vec3().add(position).sub(lookAt).normalize();
+    const u = up.clone().cross(w).normalize();
+    const v = w.clone().cross(u);
+
+    this.origin = position.clone();
+    this.horizontal = u.clone().multScalar(this.viewPortWidth);
+    this.vertical = v.clone().multScalar(this.viewPortHeight);
     this.lowerLeftCorner = this.origin
       .clone()
       .subScaled(this.horizontal, 0.5)
       .subScaled(this.vertical, 0.5)
-      .sub(new Vec3(0, 0, this.focalLength));
+      .sub(w);
   }
 
-  generateRay(u: number, v: number) {
+  generateRay(s: number, t: number) {
     const direction = this.lowerLeftCorner
       .clone()
-      .addScaled(this.horizontal, u)
-      .addScaled(this.vertical, v)
+      .addScaled(this.horizontal, s)
+      .addScaled(this.vertical, t)
       .sub(this.origin);
     return new Ray(this.origin, direction);
   }
