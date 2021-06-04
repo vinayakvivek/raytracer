@@ -23,6 +23,13 @@ class Vec3 {
     return new Vec3(this.x, this.y, this.z);
   }
 
+  copy(v: Vec3) {
+    this.x = v.x;
+    this.y = v.y;
+    this.z = v.z;
+    return this;
+  }
+
   negate() {
     this.x = -this.x;
     this.y = -this.y;
@@ -127,6 +134,21 @@ class Vec3 {
     this.x = ay * bz - az * by;
     this.y = az * bx - ax * bz;
     this.z = ax * by - ay * bx;
+    return this;
+  }
+
+  reflect(n: Vec3) {
+    return this.subScaled(n, 2 * this.dot(n));
+  }
+
+  // rafracionRatio: eta / eta'
+  refract(n: Vec3, rafractionRatio: number) {
+    const cosTheta = Math.min(-this.dot(n), 1.0);
+    const rPerp = this.addScaled(n, cosTheta).multScalar(rafractionRatio);
+    const rParallel = n
+      .clone()
+      .multScalar(-Math.sqrt(Math.abs(1.0 - rPerp.lengthSq())));
+    this.copy(rParallel.add(rPerp));
     return this;
   }
 

@@ -35,11 +35,13 @@ class Sphere extends Shape {
     }
     const p = ray.at(t);
     const n = this.normal(p);
+    let frontFace = true;
     // check normal direction
     if (ray.direction.dot(n) > 0) {
       n.negate();
+      frontFace = false;
     }
-    return { valid: true, t, p, n, material: this.material };
+    return { valid: true, t, p, n, frontFace, material: this.material };
   }
 
   normal(p: Point3) {

@@ -1,4 +1,5 @@
 import { Ray } from "../core/ray";
+import { Intersection } from "../shape/shape";
 import { Color, Point3, Vec3 } from "../utils";
 
 export interface Scatter {
@@ -8,7 +9,7 @@ export interface Scatter {
 }
 
 export class Material {
-  scatter(rayIn: Ray, p: Point3, n: Vec3): Scatter {
+  scatter(rayIn: Ray, intersection: Intersection): Scatter {
     return { valid: false };
   }
 }

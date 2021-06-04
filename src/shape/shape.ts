@@ -6,6 +6,7 @@ export interface Intersection {
   valid: boolean;
   p?: Point3;
   n?: Vec3;
+  frontFace?: boolean;
   t?: number;
   material?: Material;
 }

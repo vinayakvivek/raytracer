@@ -7,6 +7,7 @@ import { LambertianMaterial } from "./materials/lambertian";
 import { MetalMaterial } from "./materials/metal";
 import "./style.css";
 import { Color, Point3 } from "./utils";
+import { DielectricMaterial } from "./materials/dielectric";
 
 const camera = new Camera(width, aspectRatio);
 const scene = new Scene();
@@ -20,13 +21,13 @@ const ground = new Sphere(
 const centerSphere = new Sphere(
   new Point3(0, 0, -1),
   0.5,
-  new LambertianMaterial(new Color(0.7, 0.3, 0.3))
+  new DielectricMaterial(1.5)
 );
 
 const leftSphere = new Sphere(
   new Point3(-1, 0, -1),
   0.5,
-  new MetalMaterial(new Color(0.8, 0.8, 0.8), 0.3)
+  new DielectricMaterial(1.5)
 );
 
 const rightSphere = new Sphere(

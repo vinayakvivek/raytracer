@@ -12,6 +12,7 @@ export class Renderer {
   width: number;
   height: number;
   tileSize = 50;
+  depth = 10;
 
   constructor(scene: Scene, camera: Camera, spp = 10) {
     this.scene = scene;
@@ -26,10 +27,10 @@ export class Renderer {
     if (depth <= 0) {
       return new Color(0, 0, 0);
     }
-    const intersection = this.scene.intersect(ray, 0.01, Infinity);
+    const intersection = this.scene.intersect(ray, 0.001, Infinity);
     if (intersection.valid) {
       const { p, n, material } = intersection;
-      const scatter = material.scatter(ray, p, n);
+      const scatter = material.scatter(ray, intersection);
       if (scatter.valid) {
         return this.rayColor(scatter.rayOut, depth - 1).mult(
           scatter.attenuation
@@ -50,7 +51,7 @@ export class Renderer {
       const u = (x + random() * 0.5 - 0.5) / (this.width - 1);
       const v = (y + random() * 0.5 - 0.5) / (this.height - 1);
       const ray = this.camera.generateRay(u, v);
-      color.add(this.rayColor(ray, 5));
+      color.add(this.rayColor(ray, this.depth));
     }
     this.canvas.setPixel(x, y, color.multScalar(1 / this.spp));
   }

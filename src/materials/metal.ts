@@ -1,4 +1,5 @@
 import { Ray } from "../core/ray";
+import { Intersection } from "../shape/shape";
 import { clamp, Color, Point3, Vec3 } from "../utils";
 import { Material, Scatter } from "./material";
 
@@ -12,21 +13,17 @@ export class MetalMaterial extends Material {
     this.fuzz = clamp(fuzz, 0, 1);
   }
 
-  // r = v - 2 * dot(v, n) * n
-  _reflect(v: Vec3, n: Vec3) {
-    return v.clone().subScaled(n, 2 * v.dot(n));
-  }
-
-  scatter(rayIn: Ray, p: Point3, n: Color): Scatter {
+  scatter(rayIn: Ray, intersection: Intersection): Scatter {
+    const { n, p } = intersection;
     if (rayIn.direction.dot(n) > 0) {
       return { valid: false };
     }
 
     // r = r - fuzz * randomUnitSphereVector
-    const reflectedDir = this._reflect(rayIn.direction, n).addScaled(
-      Vec3.randomInUnitSphere(),
-      this.fuzz
-    );
+    const reflectedDir = rayIn.direction
+      .clone()
+      .reflect(n)
+      .addScaled(Vec3.randomInUnitSphere(), this.fuzz);
     return {
       valid: true,
       rayOut: new Ray(p, reflectedDir),

@@ -1,4 +1,5 @@
 import { Ray } from "../core/ray";
+import { Intersection } from "../shape/shape";
 import { Color, Point3, Vec3 } from "../utils";
 import { Material, Scatter } from "./material";
 
@@ -10,7 +11,8 @@ export class LambertianMaterial extends Material {
     this.albedo = albedo;
   }
 
-  scatter(rayIn: Ray, p: Point3, n: Vec3): Scatter {
+  scatter(rayIn: Ray, intersection: Intersection): Scatter {
+    const { n, p } = intersection;
     // const targetDir = n.add(Vec3.randomInUnitSphere());  // simple diffuse
     // const targetDir = n.add(Vec3.random().normalize()); // true lambertian
     // const targetDir = Vec3.randomInHemisphere(n); // diffuse (hemispherical)
