@@ -26,13 +26,13 @@ const centerSphere = new Sphere(
 const leftSphere = new Sphere(
   new Point3(-1, 0, -1),
   0.5,
-  new MetalMaterial(new Color(0.8, 0.8, 0.8))
+  new MetalMaterial(new Color(0.8, 0.8, 0.8), 0.3)
 );
 
 const rightSphere = new Sphere(
   new Point3(1, 0, -1),
   0.5,
-  new MetalMaterial(new Color(0.8, 0.6, 0.2))
+  new MetalMaterial(new Color(0.8, 0.6, 0.2), 1.0)
 );
 
 scene.addShape(ground, centerSphere, leftSphere, rightSphere);
