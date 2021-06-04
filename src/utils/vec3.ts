@@ -3,9 +3,15 @@ class Vec3 {
   y: number;
   z: number;
 
-  get r() { return this.x; }
-  get g() { return this.y; }
-  get b() { return this.z; }
+  get r() {
+    return this.x;
+  }
+  get g() {
+    return this.y;
+  }
+  get b() {
+    return this.z;
+  }
 
   constructor(x = 0, y = 0, z = 0) {
     this.x = x;
@@ -19,9 +25,9 @@ class Vec3 {
 
   negate() {
     this.x = -this.x;
-		this.y = -this.y;
-		this.z = -this.z;
-		return this;
+    this.y = -this.y;
+    this.z = -this.z;
+    return this;
   }
 
   add(v: Vec3) {
@@ -92,7 +98,7 @@ class Vec3 {
   }
 
   lengthSq() {
-    return (this.x * this.x + this.y * this.y + this.z * this.z);
+    return this.x * this.x + this.y * this.y + this.z * this.z;
   }
 
   length() {
@@ -104,7 +110,7 @@ class Vec3 {
   }
 
   dot(v: Vec3) {
-    return (this.x * v.x + this.y * v.y + this.z * v.z);
+    return this.x * v.x + this.y * v.y + this.z * v.z;
   }
 
   cross(v: Vec3) {
@@ -112,12 +118,21 @@ class Vec3 {
   }
 
   crossVectors(a: Vec3, b: Vec3) {
-    const ax = a.x, ay = a.y, az = a.z;
-    const bx = b.x, by = b.y, bz = b.z;
+    const ax = a.x,
+      ay = a.y,
+      az = a.z;
+    const bx = b.x,
+      by = b.y,
+      bz = b.z;
     this.x = ay * bz - az * by;
     this.y = az * bx - ax * bz;
     this.z = ax * by - ay * bx;
     return this;
+  }
+
+  isNearZero() {
+    const e = 1e-8;
+    return Math.abs(this.x) < e && Math.abs(this.y) < e && Math.abs(this.z) < e;
   }
 
   static random() {

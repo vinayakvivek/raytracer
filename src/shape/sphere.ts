@@ -1,14 +1,14 @@
 import { Ray } from "../core/ray";
+import { Material } from "../materials/material";
 import { Point3 } from "../utils";
 import { Shape } from "./shape";
 
 class Sphere extends Shape {
-
   center: Point3;
   radius: number;
 
-  constructor(center: Point3, radius: number) {
-    super();
+  constructor(center: Point3, radius: number, material: Material) {
+    super(material);
     this.center = center.clone();
     this.radius = radius;
   }
@@ -39,7 +39,7 @@ class Sphere extends Shape {
     if (ray.direction.dot(n) > 0) {
       n.negate();
     }
-    return { valid: true, t, p, n };
+    return { valid: true, t, p, n, material: this.material };
   }
 
   normal(p: Point3) {

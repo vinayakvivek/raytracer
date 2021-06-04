@@ -28,14 +28,14 @@ export class Renderer {
     }
     const intersection = this.scene.intersect(ray, 0.01, Infinity);
     if (intersection.valid) {
-      const { p, n } = intersection;
-
-      // const targetDir = n.add(Vec3.randomInUnitSphere());  // simple diffuse
-      const targetDir = n.add(Vec3.random().normalize()); // true lambertian
-      // const targetDir = Vec3.randomInHemisphere(n); // diffuse (hemispherical)
-
-      const targetRay = new Ray(p, targetDir);
-      return this.rayColor(targetRay, depth - 1).multScalar(0.5);
+      const { p, n, material } = intersection;
+      const scatter = material.scatter(ray, p, n);
+      if (scatter.valid) {
+        return this.rayColor(scatter.rayOut, depth - 1).mult(
+          scatter.attenuation
+        );
+      }
+      return new Color(0, 0, 0);
     }
     const t = 0.5 * (ray.direction.y + 1.0);
     const color = new Color(1.0, 1.0, 1.0)
