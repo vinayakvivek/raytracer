@@ -14,13 +14,12 @@ export class Renderer {
   tileSize = 50;
   maxDepth = 50;
 
-  constructor(scene: Scene, camera: Camera, spp = 10) {
+  constructor(canvas: Canvas, scene: Scene, camera: Camera) {
     this.scene = scene;
     this.camera = camera;
-    this.width = camera.width;
-    this.height = camera.height;
-    this.canvas = new Canvas(this.width, this.height);
-    this.spp = spp;
+    this.canvas = canvas;
+    this.width = canvas.width;
+    this.height = canvas.height;
   }
 
   rayColor(ray: Ray, depth = 5): Color {

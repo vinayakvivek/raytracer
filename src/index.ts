@@ -1,48 +1,39 @@
-import { width, aspectRatio } from "./config";
+import "./style.css";
+import { aspectRatio, width } from "./config";
 import { Camera } from "./core/camera";
-import { Scene } from "./core/scene";
+import { Canvas } from "./core/canvas";
 import { Renderer } from "./core/renderer";
-import { Sphere } from "./shape/sphere";
+import { Scene } from "./core/scene";
+import { DielectricMaterial } from "./materials/dielectric";
 import { LambertianMaterial } from "./materials/lambertian";
 import { MetalMaterial } from "./materials/metal";
-import "./style.css";
+import { Sphere } from "./shape/sphere";
 import { Color, Point3 } from "./utils";
-import { DielectricMaterial } from "./materials/dielectric";
 
-const camera = new Camera(width, aspectRatio);
+const canvas = new Canvas(width, width / aspectRatio);
+const camera = new Camera(90, aspectRatio); // 90 vfov
 const scene = new Scene();
 
-const ground = new Sphere(
-  new Point3(0, -100.5, -1),
-  100,
-  new LambertianMaterial(new Color(0.8, 0.8, 0))
-);
+const R = Math.cos(Math.PI / 4);
+const materialLeft = new LambertianMaterial(new Color(0, 0, 1));
+const materialRight = new LambertianMaterial(new Color(1, 0, 0));
+const s1 = new Sphere(new Point3(-R, 0, -1), R, materialLeft);
+const s2 = new Sphere(new Point3(R, 0, -1), R, materialRight);
 
-const centerSphere = new Sphere(
-  new Point3(0, 0, -1),
-  0.5,
-  new LambertianMaterial(new Color(0.1, 0.2, 0.5))
-);
+const groundMaterial = new LambertianMaterial(new Color(0.8, 0.8, 0));
+const ground = new Sphere(new Point3(0, -100.5, -1), 100, groundMaterial);
 
-const leftSphere = new Sphere(
-  new Point3(-1, 0, -1),
-  0.5,
-  new DielectricMaterial(1.5)
-);
+const centerMaterial = new LambertianMaterial(new Color(0.1, 0.2, 0.5));
+const centerSphere = new Sphere(new Point3(0, 0, -1), 0.5, centerMaterial);
 
-const leftInnerSphere = new Sphere(
-  new Point3(-1.0, 0.0, -1.0),
-  -0.4,
-  new DielectricMaterial(1.5)
-);
+const leftMaterial = new DielectricMaterial(1.5);
+const leftSphere = new Sphere(new Point3(-1, 0, -1), 0.5, leftMaterial);
+const leftSphere2 = new Sphere(new Point3(-1.0, 0.0, -1.0), -0.4, leftMaterial);
 
-const rightSphere = new Sphere(
-  new Point3(1, 0, -1),
-  0.5,
-  new MetalMaterial(new Color(0.8, 0.6, 0.2), 0.0)
-);
+const rightMaterial = new MetalMaterial(new Color(0.8, 0.6, 0.2), 0.0);
+const rightSphere = new Sphere(new Point3(1, 0, -1), 0.5, rightMaterial);
 
-scene.addShape(ground, leftSphere, leftInnerSphere, centerSphere, rightSphere);
+scene.addShape(s1, s2);
 
-const renderer = new Renderer(scene, camera, 100);
+const renderer = new Renderer(canvas, scene, camera);
 renderer.render();
