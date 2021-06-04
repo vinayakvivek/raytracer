@@ -17,10 +17,21 @@ const canvas = new Canvas(width, width / aspectRatio);
 const scene = new Scene();
 
 // set camera
-const cameraPosition = new Point3(-2, 2, 1);
+const cameraPosition = new Point3(3, 3, 2);
 const lookAt = new Point3(0, 0, -1);
 const up = new Vec3(0, 1, 0);
-const camera = new Camera(cameraPosition, lookAt, up, 20, aspectRatio); // 90 vfov
+const vfov = 20;
+const aperture = 0.1;
+const focusDist = lookAt.clone().sub(cameraPosition).length();
+const camera = new Camera(
+  cameraPosition,
+  lookAt,
+  up,
+  vfov,
+  aspectRatio,
+  aperture,
+  focusDist
+); // 90 vfov
 
 // set world objects
 // const R = Math.cos(Math.PI / 4);

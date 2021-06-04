@@ -173,6 +173,12 @@ class Vec3 {
     if (v.dot(normal) < 0) v.negate();
     return v;
   }
+
+  static randomInUnitDisc() {
+    const r = Math.sqrt(Math.random());
+    const theta = Math.random() * 2 * Math.PI;
+    return new Vec3(r * Math.cos(theta), r * Math.sin(theta), 0);
+  }
 }
 
 export { Vec3, Vec3 as Color, Vec3 as Point3 };
