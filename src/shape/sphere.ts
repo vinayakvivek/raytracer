@@ -45,7 +45,7 @@ class Sphere extends Shape {
   }
 
   normal(p: Point3) {
-    return p.clone().sub(this.center).normalize();
+    return p.clone().sub(this.center).divScalar(this.radius);
   }
 }
 

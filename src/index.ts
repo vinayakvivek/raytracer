@@ -21,7 +21,7 @@ const ground = new Sphere(
 const centerSphere = new Sphere(
   new Point3(0, 0, -1),
   0.5,
-  new DielectricMaterial(1.5)
+  new LambertianMaterial(new Color(0.1, 0.2, 0.5))
 );
 
 const leftSphere = new Sphere(
@@ -30,13 +30,19 @@ const leftSphere = new Sphere(
   new DielectricMaterial(1.5)
 );
 
+const leftInnerSphere = new Sphere(
+  new Point3(-1.0, 0.0, -1.0),
+  -0.4,
+  new DielectricMaterial(1.5)
+);
+
 const rightSphere = new Sphere(
   new Point3(1, 0, -1),
   0.5,
-  new MetalMaterial(new Color(0.8, 0.6, 0.2), 1.0)
+  new MetalMaterial(new Color(0.8, 0.6, 0.2), 0.0)
 );
 
-scene.addShape(ground, centerSphere, leftSphere, rightSphere);
+scene.addShape(ground, leftSphere, leftInnerSphere, centerSphere, rightSphere);
 
 const renderer = new Renderer(scene, camera, 100);
 renderer.render();

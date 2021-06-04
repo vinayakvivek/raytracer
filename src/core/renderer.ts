@@ -8,11 +8,11 @@ export class Renderer {
   canvas: Canvas;
   scene: Scene;
   camera: Camera;
-  spp = 10;
   width: number;
   height: number;
+  spp = 100;
   tileSize = 50;
-  depth = 10;
+  maxDepth = 50;
 
   constructor(scene: Scene, camera: Camera, spp = 10) {
     this.scene = scene;
@@ -51,7 +51,7 @@ export class Renderer {
       const u = (x + random() * 0.5 - 0.5) / (this.width - 1);
       const v = (y + random() * 0.5 - 0.5) / (this.height - 1);
       const ray = this.camera.generateRay(u, v);
-      color.add(this.rayColor(ray, this.depth));
+      color.add(this.rayColor(ray, this.maxDepth));
     }
     this.canvas.setPixel(x, y, color.multScalar(1 / this.spp));
   }
