@@ -17,7 +17,7 @@ const canvas = new Canvas(width, Math.round(width / aspectRatio));
 const scene = new Scene();
 
 // set camera
-const cameraPosition = new Point3(13, 2, 3);
+const cameraPosition = new Point3(15, 5, 3);
 const lookAt = new Point3(0, 0, 0);
 const up = new Vec3(0, 1, 0);
 const vfov = 20;
@@ -45,10 +45,14 @@ const randomColorBetween = (min: number, max: number) =>
     randomBetween(min, max)
   );
 
-for (let a = -11; a < 11; ++a) {
-  for (let b = -11; b < 11; ++b) {
+for (let a = -8; a < 8; ++a) {
+  for (let b = -8; b < 8; ++b) {
     const chooseMaterial = random();
-    const center = new Point3(a + 0.9 * random(), 0.2, b + 0.9 * random());
+    const center = new Point3(
+      a + 0.9 * random(),
+      randomBetween(0.2, 0.8),
+      b + 0.9 * random()
+    );
 
     if (new Point3(4, 0.2, 0).sub(center).length() < 0.9) {
       continue;
@@ -65,7 +69,8 @@ for (let a = -11; a < 11; ++a) {
     } else {
       material = new DielectricMaterial(randomBetween(1.3, 2));
     }
-    const sphere = new Sphere(center, 0.2, material);
+    const r = randomBetween(0.15, 0.4);
+    const sphere = new Sphere(center, r, material);
     scene.addShape(sphere);
   }
 }
