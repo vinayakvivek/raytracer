@@ -1,3 +1,4 @@
+import { maxRayDepth, samplesPerPixel, tileSize } from "../config";
 import { Color, random, sleep, Vec3 } from "../utils";
 import { Camera } from "./camera";
 import { Canvas } from "./canvas";
@@ -10,9 +11,9 @@ export class Renderer {
   camera: Camera;
   width: number;
   height: number;
-  spp = 100;
-  tileSize = 50;
-  maxDepth = 50;
+  spp = samplesPerPixel;
+  tileSize = tileSize;
+  maxDepth = maxRayDepth;
 
   constructor(canvas: Canvas, scene: Scene, camera: Camera) {
     this.scene = scene;
