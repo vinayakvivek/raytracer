@@ -4,6 +4,7 @@ import { Camera } from "./camera";
 import { Canvas } from "./canvas";
 import { Ray } from "./ray";
 import { Scene } from "./scene";
+import RenderWorker from "worker-loader!./render-worker";
 
 export class Renderer {
   canvas: Canvas;
@@ -89,6 +90,12 @@ export class Renderer {
   }
 
   async render() {
+    const worker = new RenderWorker();
+    worker.postMessage({ limit: 1000 });
+    worker.onmessage = (event) => {
+      console.log(event.data);
+    };
+
     for (let nspp = 0; nspp < this.spp; ++nspp) {
       await this.processTiles((x, y) => {
         const color = this.processPixel(x, y);

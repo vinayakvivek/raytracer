@@ -28,6 +28,13 @@ module.exports = {
         use: ["html-loader"],
       },
 
+      // web-workers
+      {
+        test: /\.worker\.js$/,
+        exclude: /node_modules/,
+        use: { loader: "worker-loader" },
+      },
+
       // js
       {
         test: /\.js$/,
