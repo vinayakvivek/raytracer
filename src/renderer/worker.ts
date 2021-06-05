@@ -12,6 +12,9 @@ let scene: Scene;
 let camera: Camera;
 let width: number;
 let height: number;
+let fullWidth: number;
+let fullHeight: number;
+let offset: { x: number; y: number };
 let maxDepth = 50;
 let colors: Color[][] = [];
 
@@ -36,8 +39,8 @@ const rayColor = (ray: Ray, depth: number): Color => {
 };
 
 const processPixel = (x: number, y: number) => {
-  const u = (x + random() * 0.5 - 0.5) / (width - 1);
-  const v = (y + random() * 0.5 - 0.5) / (height - 1);
+  const u = (x + random() * 0.5 - 0.5) / (fullWidth - 1);
+  const v = (y + random() * 0.5 - 0.5) / (fullHeight - 1);
   const ray = camera.generateRay(u, v);
   return rayColor(ray, maxDepth);
 };
@@ -55,28 +58,26 @@ const processTiles = async (callback: (x: number, y: number) => void) => {
       // process tile
       for (let x = i * tileSize; xLimit(x, i); ++x) {
         for (let y = j * tileSize; yLimit(y, j); ++y) {
-          callback(x, y);
+          callback(x + offset.x, y + offset.y);
         }
       }
-      // canvas.writeImage();
-      await sleep(0);
     }
   }
 };
 
-const spp = 100;
+const spp = 20;
 const render = async () => {
   for (let nspp = 0; nspp < spp; ++nspp) {
     console.time();
-    await processTiles((x, y) => {
-      const color = processPixel(x, y);
-      const currColor = colors[x][y];
-      currColor
-        .multScalar(nspp)
-        .add(color)
-        .divScalar(nspp + 1);
-      colors[x][y] = currColor;
-    });
+    for (let x = 0; x < width; ++x) {
+      for (let y = 0; y < height; ++y) {
+        const color = processPixel(x + offset.x, y + offset.y);
+        colors[x][y]
+          .multScalar(nspp)
+          .add(color)
+          .divScalar(nspp + 1);
+      }
+    }
     console.log(`spp: ${nspp + 1}`);
     renderWorkerCtx.postMessage({ colors: colors, sendBy: "renderWorker" });
     console.timeEnd();
@@ -98,10 +99,15 @@ renderWorkerCtx.addEventListener("message", (event) => {
   const sampleScene = new BasicScene();
   camera = sampleScene.camera;
   scene = sampleScene.scene;
-  width = data.width;
-  height = data.height;
+
+  offset = data.offset;
+  width = data.dim.width;
+  height = data.dim.height;
+  fullWidth = data.fullWidth;
+  fullHeight = data.fullHeight;
+
   initColors();
   render().then(() => {
-    renderWorkerCtx.postMessage({ colors: colors, sendBy: "renderWorker" });
+    renderWorkerCtx.postMessage({ done: true });
   });
 });
