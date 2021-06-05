@@ -29,9 +29,9 @@ class Canvas {
     const index = (y * this.width + x) * 4;
 
     // remove gamma correction
-    const r = Math.sqrt(color.r);
-    const g = Math.sqrt(color.g);
-    const b = Math.sqrt(color.b);
+    const r = Math.sqrt(color.x);
+    const g = Math.sqrt(color.y);
+    const b = Math.sqrt(color.z);
     // const r = color.r;
     // const g = color.g;
     // const b = color.b;

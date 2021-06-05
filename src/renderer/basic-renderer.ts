@@ -1,12 +1,11 @@
 import { maxRayDepth, samplesPerPixel, tileSize } from "../config";
 import { Color, random, sleep, Vec3 } from "../utils";
-import { Camera } from "./camera";
-import { Canvas } from "./canvas";
-import { Ray } from "./ray";
-import { Scene } from "./scene";
-import RenderWorker from "worker-loader!./render-worker";
+import { Camera } from "../core/camera";
+import { Canvas } from "../core/canvas";
+import { Ray } from "../core/ray";
+import { Scene } from "../core/scene";
 
-export class Renderer {
+export class BasicRenderer {
   canvas: Canvas;
   scene: Scene;
   camera: Camera;
@@ -90,13 +89,8 @@ export class Renderer {
   }
 
   async render() {
-    const worker = new RenderWorker();
-    worker.postMessage({ limit: 1000 });
-    worker.onmessage = (event) => {
-      console.log(event.data);
-    };
-
     for (let nspp = 0; nspp < this.spp; ++nspp) {
+      console.time();
       await this.processTiles((x, y) => {
         const color = this.processPixel(x, y);
         const currColor = this.canvas.getPixel(x, y);
@@ -107,6 +101,7 @@ export class Renderer {
         this.canvas.setPixel(x, y, currColor);
       });
       console.log(`spp: ${nspp + 1}`);
+      console.timeEnd();
     }
   }
 }
