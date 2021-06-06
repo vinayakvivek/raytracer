@@ -52,9 +52,9 @@ export class RayTracingInAWeekendScene extends SampleScene {
         } else if (chooseMaterial < 0.85) {
           const albedo = randomColorBetween(0.5, 1);
           const fuzz = randomBetween(0, 0.5);
-          material = new MetalMaterial(albedo, fuzz);
+          material = new MetalMaterial(albedo, Math.round(fuzz * 100) / 100);
         } else {
-          material = new DielectricMaterial(randomBetween(1.3, 2));
+          material = new DielectricMaterial(1.5);
         }
         const sphere = new Sphere(center, 0.2, material);
         this.world.addShape(sphere);

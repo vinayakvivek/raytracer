@@ -56,7 +56,7 @@ class Sphere extends Shape {
       name: this.name,
       type: "sphere",
       properties: {
-        center: this.center,
+        center: this.center.toJson(),
         radius: this.radius,
         material: this.material.toJson(),
       },

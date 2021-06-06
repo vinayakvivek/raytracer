@@ -1,3 +1,5 @@
+const roundTo2 = (num: number) =>
+  Math.round((num + Number.EPSILON) * 100) / 100;
 class Vec3 {
   x: number;
   y: number;
@@ -19,8 +21,12 @@ class Vec3 {
     this.z = z;
   }
 
-  static fromJson(data: { x: number; y: number; z: number }) {
-    return new Vec3(data.x, data.y, data.z);
+  toJson() {
+    return [this.x, this.y, this.z].map(num => roundTo2(num));
+  }
+
+  static fromJson(v: any) {
+    return new Vec3(v[0], v[1], v[2]);
   }
 
   clone() {

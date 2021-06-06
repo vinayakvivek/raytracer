@@ -35,7 +35,7 @@ export class MetalMaterial extends Material {
     return {
       type: "metal",
       properties: {
-        albedo: this.albedo,
+        albedo: this.albedo.toJson(),
         fuzz: this.fuzz,
       },
     };

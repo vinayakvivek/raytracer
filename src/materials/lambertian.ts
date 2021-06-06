@@ -35,7 +35,7 @@ export class LambertianMaterial extends Material {
     return {
       type: "lambertian",
       properties: {
-        albedo: this.albedo,
+        albedo: this.albedo.toJson(),
       },
     };
   }

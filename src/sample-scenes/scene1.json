@@ -4,22 +4,69 @@
     "lookAt": [0, 0, -1],
     "up": [0, 1, 0],
     "vfov": 75,
-    "aperture": 0.0,
-    "focusDistance": 1.0
+    "aspectRatio": 1.5,
+    "aperture": 0,
+    "focusDist": 1
   },
   "world": {
-    "items": [
+    "shapes": [
       {
-        "name": "ground",
+        "name": "foo-shape",
         "type": "sphere",
         "properties": {
           "center": [0, -100.5, -1],
           "radius": 100,
           "material": {
             "type": "lambertian",
-            "properties": {
-              "albedo": [0.8, 0.8, 0.0]
-            }
+            "properties": { "albedo": [0.8, 0.8, 0] }
+          }
+        }
+      },
+      {
+        "name": "foo-shape",
+        "type": "sphere",
+        "properties": {
+          "center": [0, 0, -1],
+          "radius": 0.5,
+          "material": {
+            "type": "lambertian",
+            "properties": { "albedo": [0.1, 0.2, 0.5] }
+          }
+        }
+      },
+      {
+        "name": "foo-shape",
+        "type": "sphere",
+        "properties": {
+          "center": [-1, 0, -1],
+          "radius": 0.5,
+          "material": {
+            "type": "dielectric",
+            "properties": { "refractiveIndex": 1.5 }
+          }
+        }
+      },
+      {
+        "name": "foo-shape",
+        "type": "sphere",
+        "properties": {
+          "center": [-1, 0, -1],
+          "radius": -0.45,
+          "material": {
+            "type": "dielectric",
+            "properties": { "refractiveIndex": 1.5 }
+          }
+        }
+      },
+      {
+        "name": "foo-shape",
+        "type": "sphere",
+        "properties": {
+          "center": [1, 0, -1],
+          "radius": 0.5,
+          "material": {
+            "type": "metal",
+            "properties": { "albedo": [0.8, 0.6, 0.2], "fuzz": 0 }
           }
         }
       }

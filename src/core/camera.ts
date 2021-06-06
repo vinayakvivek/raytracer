@@ -74,7 +74,11 @@ class Camera {
   }
 
   toJson() {
-    return this.properties;
+    const data: any = { ...this.properties };
+    data.position = data.position.toJson();
+    data.lookAt = data.lookAt.toJson();
+    data.up = data.up.toJson();
+    return data;
   }
 
   static fromJson(properties: CameraProperties) {
