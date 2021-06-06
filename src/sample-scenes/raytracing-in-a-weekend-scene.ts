@@ -18,22 +18,15 @@ import { SampleScene } from "./sample-scene";
 export class RayTracingInAWeekendScene extends SampleScene {
   constructor() {
     super();
-
-    const cameraPosition = new Point3(13, 2, 3);
-    const lookAt = new Point3(0, 0, 0);
-    const up = new Vec3(0, 1, 0);
-    const vfov = 20;
-    const aperture = 0.1;
-    const focusDist = 10.0;
-    this.camera = new Camera(
-      cameraPosition,
-      lookAt,
-      up,
-      vfov,
-      aspectRatio,
-      aperture,
-      focusDist
-    ); // 90 vfov
+    this.camera = new Camera({
+      position: new Point3(13, 2, 3),
+      lookAt: new Point3(0, 0, 0),
+      up: new Vec3(0, 1, 0),
+      vfov: 25,
+      aspectRatio: aspectRatio,
+      aperture: 0.1,
+      focusDist: 10.0,
+    });
 
     this.initScene();
   }

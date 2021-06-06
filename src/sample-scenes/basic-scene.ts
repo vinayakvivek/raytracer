@@ -14,16 +14,15 @@ export class BasicScene extends SampleScene {
     const cameraPosition = new Point3(-2, 2, 1);
     const lookAt = new Point3(0, 0, -1);
     const up = new Vec3(0, 1, 0);
-    this.camera = new Camera(
-      cameraPosition,
-      lookAt,
-      up,
-      75,
-      aspectRatio,
-      0.0,
-      1.0
-    ); // 90 vfov
-
+    this.camera = new Camera({
+      position: new Point3(-2, 2, 1),
+      lookAt: new Point3(0, 0, -1),
+      up: new Vec3(0, 1, 0),
+      vfov: 75,
+      aspectRatio: aspectRatio,
+      aperture: 0.0,
+      focusDist: 1.0,
+    });
     this.initScene();
   }
 

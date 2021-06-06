@@ -30,4 +30,18 @@ export class LambertianMaterial extends Material {
       rayOut: scatteredRay,
     };
   }
+
+  toJson() {
+    return {
+      type: "lambertian",
+      properties: {
+        albedo: this.albedo,
+      },
+    };
+  }
+
+  static fromJson(data: any) {
+    const albedo = Color.fromJson(data.albedo);
+    return new LambertianMaterial(albedo);
+  }
 }

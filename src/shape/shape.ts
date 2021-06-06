@@ -1,6 +1,7 @@
 import { Ray } from "../core/ray";
 import { Material } from "../materials/material";
 import { Point3, Vec3 } from "../utils";
+import { Sphere } from "./sphere";
 
 export interface Intersection {
   valid: boolean;
@@ -14,11 +15,13 @@ export interface Intersection {
 export class Shape {
   material: Material;
 
-  constructor(material: Material) {
-    this.material = material;
-  }
+  constructor() {}
 
   intersect(ray: Ray, tMin: number, tMax: number): Intersection {
     return { valid: false };
+  }
+
+  toJson() {
+    return {};
   }
 }

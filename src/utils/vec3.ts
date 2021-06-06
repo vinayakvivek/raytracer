@@ -19,6 +19,10 @@ class Vec3 {
     this.z = z;
   }
 
+  static fromJson(data: { x: number; y: number; z: number }) {
+    return new Vec3(data.x, data.y, data.z);
+  }
+
   clone() {
     return new Vec3(this.x, this.y, this.z);
   }

@@ -44,4 +44,17 @@ export class DielectricMaterial extends Material {
       attenuation: new Color(1, 1, 1),
     };
   }
+
+  toJson() {
+    return {
+      type: "dielectric",
+      properties: {
+        refractiveIndex: this.refractiveIndex,
+      },
+    };
+  }
+
+  static fromJson(data: any) {
+    return new DielectricMaterial(data.refractiveIndex);
+  }
 }

@@ -15,6 +15,11 @@ const scene = new Scene();
 scene.camera = sampleScene.camera;
 scene.world = sampleScene.world;
 
+const sceneData = JSON.stringify(scene.toJson());
+// console.log(scene.toJson());
+scene.parse(JSON.parse(sceneData));
+// console.log(scene);
+
 const renderer = new BasicRenderer(canvas, scene);
 if (renderByPixels) {
   renderer.renderByPixels();

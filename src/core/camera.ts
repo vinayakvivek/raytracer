@@ -1,6 +1,16 @@
 import { degToRad, Point3, Vec3 } from "../utils";
 import { Ray } from "./ray";
 
+export interface CameraProperties {
+  position: Point3;
+  lookAt: Point3;
+  up: Vec3;
+  vfov: number;
+  aspectRatio: number;
+  aperture: number;
+  focusDist: number;
+}
+
 class Camera {
   viewPortHeight: number;
   viewPortWidth: number;
@@ -15,34 +25,36 @@ class Camera {
   u: Vec3;
   v: Vec3;
 
-  constructor(
-    position: Point3,
-    lookAt: Point3,
-    up: Vec3,
-    vfov: number,
-    aspectRatio: number,
-    aperture: number,
-    focusDist: number
-  ) {
-    const theta = degToRad(vfov);
+  properties: CameraProperties;
+
+  constructor(properties: CameraProperties) {
+    this.properties = { ...properties };
+    const theta = degToRad(properties.vfov);
     const h = Math.tan(theta / 2);
     this.viewPortHeight = 2 * h;
-    this.viewPortWidth = aspectRatio * this.viewPortHeight;
+    this.viewPortWidth = properties.aspectRatio * this.viewPortHeight;
 
-    const w = new Vec3().add(position).sub(lookAt).normalize();
-    const u = up.clone().cross(w).normalize();
+    const w = new Vec3()
+      .add(properties.position)
+      .sub(properties.lookAt)
+      .normalize();
+    const u = properties.up.clone().cross(w).normalize();
     const v = w.clone().cross(u);
 
-    this.origin = position.clone();
-    this.horizontal = u.clone().multScalar(this.viewPortWidth * focusDist);
-    this.vertical = v.clone().multScalar(this.viewPortHeight * focusDist);
+    this.origin = properties.position.clone();
+    this.horizontal = u
+      .clone()
+      .multScalar(this.viewPortWidth * properties.focusDist);
+    this.vertical = v
+      .clone()
+      .multScalar(this.viewPortHeight * properties.focusDist);
     this.lowerLeftCorner = this.origin
       .clone()
       .subScaled(this.horizontal, 0.5)
       .subScaled(this.vertical, 0.5)
-      .subScaled(w, focusDist);
+      .subScaled(w, properties.focusDist);
 
-    this.lensRadius = aperture / 2;
+    this.lensRadius = properties.aperture / 2;
     this.u = u;
     this.v = v;
     this.w = w;
@@ -59,6 +71,17 @@ class Camera {
       .sub(this.origin)
       .sub(offset);
     return new Ray(this.origin.clone().add(offset), direction);
+  }
+
+  toJson() {
+    return this.properties;
+  }
+
+  static fromJson(properties: CameraProperties) {
+    properties.position = Point3.fromJson(properties.position);
+    properties.lookAt = Point3.fromJson(properties.lookAt);
+    properties.up = Vec3.fromJson(properties.up);
+    return new Camera(properties);
   }
 }
 

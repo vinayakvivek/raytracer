@@ -1,14 +1,17 @@
 import { Ray } from "../core/ray";
+import { MaterialFactory } from "../materials/factory";
 import { Material } from "../materials/material";
 import { Point3 } from "../utils";
 import { Shape } from "./shape";
 
 class Sphere extends Shape {
+  name: String = "foo-shape";
   center: Point3;
   radius: number;
 
   constructor(center: Point3, radius: number, material: Material) {
-    super(material);
+    super();
+    this.material = material;
     this.center = center.clone();
     this.radius = radius;
   }
@@ -46,6 +49,25 @@ class Sphere extends Shape {
 
   normal(p: Point3) {
     return p.clone().sub(this.center).divScalar(this.radius);
+  }
+
+  toJson() {
+    return {
+      name: this.name,
+      type: "sphere",
+      properties: {
+        center: this.center,
+        radius: this.radius,
+        material: this.material.toJson(),
+      },
+    };
+  }
+
+  static fromJson(data: any) {
+    let { center, radius, material } = data;
+    material = MaterialFactory.fromJson(material);
+    center = Point3.fromJson(center);
+    return new Sphere(center, radius, material);
   }
 }
 

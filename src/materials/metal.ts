@@ -30,4 +30,19 @@ export class MetalMaterial extends Material {
       attenuation: this.albedo,
     };
   }
+
+  toJson() {
+    return {
+      type: "metal",
+      properties: {
+        albedo: this.albedo,
+        fuzz: this.fuzz,
+      },
+    };
+  }
+
+  static fromJson(data: any) {
+    const { albedo, fuzz } = data;
+    return new MetalMaterial(Color.fromJson(albedo), fuzz);
+  }
 }
