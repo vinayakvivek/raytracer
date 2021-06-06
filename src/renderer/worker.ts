@@ -4,11 +4,11 @@ import { RayTracingInAWeekendScene } from "../sample-scenes/raytracing-in-a-week
 import { Color, random, sleep } from "../utils";
 import { Camera } from "../core/camera";
 import { Ray } from "../core/ray";
-import { Scene } from "../core/scene";
+import { World } from "../core/world";
 
 const renderWorkerCtx: Worker = self as any;
 
-let scene: Scene;
+let world: World;
 let camera: Camera;
 let width: number;
 let height: number;
@@ -22,7 +22,7 @@ const rayColor = (ray: Ray, depth: number): Color => {
   if (depth <= 0) {
     return new Color(0, 0, 0);
   }
-  const intersection = scene.intersect(ray, 0.001, Infinity);
+  const intersection = world.intersect(ray, 0.001, Infinity);
   if (intersection.valid) {
     const { p, n, material } = intersection;
     const scatter = material.scatter(ray, intersection);
@@ -98,7 +98,7 @@ renderWorkerCtx.addEventListener("message", (event) => {
   const data = event.data;
   const sampleScene = new BasicScene();
   camera = sampleScene.camera;
-  scene = sampleScene.scene;
+  world = sampleScene.world;
 
   offset = data.offset;
   width = data.dim.width;

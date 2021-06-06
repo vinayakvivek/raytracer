@@ -3,21 +3,20 @@ import { Color, random, sleep, Vec3 } from "../utils";
 import { Camera } from "../core/camera";
 import { Canvas } from "../core/canvas";
 import { Ray } from "../core/ray";
+import { World } from "../core/world";
 import { Scene } from "../core/scene";
 
 export class BasicRenderer {
   canvas: Canvas;
   scene: Scene;
-  camera: Camera;
   width: number;
   height: number;
   spp = samplesPerPixel;
   tileSize = tileSize;
   maxDepth = maxRayDepth;
 
-  constructor(canvas: Canvas, scene: Scene, camera: Camera) {
+  constructor(canvas: Canvas, scene: Scene) {
     this.scene = scene;
-    this.camera = camera;
     this.canvas = canvas;
     this.width = canvas.width;
     this.height = canvas.height;
@@ -27,7 +26,7 @@ export class BasicRenderer {
     if (depth <= 0) {
       return new Color(0, 0, 0);
     }
-    const intersection = this.scene.intersect(ray, 0.001, Infinity);
+    const intersection = this.scene.world.intersect(ray, 0.001, Infinity);
     if (intersection.valid) {
       const { p, n, material } = intersection;
       const scatter = material.scatter(ray, intersection);
@@ -48,7 +47,7 @@ export class BasicRenderer {
   processPixel(x: number, y: number) {
     const u = (x + random() * 0.5 - 0.5) / (this.width - 1);
     const v = (y + random() * 0.5 - 0.5) / (this.height - 1);
-    const ray = this.camera.generateRay(u, v);
+    const ray = this.scene.camera.generateRay(u, v);
     return this.rayColor(ray, this.maxDepth);
   }
 

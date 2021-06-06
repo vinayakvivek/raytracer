@@ -30,7 +30,7 @@ export class BasicScene extends SampleScene {
   initScene() {
     const groundMaterial = new LambertianMaterial(new Color(0.8, 0.8, 0.0));
     const ground = new Sphere(new Point3(0, -100.5, -1), 100, groundMaterial);
-    this.scene.addShape(ground);
+    this.world.addShape(ground);
 
     const centerMaterial = new LambertianMaterial(new Color(0.1, 0.2, 0.5));
     const s1 = new Sphere(new Point3(0, 0, -1), 0.5, centerMaterial);
@@ -42,6 +42,6 @@ export class BasicScene extends SampleScene {
     const rightMaterial = new MetalMaterial(new Color(0.8, 0.6, 0.2), 0.0);
     const s4 = new Sphere(new Point3(1, 0, -1), 0.5, rightMaterial);
 
-    this.scene.addShape(s1, s2, s3, s4);
+    this.world.addShape(s1, s2, s3, s4);
   }
 }

@@ -41,7 +41,7 @@ export class RayTracingInAWeekendScene extends SampleScene {
   initScene() {
     const groundMaterial = new LambertianMaterial(new Color(0.5, 0.5, 0.5));
     const ground = new Sphere(new Point3(0, -1000, 0), 1000, groundMaterial);
-    this.scene.addShape(ground);
+    this.world.addShape(ground);
 
     for (let a = -11; a < 11; ++a) {
       for (let b = -11; b < 11; ++b) {
@@ -64,7 +64,7 @@ export class RayTracingInAWeekendScene extends SampleScene {
           material = new DielectricMaterial(randomBetween(1.3, 2));
         }
         const sphere = new Sphere(center, 0.2, material);
-        this.scene.addShape(sphere);
+        this.world.addShape(sphere);
       }
     }
 
@@ -77,6 +77,6 @@ export class RayTracingInAWeekendScene extends SampleScene {
     const material3 = new MetalMaterial(new Color(0.7, 0.6, 0.5), 0.0);
     const sphere3 = new Sphere(new Point3(4, 1, 0), 1.0, material3);
 
-    this.scene.addShape(sphere1, sphere2, sphere3);
+    this.world.addShape(sphere1, sphere2, sphere3);
   }
 }

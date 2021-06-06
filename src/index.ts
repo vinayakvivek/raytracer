@@ -5,15 +5,19 @@ import { WorkerRenderer } from "./renderer/worker-renderer";
 import { RayTracingInAWeekendScene } from "./sample-scenes/raytracing-in-a-weekend-scene";
 import { BasicRenderer } from "./renderer/basic-renderer";
 import { BasicScene } from "./sample-scenes/basic-scene";
+import { Scene } from "./core/scene";
 
 // set canvas
 const canvas = new Canvas(width, Math.round(width / aspectRatio));
 
-const sampleScene = new RayTracingInAWeekendScene();
+const sampleScene = new BasicScene();
+const scene = new Scene();
+scene.camera = sampleScene.camera;
+scene.world = sampleScene.world;
 
-const renderer = new WorkerRenderer(canvas);
+const renderer = new BasicRenderer(canvas, scene);
 if (renderByPixels) {
-  // renderer.renderByPixels();
+  renderer.renderByPixels();
 } else {
   renderer.render();
 }

@@ -1,15 +1,15 @@
 import { Camera } from "../core/camera";
-import { Scene } from "../core/scene";
+import { World } from "../core/world";
 
 export interface ISampleScene {
   new (): SampleScene;
 }
 
 export class SampleScene {
-  scene: Scene;
+  world: World;
   camera: Camera;
 
   constructor() {
-    this.scene = new Scene();
+    this.world = new World();
   }
 }
