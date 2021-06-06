@@ -3,10 +3,12 @@ import RenderWorker from "worker-loader!./worker";
 
 export class WorkerRenderer {
   canvas: Canvas;
+  sceneData: any;
   width: number;
   height: number;
 
-  constructor(canvas: Canvas) {
+  constructor(canvas: Canvas, sceneData: any) {
+    this.sceneData = sceneData;
     this.canvas = canvas;
     this.width = canvas.width;
     this.height = canvas.height;
@@ -18,6 +20,7 @@ export class WorkerRenderer {
   ) {
     const worker = new RenderWorker();
     worker.postMessage({
+      sceneData: this.sceneData,
       offset,
       dim,
       fullWidth: this.width,
@@ -50,6 +53,6 @@ export class WorkerRenderer {
   }
 
   render() {
-    this.partition(1);
+    this.partition(2);
   }
 }

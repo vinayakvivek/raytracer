@@ -5,6 +5,7 @@ import { Color, random, sleep } from "../utils";
 import { Camera } from "../core/camera";
 import { Ray } from "../core/ray";
 import { World } from "../core/world";
+import { Scene } from "../core/scene";
 
 const renderWorkerCtx: Worker = self as any;
 
@@ -96,9 +97,10 @@ const initColors = () => {
 
 renderWorkerCtx.addEventListener("message", (event) => {
   const data = event.data;
-  const sampleScene = new BasicScene();
-  camera = sampleScene.camera;
-  world = sampleScene.world;
+  const scene = new Scene();
+  scene.parse(data.sceneData);
+  camera = scene.camera;
+  world = scene.world;
 
   offset = data.offset;
   width = data.dim.width;

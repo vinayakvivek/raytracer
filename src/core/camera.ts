@@ -1,3 +1,4 @@
+import { aspectRatio } from "../config";
 import { degToRad, Point3, Vec3 } from "../utils";
 import { Ray } from "./ray";
 
@@ -6,7 +7,6 @@ export interface CameraProperties {
   lookAt: Point3;
   up: Vec3;
   vfov: number;
-  aspectRatio: number;
   aperture: number;
   focusDist: number;
 }
@@ -32,7 +32,7 @@ class Camera {
     const theta = degToRad(properties.vfov);
     const h = Math.tan(theta / 2);
     this.viewPortHeight = 2 * h;
-    this.viewPortWidth = properties.aspectRatio * this.viewPortHeight;
+    this.viewPortWidth = aspectRatio * this.viewPortHeight;
 
     const w = new Vec3()
       .add(properties.position)

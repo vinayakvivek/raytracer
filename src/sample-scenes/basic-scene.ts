@@ -19,7 +19,6 @@ export class BasicScene extends SampleScene {
       lookAt: new Point3(0, 0, -1),
       up: new Vec3(0, 1, 0),
       vfov: 75,
-      aspectRatio: aspectRatio,
       aperture: 0.0,
       focusDist: 1.0,
     });

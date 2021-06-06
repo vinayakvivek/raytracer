@@ -23,7 +23,6 @@ export class RayTracingInAWeekendScene extends SampleScene {
       lookAt: new Point3(0, 0, 0),
       up: new Vec3(0, 1, 0),
       vfov: 25,
-      aspectRatio: aspectRatio,
       aperture: 0.1,
       focusDist: 10.0,
     });

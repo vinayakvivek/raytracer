@@ -15,8 +15,9 @@ export class BasicRenderer {
   tileSize = tileSize;
   maxDepth = maxRayDepth;
 
-  constructor(canvas: Canvas, scene: Scene) {
-    this.scene = scene;
+  constructor(canvas: Canvas, sceneData: any) {
+    this.scene = new Scene();
+    this.scene.parse(sceneData);
     this.canvas = canvas;
     this.width = canvas.width;
     this.height = canvas.height;
