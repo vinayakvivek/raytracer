@@ -1,3 +1,4 @@
+import { IWorld } from "../models/scene.model";
 import { ShapeFactory } from "../shape/factory";
 import { Intersection, Shape } from "../shape/shape";
 import { Ray } from "./ray";
@@ -26,13 +27,13 @@ export class World {
     return closest;
   }
 
-  toJson() {
+  toJson(): IWorld {
     return {
       shapes: this.shapes.map((s) => s.toJson()),
     };
   }
 
-  static fromJson(data: any) {
+  static fromJson(data: IWorld) {
     const w = new World();
     for (const shapeData of data.shapes) {
       w.addShape(ShapeFactory.fromJson(shapeData));

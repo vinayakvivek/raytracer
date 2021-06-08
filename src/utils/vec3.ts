@@ -1,3 +1,5 @@
+export type Array3 = [number, number, number];
+
 const roundTo2 = (num: number) =>
   Math.round((num + Number.EPSILON) * 100) / 100;
 class Vec3 {
@@ -21,8 +23,8 @@ class Vec3 {
     this.z = z;
   }
 
-  toJson() {
-    return [this.x, this.y, this.z].map(num => roundTo2(num));
+  toJson(): Array3 {
+    return [roundTo2(this.x), roundTo2(this.y), roundTo2(this.z)];
   }
 
   static fromJson(v: any) {

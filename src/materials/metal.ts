@@ -1,4 +1,5 @@
 import { Ray } from "../core/ray";
+import { IMetalMaterial, MetalMaterialProps } from "../models/material.model";
 import { Intersection } from "../shape/shape";
 import { clamp, Color, Point3, Vec3 } from "../utils";
 import { Material, Scatter } from "./material";
@@ -31,7 +32,7 @@ export class MetalMaterial extends Material {
     };
   }
 
-  toJson() {
+  toJson(): IMetalMaterial {
     return {
       type: "metal",
       properties: {
@@ -41,7 +42,7 @@ export class MetalMaterial extends Material {
     };
   }
 
-  static fromJson(data: any) {
+  static fromJson(data: MetalMaterialProps) {
     const { albedo, fuzz } = data;
     return new MetalMaterial(Color.fromJson(albedo), fuzz);
   }

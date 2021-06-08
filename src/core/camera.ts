@@ -1,4 +1,5 @@
 import { aspectRatio } from "../config";
+import { ICamera } from "../models/scene.model";
 import { degToRad, Point3, Vec3 } from "../utils";
 import { Ray } from "./ray";
 
@@ -73,19 +74,23 @@ class Camera {
     return new Ray(this.origin.clone().add(offset), direction);
   }
 
-  toJson() {
-    const data: any = { ...this.properties };
-    data.position = data.position.toJson();
-    data.lookAt = data.lookAt.toJson();
-    data.up = data.up.toJson();
-    return data;
+  toJson(): ICamera {
+    const data: CameraProperties = { ...this.properties };
+    return {
+      ...data,
+      position: data.position.toJson(),
+      lookAt: data.lookAt.toJson(),
+      up: data.up.toJson(),
+    };
   }
 
-  static fromJson(properties: CameraProperties) {
-    properties.position = Point3.fromJson(properties.position);
-    properties.lookAt = Point3.fromJson(properties.lookAt);
-    properties.up = Vec3.fromJson(properties.up);
-    return new Camera(properties);
+  static fromJson(props: ICamera) {
+    return new Camera({
+      ...props,
+      position: Point3.fromJson(props.position),
+      lookAt: Point3.fromJson(props.lookAt),
+      up: Vec3.fromJson(props.up),
+    });
   }
 }
 

@@ -1,6 +1,8 @@
 import { Ray } from "../core/ray";
 import { Material } from "../materials/material";
+import { IShape } from "../models/shape.model";
 import { Point3, Vec3 } from "../utils";
+import { UnimplementedError } from "../utils/errors";
 import { Sphere } from "./sphere";
 
 export interface Intersection {
@@ -18,10 +20,10 @@ export class Shape {
   constructor() {}
 
   intersect(ray: Ray, tMin: number, tMax: number): Intersection {
-    return { valid: false };
+    throw new UnimplementedError();
   }
 
-  toJson() {
-    return {};
+  toJson(): IShape {
+    throw new UnimplementedError();
   }
 }

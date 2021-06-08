@@ -1,5 +1,6 @@
 import { Canvas } from "../core/canvas";
 import RenderWorker from "worker-loader!./worker";
+import { IScene } from "../models/scene.model";
 
 export class WorkerRenderer {
   canvas: Canvas;
@@ -7,7 +8,7 @@ export class WorkerRenderer {
   width: number;
   height: number;
 
-  constructor(canvas: Canvas, sceneData: any) {
+  constructor(canvas: Canvas, sceneData: IScene) {
     this.sceneData = sceneData;
     this.canvas = canvas;
     this.width = canvas.width;

@@ -5,6 +5,7 @@ import { Canvas } from "../core/canvas";
 import { Ray } from "../core/ray";
 import { World } from "../core/world";
 import { Scene } from "../core/scene";
+import { IScene } from "../models/scene.model";
 
 export class BasicRenderer {
   canvas: Canvas;
@@ -15,7 +16,7 @@ export class BasicRenderer {
   tileSize = tileSize;
   maxDepth = maxRayDepth;
 
-  constructor(canvas: Canvas, sceneData: any) {
+  constructor(canvas: Canvas, sceneData: IScene) {
     this.scene = new Scene();
     this.scene.parse(sceneData);
     this.canvas = canvas;
