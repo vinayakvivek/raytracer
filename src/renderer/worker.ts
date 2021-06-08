@@ -1,4 +1,4 @@
-import { tileSize } from "../config";
+import { maxRayDepth, samplesPerPixel, tileSize } from "../config";
 import { BasicScene } from "../sample-scenes/basic-scene";
 import { RayTracingInAWeekendScene } from "../sample-scenes/raytracing-in-a-weekend-scene";
 import { Color, random, sleep } from "../utils";
@@ -16,7 +16,8 @@ let height: number;
 let fullWidth: number;
 let fullHeight: number;
 let offset: { x: number; y: number };
-let maxDepth = 50;
+const maxDepth = maxRayDepth;
+const spp = samplesPerPixel;
 let colors: Color[][] = [];
 
 const rayColor = (ray: Ray, depth: number): Color => {
@@ -66,7 +67,6 @@ const processTiles = async (callback: (x: number, y: number) => void) => {
   }
 };
 
-const spp = 20;
 const render = async () => {
   for (let nspp = 0; nspp < spp; ++nspp) {
     console.time();
