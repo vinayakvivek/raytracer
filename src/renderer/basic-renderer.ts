@@ -1,9 +1,7 @@
 import { maxRayDepth, samplesPerPixel, tileSize } from "../config";
 import { Color, random, sleep, Vec3 } from "../utils";
-import { Camera } from "../core/camera";
 import { Canvas } from "../core/canvas";
 import { Ray } from "../core/ray";
-import { World } from "../core/world";
 import { Scene } from "../core/scene";
 import { IScene } from "../models/scene.model";
 

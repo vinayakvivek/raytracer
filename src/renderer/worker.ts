@@ -1,7 +1,5 @@
 import { maxRayDepth, samplesPerPixel, tileSize } from "../config";
-import { BasicScene } from "../sample-scenes/basic-scene";
-import { RayTracingInAWeekendScene } from "../sample-scenes/raytracing-in-a-weekend-scene";
-import { Color, random, sleep } from "../utils";
+import { Color, random } from "../utils";
 import { Camera } from "../core/camera";
 import { Ray } from "../core/ray";
 import { World } from "../core/world";
