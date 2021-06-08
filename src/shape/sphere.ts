@@ -6,13 +6,11 @@ import { Point3 } from "../utils";
 import { Shape } from "./shape";
 
 class Sphere extends Shape {
-  name: string = "foo-shape";
   center: Point3;
   radius: number;
 
   constructor(center: Point3, radius: number, material: Material) {
-    super();
-    this.material = material;
+    super(material);
     this.center = center.clone();
     this.radius = radius;
   }

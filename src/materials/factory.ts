@@ -2,7 +2,6 @@ import { IMaterial } from "../models/material.model";
 import { InvalidMaterialTypeError } from "../utils/errors";
 import { DielectricMaterial } from "./dielectric";
 import { LambertianMaterial } from "./lambertian";
-import { Material } from "./material";
 import { MetalMaterial } from "./metal";
 
 export class MaterialFactory {
@@ -14,7 +13,8 @@ export class MaterialFactory {
         return MetalMaterial.fromJson(data.properties);
       case "dielectric":
         return DielectricMaterial.fromJson(data.properties);
+      default:
+        throw new InvalidMaterialTypeError();
     }
-    throw new InvalidMaterialTypeError();
   }
 }

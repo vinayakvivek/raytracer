@@ -6,15 +6,29 @@ export type ShapeType = "sphere" | "plane";
 export interface IShape {
   name: string;
   type: ShapeType;
-  properties: any;
+  properties: ShapeProps;
+}
+
+export interface ShapeProps {
+  material: IMaterial;
 }
 
 export interface ISphere extends IShape {
   type: "sphere";
+  properties: SphereProps;
 }
 
-export interface SphereProps {
+export interface SphereProps extends ShapeProps {
   center: Array3;
   radius: number;
-  material: IMaterial;
+}
+
+export interface IPlane extends IShape {
+  type: "plane";
+  properties: PlaneProps;
+}
+
+export interface PlaneProps extends ShapeProps {
+  normal: Array3;
+  position: Array3;
 }

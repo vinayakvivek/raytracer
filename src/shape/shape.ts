@@ -14,9 +14,12 @@ export interface Intersection {
 }
 
 export class Shape {
+  name: string = "foo-shape";
   material: Material;
 
-  constructor() {}
+  constructor(material: Material) {
+    this.material = material;
+  }
 
   intersect(ray: Ray, tMin: number, tMax: number): Intersection {
     throw new UnimplementedError();

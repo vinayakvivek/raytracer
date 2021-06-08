@@ -1,3 +1,5 @@
+import { EPSILON } from "./constants";
+
 export type Array3 = [number, number, number];
 
 const roundTo2 = (num: number) =>
@@ -165,7 +167,7 @@ class Vec3 {
   }
 
   isNearZero() {
-    const e = 1e-8;
+    const e = EPSILON;
     return Math.abs(this.x) < e && Math.abs(this.y) < e && Math.abs(this.z) < e;
   }
 
