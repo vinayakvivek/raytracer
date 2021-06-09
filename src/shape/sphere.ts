@@ -1,7 +1,7 @@
 import { Ray } from "../core/ray";
 import { MaterialFactory } from "../materials/factory";
 import { Material } from "../materials/material";
-import { ISphere, SphereProps } from "../models/shape.model";
+import { ISphere } from "../models/shape.model";
 import { Point3 } from "../utils";
 import { Shape } from "./shape";
 
@@ -62,10 +62,11 @@ class Sphere extends Shape {
     };
   }
 
-  static fromJson(data: SphereProps) {
-    const material = MaterialFactory.fromJson(data.material);
-    const center = Point3.fromJson(data.center);
-    return new Sphere(center, data.radius, material);
+  static fromJson(data: ISphere) {
+    const props = data.properties;
+    const material = MaterialFactory.fromJson(props.material);
+    const center = Point3.fromJson(props.center);
+    return new Sphere(center, props.radius, material);
   }
 }
 

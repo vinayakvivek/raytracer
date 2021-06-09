@@ -1,8 +1,5 @@
 import { Ray } from "../core/ray";
-import {
-  DielectricMaterialProps,
-  IDielectricMaterial,
-} from "../models/material.model";
+import { IDielectricMaterial } from "../models/material.model";
 import { Intersection } from "../shape/shape";
 import { Point3, Color, random } from "../utils";
 import { Material, Scatter } from "./material";
@@ -58,7 +55,7 @@ export class DielectricMaterial extends Material {
     };
   }
 
-  static fromJson(data: DielectricMaterialProps) {
-    return new DielectricMaterial(data.refractiveIndex);
+  static fromJson(data: IDielectricMaterial) {
+    return new DielectricMaterial(data.properties.refractiveIndex);
   }
 }

@@ -9,28 +9,20 @@ export interface IMaterial {
 
 export interface ILambertianMaterial extends IMaterial {
   type: "lambertian";
-  properties: LambertianMaterialProps;
+  properties: {
+    albedo: Array3;
+  };
 }
-
-export interface LambertianMaterialProps {
-  albedo: Array3;
-}
-
 export interface IMetalMaterial extends IMaterial {
   type: "metal";
-  properties: MetalMaterialProps;
+  properties: {
+    albedo: Array3;
+    fuzz: number;
+  };
 }
-
-export interface MetalMaterialProps {
-  albedo: Array3;
-  fuzz: number;
-}
-
 export interface IDielectricMaterial extends IMaterial {
   type: "dielectric";
-  properties: DielectricMaterialProps;
-}
-
-export interface DielectricMaterialProps {
-  refractiveIndex: number;
+  properties: {
+    refractiveIndex: number;
+  };
 }

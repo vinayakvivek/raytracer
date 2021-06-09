@@ -1,7 +1,7 @@
 import { Ray } from "../core/ray";
 import { MaterialFactory } from "../materials/factory";
 import { Material } from "../materials/material";
-import { IPlane, PlaneProps } from "../models/shape.model";
+import { IPlane } from "../models/shape.model";
 import { Point3, Vec3 } from "../utils";
 import { EPSILON } from "../utils/constants";
 import { Intersection, Shape } from "./shape";
@@ -55,10 +55,11 @@ export class Plane extends Shape {
     };
   }
 
-  static fromJson(data: PlaneProps) {
-    const material = MaterialFactory.fromJson(data.material);
-    const position = Vec3.fromJson(data.position);
-    const normal = Vec3.fromJson(data.normal);
+  static fromJson(data: IPlane) {
+    const props = data.properties;
+    const material = MaterialFactory.fromJson(props.material);
+    const position = Vec3.fromJson(props.position);
+    const normal = Vec3.fromJson(props.normal);
     return new Plane(position, normal, material);
   }
 }

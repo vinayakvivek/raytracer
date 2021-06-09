@@ -1,8 +1,5 @@
 import { Ray } from "../core/ray";
-import {
-  ILambertianMaterial,
-  LambertianMaterialProps,
-} from "../models/material.model";
+import { ILambertianMaterial } from "../models/material.model";
 import { Intersection } from "../shape/shape";
 import { Color, Point3, Vec3 } from "../utils";
 import { Material, Scatter } from "./material";
@@ -44,8 +41,8 @@ export class LambertianMaterial extends Material {
     };
   }
 
-  static fromJson(data: LambertianMaterialProps) {
-    const albedo = Color.fromJson(data.albedo);
+  static fromJson(data: ILambertianMaterial) {
+    const albedo = Color.fromJson(data.properties.albedo);
     return new LambertianMaterial(albedo);
   }
 }

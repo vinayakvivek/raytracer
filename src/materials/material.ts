@@ -1,8 +1,9 @@
 import { Ray } from "../core/ray";
 import { IMaterial } from "../models/material.model";
 import { Intersection } from "../shape/shape";
-import { Color, Point3, Vec3 } from "../utils";
+import { Color } from "../utils";
 import { UnimplementedError } from "../utils/errors";
+
 export interface Scatter {
   valid: boolean;
   attenuation?: Color;

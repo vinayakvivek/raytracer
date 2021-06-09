@@ -15,20 +15,16 @@ export interface ShapeProps {
 
 export interface ISphere extends IShape {
   type: "sphere";
-  properties: SphereProps;
-}
-
-export interface SphereProps extends ShapeProps {
-  center: Array3;
-  radius: number;
+  properties: ShapeProps & {
+    center: Array3;
+    radius: number;
+  };
 }
 
 export interface IPlane extends IShape {
   type: "plane";
-  properties: PlaneProps;
-}
-
-export interface PlaneProps extends ShapeProps {
-  normal: Array3;
-  position: Array3;
+  properties: ShapeProps & {
+    normal: Array3;
+    position: Array3;
+  };
 }
