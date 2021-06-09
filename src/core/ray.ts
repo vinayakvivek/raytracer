@@ -1,13 +1,14 @@
 import { Point3, Vec3 } from "../utils";
 
 class Ray {
-
   origin: Point3;
   direction: Vec3;
+  time: number;
 
-  constructor(origin: Point3, direction: Vec3) {
+  constructor(origin: Point3, direction: Vec3, time = 0) {
     this.origin = origin.clone();
     this.direction = direction.clone().normalize();
+    this.time = time;
   }
 
   at(t: number): Point3 {

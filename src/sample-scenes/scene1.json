@@ -5,7 +5,9 @@
     "up": [0, 1, 0],
     "vfov": 75,
     "aperture": 0,
-    "focusDist": 1
+    "focusDist": 1,
+    "startTime": 0,
+    "endTime": 1
   },
   "world": {
     "shapes": [

@@ -25,6 +25,8 @@ export class RayTracingInAWeekendScene extends SampleScene {
       vfov: 25,
       aperture: 0.1,
       focusDist: 10.0,
+      startTime: 0.0,
+      endTime: 1.0,
     });
 
     this.initScene();

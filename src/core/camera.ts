@@ -1,6 +1,6 @@
 import { aspectRatio } from "../config";
 import { ICamera } from "../models/scene.model";
-import { degToRad, Point3, Vec3 } from "../utils";
+import { degToRad, Point3, randomBetween, Vec3 } from "../utils";
 import { Ray } from "./ray";
 
 export interface CameraProperties {
@@ -10,17 +10,15 @@ export interface CameraProperties {
   vfov: number;
   aperture: number;
   focusDist: number;
+  startTime: number;
+  endTime: number;
 }
 
 class Camera {
-  viewPortHeight: number;
-  viewPortWidth: number;
-
   origin: Point3;
   horizontal: Vec3;
   vertical: Vec3;
   lowerLeftCorner: Point3;
-
   lensRadius: number;
   w: Vec3;
   u: Vec3;
@@ -32,8 +30,8 @@ class Camera {
     this.properties = { ...properties };
     const theta = degToRad(properties.vfov);
     const h = Math.tan(theta / 2);
-    this.viewPortHeight = 2 * h;
-    this.viewPortWidth = aspectRatio * this.viewPortHeight;
+    const viewPortHeight = 2 * h;
+    const viewPortWidth = aspectRatio * viewPortHeight;
 
     const w = new Vec3()
       .add(properties.position)
@@ -45,10 +43,8 @@ class Camera {
     this.origin = properties.position.clone();
     this.horizontal = u
       .clone()
-      .multScalar(this.viewPortWidth * properties.focusDist);
-    this.vertical = v
-      .clone()
-      .multScalar(this.viewPortHeight * properties.focusDist);
+      .multScalar(viewPortWidth * properties.focusDist);
+    this.vertical = v.clone().multScalar(viewPortHeight * properties.focusDist);
     this.lowerLeftCorner = this.origin
       .clone()
       .subScaled(this.horizontal, 0.5)
@@ -61,6 +57,12 @@ class Camera {
     this.w = w;
   }
 
+  get _randomTime() {
+    const t1 = this.properties.startTime;
+    const t2 = this.properties.endTime;
+    return randomBetween(t1, t2);
+  }
+
   generateRay(s: number, t: number) {
     const rd = Vec3.randomInUnitDisc().multScalar(this.lensRadius);
     const offset = new Vec3().addScaled(this.u, rd.x).addScaled(this.v, rd.y);
@@ -71,7 +73,11 @@ class Camera {
       .addScaled(this.vertical, t)
       .sub(this.origin)
       .sub(offset);
-    return new Ray(this.origin.clone().add(offset), direction);
+    return new Ray(
+      this.origin.clone().add(offset),
+      direction,
+      this._randomTime
+    );
   }
 
   toJson(): ICamera {

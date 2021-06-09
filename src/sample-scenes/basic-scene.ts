@@ -21,6 +21,8 @@ export class BasicScene extends SampleScene {
       vfov: 75,
       aperture: 0.0,
       focusDist: 1.0,
+      startTime: 0.0,
+      endTime: 1.0,
     });
     this.initScene();
   }

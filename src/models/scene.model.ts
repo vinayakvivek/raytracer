@@ -8,6 +8,8 @@ export interface ICamera {
   vfov: number;
   aperture: number;
   focusDist: number;
+  startTime: number;
+  endTime: number;
 }
 
 export interface IWorld {
