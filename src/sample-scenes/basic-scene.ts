@@ -1,4 +1,3 @@
-import { aspectRatio } from "../config";
 import { Camera } from "../core/camera";
 import { DielectricMaterial } from "../materials/dielectric";
 import { LambertianMaterial } from "../materials/lambertian";
@@ -10,14 +9,10 @@ import { SampleScene } from "./sample-scene";
 export class BasicScene extends SampleScene {
   constructor() {
     super();
-
-    const cameraPosition = new Point3(-2, 2, 1);
-    const lookAt = new Point3(0, 0, -1);
-    const up = new Vec3(0, 1, 0);
     this.camera = new Camera({
-      position: new Point3(-2, 2, 1),
-      lookAt: new Point3(0, 0, -1),
-      up: new Vec3(0, 1, 0),
+      position: [-2, 2, 1],
+      lookAt: [0, 0, -1],
+      up: [0, 1, 0],
       vfov: 75,
       aperture: 0.0,
       focusDist: 1.0,

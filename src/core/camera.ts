@@ -3,17 +3,6 @@ import { ICamera } from "../models/scene.model";
 import { degToRad, Point3, randomBetween, Vec3 } from "../utils";
 import { Ray } from "./ray";
 
-export interface CameraProperties {
-  position: Point3;
-  lookAt: Point3;
-  up: Vec3;
-  vfov: number;
-  aperture: number;
-  focusDist: number;
-  startTime: number;
-  endTime: number;
-}
-
 class Camera {
   origin: Point3;
   horizontal: Vec3;
@@ -24,42 +13,39 @@ class Camera {
   u: Vec3;
   v: Vec3;
 
-  properties: CameraProperties;
+  props: ICamera;
 
-  constructor(properties: CameraProperties) {
-    this.properties = { ...properties };
-    const theta = degToRad(properties.vfov);
+  constructor(props: ICamera) {
+    this.props = { ...props };
+    const theta = degToRad(props.vfov);
     const h = Math.tan(theta / 2);
     const viewPortHeight = 2 * h;
     const viewPortWidth = aspectRatio * viewPortHeight;
 
-    const w = new Vec3()
-      .add(properties.position)
-      .sub(properties.lookAt)
+    const w = Point3.fromJson(props.position)
+      .sub(Point3.fromJson(props.lookAt))
       .normalize();
-    const u = properties.up.clone().cross(w).normalize();
+    const u = Vec3.fromJson(props.up).cross(w).normalize();
     const v = w.clone().cross(u);
 
-    this.origin = properties.position.clone();
-    this.horizontal = u
-      .clone()
-      .multScalar(viewPortWidth * properties.focusDist);
-    this.vertical = v.clone().multScalar(viewPortHeight * properties.focusDist);
+    this.origin = Point3.fromJson(props.position);
+    this.horizontal = u.clone().multScalar(viewPortWidth * props.focusDist);
+    this.vertical = v.clone().multScalar(viewPortHeight * props.focusDist);
     this.lowerLeftCorner = this.origin
       .clone()
       .subScaled(this.horizontal, 0.5)
       .subScaled(this.vertical, 0.5)
-      .subScaled(w, properties.focusDist);
+      .subScaled(w, props.focusDist);
 
-    this.lensRadius = properties.aperture / 2;
+    this.lensRadius = props.aperture / 2;
     this.u = u;
     this.v = v;
     this.w = w;
   }
 
   get _randomTime() {
-    const t1 = this.properties.startTime;
-    const t2 = this.properties.endTime;
+    const t1 = this.props.startTime;
+    const t2 = this.props.endTime;
     return randomBetween(t1, t2);
   }
 
@@ -81,22 +67,11 @@ class Camera {
   }
 
   toJson(): ICamera {
-    const data: CameraProperties = { ...this.properties };
-    return {
-      ...data,
-      position: data.position.toJson(),
-      lookAt: data.lookAt.toJson(),
-      up: data.up.toJson(),
-    };
+    return this.props;
   }
 
   static fromJson(props: ICamera) {
-    return new Camera({
-      ...props,
-      position: Point3.fromJson(props.position),
-      lookAt: Point3.fromJson(props.lookAt),
-      up: Vec3.fromJson(props.up),
-    });
+    return new Camera(props);
   }
 }
 

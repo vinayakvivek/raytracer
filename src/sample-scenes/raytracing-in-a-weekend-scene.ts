@@ -1,4 +1,3 @@
-import { aspectRatio } from "../config";
 import { Camera } from "../core/camera";
 import { DielectricMaterial } from "../materials/dielectric";
 import { LambertianMaterial } from "../materials/lambertian";
@@ -11,7 +10,6 @@ import {
   randomBetween,
   randomColor,
   randomColorBetween,
-  Vec3,
 } from "../utils";
 import { SampleScene } from "./sample-scene";
 
@@ -19,9 +17,9 @@ export class RayTracingInAWeekendScene extends SampleScene {
   constructor() {
     super();
     this.camera = new Camera({
-      position: new Point3(13, 2, 3),
-      lookAt: new Point3(0, 0, 0),
-      up: new Vec3(0, 1, 0),
+      position: [13, 2, 3],
+      lookAt: [0, 0, 0],
+      up: [0, 1, 0],
       vfov: 25,
       aperture: 0.1,
       focusDist: 10.0,
