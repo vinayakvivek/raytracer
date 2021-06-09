@@ -2,6 +2,7 @@ import { Camera } from "../core/camera";
 import { DielectricMaterial } from "../materials/dielectric";
 import { LambertianMaterial } from "../materials/lambertian";
 import { MetalMaterial } from "../materials/metal";
+import { MovingSphere } from "../shape/moving-sphere";
 import { Sphere } from "../shape/sphere";
 import {
   Color,
@@ -10,6 +11,7 @@ import {
   randomBetween,
   randomColor,
   randomColorBetween,
+  Vec3,
 } from "../utils";
 import { SampleScene } from "./sample-scene";
 
@@ -35,8 +37,8 @@ export class RayTracingInAWeekendScene extends SampleScene {
     const ground = new Sphere(new Point3(0, -1000, 0), 1000, groundMaterial);
     this.world.addShape(ground);
 
-    for (let a = -11; a < 11; ++a) {
-      for (let b = -11; b < 11; ++b) {
+    for (let a = -5; a < 5; ++a) {
+      for (let b = -5; b < 5; ++b) {
         const chooseMaterial = random();
         const center = new Point3(a + 0.9 * random(), 0.2, b + 0.9 * random());
 
@@ -48,6 +50,11 @@ export class RayTracingInAWeekendScene extends SampleScene {
         if (chooseMaterial < 0.6) {
           const albedo = randomColor().mult(randomColor());
           material = new LambertianMaterial(albedo);
+          // const center2 = new Vec3(0, randomBetween(0, 0.5), 0).add(center);
+          // this.world.addShape(
+          //   new MovingSphere(center, center2, 0.2, 0.0, 1.0, material)
+          // );
+          // continue;
         } else if (chooseMaterial < 0.85) {
           const albedo = randomColorBetween(0.5, 1);
           const fuzz = randomBetween(0, 0.5);
