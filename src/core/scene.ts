@@ -11,6 +11,7 @@ export class Scene {
   parse(data: IScene) {
     this.world = World.fromJson(data.world);
     this.camera = Camera.fromJson(data.camera);
+    console.log(this.world);
   }
 
   toJson(): IScene {

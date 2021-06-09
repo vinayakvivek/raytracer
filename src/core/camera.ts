@@ -16,7 +16,7 @@ class Camera {
   props: ICamera;
 
   constructor(props: ICamera) {
-    this.props = { ...props };
+    this.props = props;
     const theta = degToRad(props.vfov);
     const h = Math.tan(theta / 2);
     const viewPortHeight = 2 * h;

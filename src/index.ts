@@ -3,7 +3,7 @@ import { aspectRatio, renderByPixels, width } from "./config";
 import { Canvas } from "./core/canvas";
 import { WorkerRenderer } from "./renderer/worker-renderer";
 import { BasicRenderer } from "./renderer/basic-renderer";
-import * as sceneData from "./sample-scenes/scene2.json";
+import * as sceneData from "./sample-scenes/scene4.json";
 import { IScene } from "./models/scene.model";
 
 const canvas = new Canvas(width, Math.round(width / aspectRatio));

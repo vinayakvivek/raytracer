@@ -1,7 +1,7 @@
 import { Array3 } from "../utils";
 import { IMaterial } from "./material.model";
 
-export type ShapeType = "sphere" | "plane";
+export type ShapeType = "sphere" | "moving-sphere" | "plane";
 
 export interface IShape {
   name: string;
@@ -18,6 +18,17 @@ export interface ISphere extends IShape {
   properties: ShapeProps & {
     center: Array3;
     radius: number;
+  };
+}
+
+export interface IMovingSphere extends IShape {
+  type: "moving-sphere";
+  properties: ShapeProps & {
+    startCenter: Array3;
+    endCenter: Array3;
+    radius: number;
+    startTime: number;
+    endTime: number;
   };
 }
 

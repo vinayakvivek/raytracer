@@ -5,7 +5,7 @@ class Ray {
   direction: Vec3;
   time: number;
 
-  constructor(origin: Point3, direction: Vec3, time = 0) {
+  constructor(origin: Point3, direction: Vec3, time: number) {
     this.origin = origin.clone();
     this.direction = direction.clone().normalize();
     this.time = time;

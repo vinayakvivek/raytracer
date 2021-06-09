@@ -24,7 +24,7 @@ export class LambertianMaterial extends Material {
       scatterDir = n;
     }
 
-    const scatteredRay = new Ray(p, scatterDir);
+    const scatteredRay = new Ray(p, scatterDir, rayIn.time);
     return {
       valid: true,
       attenuation: this.albedo.clone(),

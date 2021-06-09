@@ -5,7 +5,7 @@ import { ISphere } from "../models/shape.model";
 import { Point3 } from "../utils";
 import { Shape } from "./shape";
 
-class Sphere extends Shape {
+export class Sphere extends Shape {
   center: Point3;
   radius: number;
 
@@ -69,5 +69,3 @@ class Sphere extends Shape {
     return new Sphere(center, props.radius, material);
   }
 }
-
-export { Sphere };

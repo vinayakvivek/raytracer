@@ -27,7 +27,7 @@ export class MetalMaterial extends Material {
       .addScaled(Vec3.randomInUnitSphere(), this.fuzz);
     return {
       valid: true,
-      rayOut: new Ray(p, reflectedDir),
+      rayOut: new Ray(p, reflectedDir, rayIn.time),
       attenuation: this.albedo,
     };
   }
