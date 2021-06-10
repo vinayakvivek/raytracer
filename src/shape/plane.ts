@@ -1,6 +1,8 @@
+import { AABB } from "../core/aabb";
 import { Ray } from "../core/ray";
 import { MaterialFactory } from "../materials/factory";
 import { Material } from "../materials/material";
+import { TimeInterval } from "../models/scene.model";
 import { IPlane } from "../models/shape.model";
 import { Point3, Vec3 } from "../utils";
 import { EPSILON } from "../utils/constants";
@@ -14,6 +16,7 @@ export class Plane extends Shape {
     super(material);
     this.normal = normal.clone();
     this.position = position.clone();
+    this.boundingBox = null;
   }
 
   intersect(ray: Ray, tMin: number, tMax: number): Intersection {

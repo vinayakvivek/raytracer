@@ -1,8 +1,10 @@
+import { AABB } from "../core/aabb";
 import { Ray } from "../core/ray";
 import { MaterialFactory } from "../materials/factory";
 import { Material } from "../materials/material";
+import { TimeInterval } from "../models/scene.model";
 import { ISphere } from "../models/shape.model";
-import { Point3 } from "../utils";
+import { Point3, Vec3 } from "../utils";
 import { Shape } from "./shape";
 
 export class Sphere extends Shape {
@@ -13,6 +15,14 @@ export class Sphere extends Shape {
     super(material);
     this.center = center.clone();
     this.radius = radius;
+    this.boundingBox = this._boundingBox();
+  }
+
+  _boundingBox(): AABB {
+    const r = this.radius;
+    const min = this.center.clone().sub(new Vec3(r, r, r));
+    const max = this.center.clone().add(new Vec3(r, r, r));
+    return new AABB(min, max);
   }
 
   // return t, n

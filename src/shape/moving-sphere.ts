@@ -1,3 +1,4 @@
+import { AABB } from "../core/aabb";
 import { Ray } from "../core/ray";
 import { MaterialFactory } from "../materials/factory";
 import { Material } from "../materials/material";
@@ -12,6 +13,7 @@ export class MovingSphere extends Shape {
   radius: number;
 
   startTime: number;
+  endTime: number;
   timeDiff: number;
   moveDir: Vec3;
 
@@ -26,9 +28,22 @@ export class MovingSphere extends Shape {
     this.startCenter = startCenter;
     this.endCenter = endCenter;
     this.startTime = time.start;
+    this.endTime = time.end;
     this.radius = radius;
     this.moveDir = endCenter.clone().sub(startCenter);
     this.timeDiff = time.end - time.start;
+
+    this.boundingBox = this._boundingBox();
+  }
+
+  _boundingBox(): AABB {
+    const r = this.radius;
+    const offset = new Vec3(r, r, r);
+    const c0 = this.center(this.startTime);
+    const c1 = this.center(this.endTime);
+    const b0 = new AABB(c0.clone().sub(offset), c0.clone().add(offset));
+    const b1 = new AABB(c1.clone().sub(offset), c1.clone().add(offset));
+    return AABB.surroundingBox(b0, b1);
   }
 
   // return t, n
@@ -80,7 +95,7 @@ export class MovingSphere extends Shape {
         endCenter: this.endCenter.toJson(),
         time: {
           start: this.startTime,
-          end: this.startTime + this.timeDiff,
+          end: this.endTime,
         },
         radius: this.radius,
         material: this.material.toJson(),

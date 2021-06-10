@@ -24,10 +24,17 @@ export class AABB {
       }
       tMin = t0 > tMin ? t0 : tMin;
       tMax = t1 < tMax ? t1 : tMax;
-      if (tMax < tMax) {
+      if (tMax < tMin) {
         return false;
       }
     }
     return true;
+  }
+
+  static surroundingBox(box1: AABB, box2: AABB) {
+    return new AABB(
+      Point3.min(box1.min, box2.min),
+      Point3.max(box1.max, box2.max)
+    );
   }
 }

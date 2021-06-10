@@ -193,6 +193,22 @@ class Vec3 {
     const theta = Math.random() * 2 * Math.PI;
     return new Vec3(r * Math.cos(theta), r * Math.sin(theta), 0);
   }
+
+  static max(v1: Vec3, v2: Vec3) {
+    return new Vec3(
+      Math.max(v1.x, v2.x),
+      Math.max(v1.y, v2.y),
+      Math.max(v1.z, v2.z)
+    );
+  }
+
+  static min(v1: Vec3, v2: Vec3) {
+    return new Vec3(
+      Math.min(v1.x, v2.x),
+      Math.min(v1.y, v2.y),
+      Math.min(v1.z, v2.z)
+    );
+  }
 }
 
 export { Vec3, Vec3 as Color, Vec3 as Point3 };
