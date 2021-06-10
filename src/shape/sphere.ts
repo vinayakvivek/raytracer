@@ -11,11 +11,16 @@ export class Sphere extends Shape {
   center: Point3;
   radius: number;
 
-  constructor(center: Point3, radius: number, material: Material) {
+  constructor(
+    center: Point3,
+    radius: number,
+    material: Material,
+    unbounded = false
+  ) {
     super(material);
     this.center = center.clone();
     this.radius = radius;
-    this.boundingBox = this._boundingBox();
+    this.boundingBox = unbounded ? null : this._boundingBox();
   }
 
   _boundingBox(): AABB {
@@ -76,6 +81,6 @@ export class Sphere extends Shape {
     const props = data.properties;
     const material = MaterialFactory.fromJson(props.material);
     const center = Point3.fromJson(props.center);
-    return new Sphere(center, props.radius, material);
+    return new Sphere(center, props.radius, material, !!data.unbounded);
   }
 }

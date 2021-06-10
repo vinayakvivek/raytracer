@@ -7,6 +7,7 @@ export type ShapeType = "sphere" | "moving-sphere" | "plane";
 export interface IShape {
   name: string;
   type: ShapeType;
+  unbounded?: boolean;
   properties: ShapeProps;
 }
 

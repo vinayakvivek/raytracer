@@ -22,7 +22,8 @@ export class MovingSphere extends Shape {
     endCenter: Point3,
     radius: number,
     time: TimeInterval,
-    material: Material
+    material: Material,
+    unbounded = false
   ) {
     super(material);
     this.startCenter = startCenter;
@@ -33,7 +34,7 @@ export class MovingSphere extends Shape {
     this.moveDir = endCenter.clone().sub(startCenter);
     this.timeDiff = time.end - time.start;
 
-    this.boundingBox = this._boundingBox();
+    this.boundingBox = unbounded ? null : this._boundingBox();
   }
 
   _boundingBox(): AABB {
@@ -108,6 +109,13 @@ export class MovingSphere extends Shape {
     const material = MaterialFactory.fromJson(props.material);
     const sc = Point3.fromJson(props.startCenter);
     const ec = Point3.fromJson(props.endCenter);
-    return new MovingSphere(sc, ec, props.radius, props.time, material);
+    return new MovingSphere(
+      sc,
+      ec,
+      props.radius,
+      props.time,
+      material,
+      !!data.unbounded
+    );
   }
 }
