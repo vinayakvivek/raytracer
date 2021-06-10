@@ -1,5 +1,5 @@
 import { aspectRatio } from "../config";
-import { ICamera } from "../models/scene.model";
+import { ICamera, TimeInterval } from "../models/scene.model";
 import { degToRad, Point3, randomBetween, Vec3 } from "../utils";
 import { Ray } from "./ray";
 
@@ -14,9 +14,11 @@ class Camera {
   v: Vec3;
 
   props: ICamera;
+  time: TimeInterval;
 
   constructor(props: ICamera) {
     this.props = props;
+    this.time = props.time;
     const theta = degToRad(props.vfov);
     const h = Math.tan(theta / 2);
     const viewPortHeight = 2 * h;
@@ -44,9 +46,7 @@ class Camera {
   }
 
   get _randomTime() {
-    const t1 = this.props.startTime;
-    const t2 = this.props.endTime;
-    return randomBetween(t1, t2);
+    return randomBetween(this.time.start, this.time.end);
   }
 
   generateRay(s: number, t: number) {

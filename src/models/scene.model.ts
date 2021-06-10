@@ -8,8 +8,7 @@ export interface ICamera {
   vfov: number;
   aperture: number;
   focusDist: number;
-  startTime: number;
-  endTime: number;
+  time: TimeInterval;
 }
 
 export interface IWorld {
@@ -19,4 +18,9 @@ export interface IWorld {
 export interface IScene {
   camera: ICamera;
   world: IWorld;
+}
+
+export interface TimeInterval {
+  start: number;
+  end: number;
 }
