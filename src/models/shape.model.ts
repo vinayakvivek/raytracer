@@ -1,5 +1,6 @@
 import { Array3 } from "../utils";
 import { IMaterial } from "./material.model";
+import { TimeInterval } from "./scene.model";
 
 export type ShapeType = "sphere" | "moving-sphere" | "plane";
 
@@ -27,8 +28,7 @@ export interface IMovingSphere extends IShape {
     startCenter: Array3;
     endCenter: Array3;
     radius: number;
-    startTime: number;
-    endTime: number;
+    time: TimeInterval;
   };
 }
 

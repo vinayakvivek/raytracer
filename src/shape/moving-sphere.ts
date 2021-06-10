@@ -1,6 +1,7 @@
 import { Ray } from "../core/ray";
 import { MaterialFactory } from "../materials/factory";
 import { Material } from "../materials/material";
+import { TimeInterval } from "../models/scene.model";
 import { IMovingSphere } from "../models/shape.model";
 import { Point3, Vec3 } from "../utils";
 import { Shape } from "./shape";
@@ -9,28 +10,25 @@ export class MovingSphere extends Shape {
   startCenter: Point3;
   endCenter: Point3;
   radius: number;
+
   startTime: number;
-  endTime: number;
-  moveDir: Vec3;
   timeDiff: number;
+  moveDir: Vec3;
 
   constructor(
     startCenter: Point3,
     endCenter: Point3,
     radius: number,
-    startTime: number,
-    endTime: number,
+    time: TimeInterval,
     material: Material
   ) {
     super(material);
     this.startCenter = startCenter;
     this.endCenter = endCenter;
-    this.startTime = startTime;
-    this.endTime = endTime;
+    this.startTime = time.start;
     this.radius = radius;
     this.moveDir = endCenter.clone().sub(startCenter);
-    this.timeDiff = endTime - startTime;
-    console.log(this.moveDir, this.timeDiff);
+    this.timeDiff = time.end - time.start;
   }
 
   // return t, n
@@ -80,8 +78,10 @@ export class MovingSphere extends Shape {
       properties: {
         startCenter: this.startCenter.toJson(),
         endCenter: this.endCenter.toJson(),
-        startTime: this.startTime,
-        endTime: this.endTime,
+        time: {
+          start: this.startTime,
+          end: this.startTime + this.timeDiff,
+        },
         radius: this.radius,
         material: this.material.toJson(),
       },
@@ -93,13 +93,6 @@ export class MovingSphere extends Shape {
     const material = MaterialFactory.fromJson(props.material);
     const sc = Point3.fromJson(props.startCenter);
     const ec = Point3.fromJson(props.endCenter);
-    return new MovingSphere(
-      sc,
-      ec,
-      props.radius,
-      props.startTime,
-      props.endTime,
-      material
-    );
+    return new MovingSphere(sc, ec, props.radius, props.time, material);
   }
 }
