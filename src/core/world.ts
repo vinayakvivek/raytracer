@@ -26,6 +26,7 @@ export class World {
       const boundedShapes = this.shapes.filter((s) => !!s.boundingBox);
       this.bvhNode = new BvhNode(boundedShapes);
     } else {
+      // if BVH is not enabled, all shapes are unbounded
       this.unboundedShapes = this.shapes;
     }
   }

@@ -5,7 +5,7 @@ import { Material } from "../materials/material";
 import { TimeInterval } from "../models/scene.model";
 import { ISphere } from "../models/shape.model";
 import { Point3, Vec3 } from "../utils";
-import { Shape } from "./shape";
+import { Shape, UV } from "./shape";
 
 export class Sphere extends Shape {
   center: Point3;
@@ -28,6 +28,15 @@ export class Sphere extends Shape {
     const min = this.center.clone().sub(new Vec3(r, r, r));
     const max = this.center.clone().add(new Vec3(r, r, r));
     return new AABB(min, max);
+  }
+
+  getUV(p: Point3): UV {
+    const theta = Math.acos(-p.y);
+    const phi = Math.atan2(-p.z, p.x) + Math.PI;
+    return {
+      u: phi / (2 * Math.PI),
+      v: theta / Math.PI,
+    };
   }
 
   // return t, n
@@ -58,7 +67,8 @@ export class Sphere extends Shape {
       n.negate();
       frontFace = false;
     }
-    return { valid: true, t, p, n, frontFace, material: this.material };
+    const uv = this.getUV(n);
+    return { valid: true, t, p, n, frontFace, material: this.material, uv };
   }
 
   normal(p: Point3) {
