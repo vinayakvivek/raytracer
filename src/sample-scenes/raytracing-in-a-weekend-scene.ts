@@ -4,6 +4,7 @@ import { LambertianMaterial } from "../materials/lambertian";
 import { MetalMaterial } from "../materials/metal";
 import { MovingSphere } from "../shape/moving-sphere";
 import { Sphere } from "../shape/sphere";
+import { CheckerTexture } from "../textures/checker";
 import { SolidColorTexture } from "../textures/solid-color";
 import {
   Color,
@@ -24,8 +25,8 @@ export class RayTracingInAWeekendScene extends SampleScene {
       lookAt: [0, 0, 0],
       up: [0, 1, 0],
       vfov: 25,
-      aperture: 0.1,
-      focusDist: 10.0,
+      aperture: 0,
+      focusDist: 1.0,
       time: { start: 0, end: 1 },
     });
 
@@ -34,7 +35,10 @@ export class RayTracingInAWeekendScene extends SampleScene {
 
   initScene() {
     const groundMaterial = new LambertianMaterial(
-      new SolidColorTexture(new Color(0.5, 0.5, 0.5))
+      new CheckerTexture(
+        new SolidColorTexture(new Vec3(0, 0, 0)),
+        new SolidColorTexture(new Vec3(1, 1, 1))
+      )
     );
     const ground = new Sphere(new Point3(0, -1000, 0), 1000, groundMaterial);
     this.world.addShape(ground);
