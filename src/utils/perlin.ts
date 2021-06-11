@@ -1,4 +1,4 @@
-import { randomBetween } from "./utils";
+import { clamp, randomBetween } from "./utils";
 import { Point3 } from "./vec3";
 
 const count: number = 256;
@@ -28,9 +28,48 @@ for (let i = 0; i < count; ++i) {
   rands[i] = Math.random();
 }
 
+const trilinearInterp = (c: number[][][], u: number, v: number, w: number) => {
+  let accum = 0.0;
+  for (let i = 0; i < 2; i++)
+    for (let j = 0; j < 2; j++)
+      for (let k = 0; k < 2; k++)
+        accum +=
+          (i * u + (1 - i) * (1 - u)) *
+          (j * v + (1 - j) * (1 - v)) *
+          (k * w + (1 - k) * (1 - w)) *
+          c[i][j][k];
+  return accum;
+};
+
 export const perlinNoise = (p: Point3) => {
-  const i = ((4 * p.x) ^ 0) & 255;
-  const j = ((4 * p.y) ^ 0) & 255;
-  const k = ((4 * p.z) ^ 0) & 255;
-  return rands[px[i] ^ py[j] ^ pz[k]];
+  let u = p.x - Math.floor(p.x);
+  let v = p.y - Math.floor(p.y);
+  let w = p.z - Math.floor(p.z);
+  u = u * u * (3 - 2 * u);
+  v = v * v * (3 - 2 * v);
+  w = w * w * (3 - 2 * w);
+
+  const i = Math.floor(p.x);
+  const j = Math.floor(p.y);
+  const k = Math.floor(p.z);
+
+  const c: number[][][] = [
+    [
+      [0, 0],
+      [0, 0],
+    ],
+    [
+      [0, 0],
+      [0, 0],
+    ],
+  ];
+
+  for (let di = 0; di < 2; di++)
+    for (let dj = 0; dj < 2; dj++)
+      for (let dk = 0; dk < 2; dk++)
+        c[di][dj][dk] =
+          rands[px[(i + di) & 255] ^ py[(j + dj) & 255] ^ pz[(k + dk) & 255]];
+
+  // console.log(c);
+  return trilinearInterp(c, u, v, w);
 };

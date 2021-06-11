@@ -23,7 +23,8 @@
             "type": "lambertian",
             "properties": {
               "albedo": {
-                "type": "perlin"
+                "type": "perlin",
+                "scale": 4.0
               }
             }
           }
@@ -39,7 +40,8 @@
             "type": "lambertian",
             "properties": {
               "albedo": {
-                "type": "perlin"
+                "type": "perlin",
+                "scale": 4.0
               }
             }
           }

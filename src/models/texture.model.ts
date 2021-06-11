@@ -19,4 +19,5 @@ export interface ICheckerTexture extends ITexture {
 
 export interface IPerlinTexture extends ITexture {
   type: "perlin";
+  scale: number;
 }
