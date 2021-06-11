@@ -1,8 +1,9 @@
 import { clamp, randomBetween } from "./utils";
-import { Point3 } from "./vec3";
+import { Point3, Vec3 } from "./vec3";
 
 const count: number = 256;
 const rands = new Float32Array(count);
+const randVecs: Vec3[] = [];
 const px = new Uint8Array(count);
 const py = new Uint8Array(count);
 const pz = new Uint8Array(count);
@@ -26,18 +27,25 @@ generatePerlinPerm(py);
 generatePerlinPerm(pz);
 for (let i = 0; i < count; ++i) {
   rands[i] = Math.random();
+  randVecs.push(Vec3.random().normalize());
 }
 
-const trilinearInterp = (c: number[][][], u: number, v: number, w: number) => {
+const trilinearInterp = (c: Vec3[][][], u: number, v: number, w: number) => {
+  const uu = u * u * (3 - 2 * u);
+  const vv = v * v * (3 - 2 * v);
+  const ww = w * w * (3 - 2 * w);
+
   let accum = 0.0;
   for (let i = 0; i < 2; i++)
     for (let j = 0; j < 2; j++)
-      for (let k = 0; k < 2; k++)
+      for (let k = 0; k < 2; k++) {
+        const weightV = new Vec3(u - i, v - j, w - k);
         accum +=
           (i * u + (1 - i) * (1 - u)) *
           (j * v + (1 - j) * (1 - v)) *
           (k * w + (1 - k) * (1 - w)) *
-          c[i][j][k];
+          c[i][j][k].dot(weightV);
+      }
   return accum;
 };
 
@@ -45,22 +53,18 @@ export const perlinNoise = (p: Point3) => {
   let u = p.x - Math.floor(p.x);
   let v = p.y - Math.floor(p.y);
   let w = p.z - Math.floor(p.z);
-  u = u * u * (3 - 2 * u);
-  v = v * v * (3 - 2 * v);
-  w = w * w * (3 - 2 * w);
-
   const i = Math.floor(p.x);
   const j = Math.floor(p.y);
   const k = Math.floor(p.z);
 
-  const c: number[][][] = [
+  const c: Vec3[][][] = [
     [
-      [0, 0],
-      [0, 0],
+      [null, null],
+      [null, null],
     ],
     [
-      [0, 0],
-      [0, 0],
+      [null, null],
+      [null, null],
     ],
   ];
 
@@ -68,7 +72,9 @@ export const perlinNoise = (p: Point3) => {
     for (let dj = 0; dj < 2; dj++)
       for (let dk = 0; dk < 2; dk++)
         c[di][dj][dk] =
-          rands[px[(i + di) & 255] ^ py[(j + dj) & 255] ^ pz[(k + dk) & 255]];
+          randVecs[
+            px[(i + di) & 255] ^ py[(j + dj) & 255] ^ pz[(k + dk) & 255]
+          ];
 
   // console.log(c);
   return trilinearInterp(c, u, v, w);

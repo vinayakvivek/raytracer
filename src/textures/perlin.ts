@@ -14,7 +14,8 @@ export class PerlinTexture extends Texture {
 
   value(uv: UV, p: Point3): Color {
     // no issue if p is updated
-    return new Color(1, 1, 1).multScalar(perlinNoise(p.multScalar(this.scale)));
+    const noise = 0.5 * (1 + perlinNoise(p.multScalar(this.scale)));
+    return new Color(1, 1, 1).multScalar(noise);
   }
 
   toJson(): IPerlinTexture {

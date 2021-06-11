@@ -6,7 +6,7 @@ import { BasicRenderer } from "./renderer/basic-renderer";
 import { IScene } from "./models/scene.model";
 import * as sceneData from "./sample-scenes/two_perlin_spheres.json";
 import { perlinNoise } from "./utils/perlin";
-import { Point3 } from "./utils";
+import { Point3, Vec3 } from "./utils";
 
 const render = () => {
   const canvas = new Canvas(width, Math.round(width / aspectRatio));
@@ -27,6 +27,5 @@ const render = () => {
 // console.log(perlinNoise(new Point3(1.23, 4.654, 12.323)));
 render();
 
-for (let x = -10; x < 10; x += 0.02) {
-  console.log(perlinNoise(new Point3(x, 0, 5)));
-}
+// console.log(perlinNoise(new Point3(1, 0, 5)));
+// console.log(Vec3.random());
