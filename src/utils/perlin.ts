@@ -79,3 +79,17 @@ export const perlinNoise = (p: Point3) => {
   // console.log(c);
   return trilinearInterp(c, u, v, w);
 };
+
+export const perlinNoiseTurb = (p: Point3, depth = 7) => {
+  let accum = 0.0;
+  let temp_p = p.clone();
+  let weight = 1.0;
+
+  for (let i = 0; i < depth; i++) {
+    accum += weight * perlinNoise(temp_p);
+    weight *= 0.5;
+    temp_p.multScalar(2);
+  }
+
+  return Math.abs(accum);
+};
