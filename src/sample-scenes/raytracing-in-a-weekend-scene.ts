@@ -4,6 +4,7 @@ import { LambertianMaterial } from "../materials/lambertian";
 import { MetalMaterial } from "../materials/metal";
 import { MovingSphere } from "../shape/moving-sphere";
 import { Sphere } from "../shape/sphere";
+import { SolidColorTexture } from "../textures/solid-color";
 import {
   Color,
   Point3,
@@ -32,7 +33,9 @@ export class RayTracingInAWeekendScene extends SampleScene {
   }
 
   initScene() {
-    const groundMaterial = new LambertianMaterial(new Color(0.5, 0.5, 0.5));
+    const groundMaterial = new LambertianMaterial(
+      new SolidColorTexture(new Color(0.5, 0.5, 0.5))
+    );
     const ground = new Sphere(new Point3(0, -1000, 0), 1000, groundMaterial);
     this.world.addShape(ground);
 
@@ -47,8 +50,8 @@ export class RayTracingInAWeekendScene extends SampleScene {
 
         let material;
         if (chooseMaterial < 0.6) {
-          const albedo = randomColor().mult(randomColor());
-          material = new LambertianMaterial(albedo);
+          const color = randomColor().mult(randomColor());
+          material = new LambertianMaterial(new SolidColorTexture(color));
           // const center2 = new Vec3(0, randomBetween(0, 0.5), 0).add(center);
           // this.world.addShape(
           //   new MovingSphere(center, center2, 0.2, 0.0, 1.0, material)
@@ -69,7 +72,9 @@ export class RayTracingInAWeekendScene extends SampleScene {
     const material1 = new DielectricMaterial(1.5);
     const sphere1 = new Sphere(new Point3(0, 1, 0), 1.0, material1);
 
-    const material2 = new LambertianMaterial(new Color(0.4, 0.2, 0.1));
+    const material2 = new LambertianMaterial(
+      new SolidColorTexture(new Color(0.4, 0.2, 0.1))
+    );
     const sphere2 = new Sphere(new Point3(-4, 1, 0), 1.0, material2);
 
     const material3 = new MetalMaterial(new Color(0.7, 0.6, 0.5), 0.0);

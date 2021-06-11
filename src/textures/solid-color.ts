@@ -1,4 +1,5 @@
 import { ISolidColorTexture } from "../models/texture.model";
+import { UV } from "../shape/shape";
 import { Color, Point3 } from "../utils";
 import { Texture } from "./texture";
 
@@ -10,12 +11,13 @@ export class SolidColorTexture extends Texture {
     this.color = color;
   }
 
-  value(u: number, v: number, p: Point3): Color {
+  value(uv: UV, p: Point3): Color {
     return this.color;
   }
 
   toJson(): ISolidColorTexture {
     return {
+      type: "solid",
       color: this.color.toJson(),
     };
   }

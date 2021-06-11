@@ -1,4 +1,5 @@
 import { Array3 } from "../utils";
+import { ITexture } from "./texture.model";
 
 export type MaterialType = "lambertian" | "metal" | "dielectric";
 
@@ -10,7 +11,7 @@ export interface IMaterial {
 export interface ILambertianMaterial extends IMaterial {
   type: "lambertian";
   properties: {
-    albedo: Array3;
+    albedo: ITexture;
   };
 }
 export interface IMetalMaterial extends IMaterial {

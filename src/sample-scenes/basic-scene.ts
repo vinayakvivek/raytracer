@@ -3,6 +3,7 @@ import { DielectricMaterial } from "../materials/dielectric";
 import { LambertianMaterial } from "../materials/lambertian";
 import { MetalMaterial } from "../materials/metal";
 import { Sphere } from "../shape/sphere";
+import { SolidColorTexture } from "../textures/solid-color";
 import { Color, Point3, Vec3 } from "../utils";
 import { SampleScene } from "./sample-scene";
 
@@ -22,11 +23,15 @@ export class BasicScene extends SampleScene {
   }
 
   initScene() {
-    const groundMaterial = new LambertianMaterial(new Color(0.8, 0.8, 0.0));
+    const groundMaterial = new LambertianMaterial(
+      new SolidColorTexture(new Color(0.8, 0.8, 0.0))
+    );
     const ground = new Sphere(new Point3(0, -100.5, -1), 100, groundMaterial);
     this.world.addShape(ground);
 
-    const centerMaterial = new LambertianMaterial(new Color(0.1, 0.2, 0.5));
+    const centerMaterial = new LambertianMaterial(
+      new SolidColorTexture(new Color(0.1, 0.2, 0.5))
+    );
     const s1 = new Sphere(new Point3(0, 0, -1), 0.5, centerMaterial);
 
     const leftMaterial = new DielectricMaterial(1.5);
