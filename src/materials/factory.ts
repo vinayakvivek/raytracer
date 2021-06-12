@@ -40,7 +40,7 @@ export class MaterialFactory {
           this.textureFactory
         );
       case "metal":
-        return new MetalMaterial(data as IMetalMaterial);
+        return new MetalMaterial(data as IMetalMaterial, this.textureFactory);
       case "dielectric":
         return new DielectricMaterial(data as IDielectricMaterial);
       default:

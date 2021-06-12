@@ -14,7 +14,7 @@ export interface ILambertianMaterial extends IMaterial {
 }
 export interface IMetalMaterial extends IMaterial {
   type: "metal";
-  albedo: Array3;
+  textureId: number;
   fuzz: number;
 }
 export interface IDielectricMaterial extends IMaterial {

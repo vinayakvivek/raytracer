@@ -7,8 +7,13 @@ import { IScene } from "./models/scene.model";
 import * as sceneData from "./sample-scenes/earth_scene.json";
 import { ImageTexture } from "./textures/image";
 import { Scene } from "./core/scene";
+import { SceneCreator } from "./sample-scenes/creator/scene-creator";
+import { RayTracingWeekendSceneCreator } from "./sample-scenes/creator/raytracing-weekend";
 
 const canvas = new Canvas(width, Math.round(width / aspectRatio));
 
-const renderer = new BasicRenderer(canvas, sceneData as unknown as IScene);
-renderer.render();
+// const renderer = new BasicRenderer(canvas, sceneData as unknown as IScene);
+// renderer.render();
+
+const sceneCreator = new RayTracingWeekendSceneCreator();
+sceneCreator.renderScene(canvas);

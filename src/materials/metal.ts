@@ -1,21 +1,23 @@
 import { Ray } from "../core/ray";
 import { IMetalMaterial } from "../models/material.model";
 import { Intersection } from "../shape/shape";
+import { TextureFactory } from "../textures/factory";
+import { Texture } from "../textures/texture";
 import { clamp, Color, Point3, Vec3 } from "../utils";
 import { Material, Scatter } from "./material";
 
 export class MetalMaterial extends Material {
-  albedo: Color;
+  albedo: Texture;
   fuzz: number;
 
-  constructor(props: IMetalMaterial) {
+  constructor(props: IMetalMaterial, textureFactory: TextureFactory) {
     super(props);
-    this.albedo = Color.fromJson(props.albedo);
+    this.albedo = textureFactory.getById(props.textureId);
     this.fuzz = clamp(props.fuzz, 0, 1);
   }
 
   scatter(rayIn: Ray, intersection: Intersection): Scatter {
-    const { n, p } = intersection;
+    const { n, p, uv } = intersection;
     if (rayIn.direction.dot(n) > 0) {
       return { valid: false };
     }
@@ -28,7 +30,7 @@ export class MetalMaterial extends Material {
     return {
       valid: true,
       rayOut: new Ray(p, reflectedDir, rayIn.time),
-      attenuation: this.albedo,
+      attenuation: this.albedo.value(uv, p),
     };
   }
 }

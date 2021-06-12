@@ -1,5 +1,3 @@
-import { LoadingManager } from "./utils/loading-manager";
-
 type RendererType = "basic" | "worker";
 
 export const width = 800;
