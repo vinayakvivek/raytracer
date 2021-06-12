@@ -93,6 +93,12 @@ const initColors = () => {
   }
 };
 
+const renderUtil = () => {
+  render().then(() => {
+    renderWorkerCtx.postMessage({ done: true });
+  });
+};
+
 renderWorkerCtx.addEventListener("message", (event) => {
   const data = event.data;
   const scene = new Scene(data.sceneData);
@@ -106,7 +112,12 @@ renderWorkerCtx.addEventListener("message", (event) => {
   fullHeight = data.fullHeight;
 
   initColors();
-  render().then(() => {
-    renderWorkerCtx.postMessage({ done: true });
-  });
+
+  if (scene.isLoading) {
+    scene.setOnLoad(() => {
+      renderUtil();
+    });
+  } else {
+    renderUtil();
+  }
 });

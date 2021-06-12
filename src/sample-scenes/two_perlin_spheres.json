@@ -12,40 +12,38 @@
     }
   },
   "world": {
+    "textures": [
+      {
+        "id": 0,
+        "name": "perlin-text",
+        "type": "perlin",
+        "scale": 4.0
+      }
+    ],
+    "materials": [
+      {
+        "id": 0,
+        "name": "marble",
+        "type": "lambertian",
+        "textureId": 0
+      }
+    ],
     "shapes": [
       {
+        "id": 0,
         "name": "ground",
         "type": "sphere",
-        "properties": {
-          "center": [0, -1000, 0],
-          "radius": 1000,
-          "material": {
-            "type": "lambertian",
-            "properties": {
-              "albedo": {
-                "type": "perlin",
-                "scale": 4.0
-              }
-            }
-          }
-        }
+        "center": [0, -1000, 0],
+        "radius": 1000,
+        "materialId": 0
       },
       {
+        "id": 1,
         "name": "small",
         "type": "sphere",
-        "properties": {
-          "center": [0, 2, 0],
-          "radius": 2,
-          "material": {
-            "type": "lambertian",
-            "properties": {
-              "albedo": {
-                "type": "perlin",
-                "scale": 4.0
-              }
-            }
-          }
-        }
+        "center": [0, 2, 0],
+        "radius": 2,
+        "materialId": 0
       }
     ]
   }

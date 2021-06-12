@@ -1,7 +1,7 @@
-import { loadingManager } from "../config";
 import { IImageTexture } from "../models/texture.model";
 import { UV } from "../shape/shape";
 import { clamp, Color, Point3 } from "../utils";
+import { LoadingManager } from "../utils/loading-manager";
 import { Texture } from "./texture";
 
 type OnLoadCallback = (texture: ImageTexture) => void;
@@ -11,8 +11,9 @@ export class ImageTexture extends Texture {
   context: CanvasRenderingContext2D;
   width: number;
   height: number;
+  onLoad: OnLoadCallback;
 
-  constructor(props: IImageTexture, onLoad: OnLoadCallback = () => {}) {
+  constructor(props: IImageTexture, loadingManager: LoadingManager) {
     super(props);
     this.src = props.src;
     const loadId = loadingManager.addItem(`Image: ${this.src}`);
@@ -25,7 +26,10 @@ export class ImageTexture extends Texture {
       this.context = canvas.getContext("2d");
       this.context.drawImage(image, 0, 0);
       loadingManager.itemLoaded(loadId);
-      onLoad(this);
+
+      if (this.onLoad) {
+        this.onLoad(this);
+      }
     };
   }
 

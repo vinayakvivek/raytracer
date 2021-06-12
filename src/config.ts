@@ -10,4 +10,3 @@ export const rendererType: RendererType = "basic";
 export const renderByPixels = false;
 export const tileSize = 200;
 export const useBvh = true;
-export const loadingManager = new LoadingManager();

@@ -6,6 +6,7 @@ import {
   ITexture,
 } from "../models/texture.model";
 import { InvalidTextureTypeError, TextureNotFoundError } from "../utils/errors";
+import { LoadingManager } from "../utils/loading-manager";
 import { CheckerTexture } from "./checker";
 import { ImageTexture } from "./image";
 import { PerlinTexture } from "./perlin";
@@ -18,8 +19,11 @@ export type TextureIdMap = {
 
 export class TextureFactory {
   textures: TextureIdMap = {};
+  loadingManager: LoadingManager;
 
-  constructor() {}
+  constructor(loadingManager: LoadingManager) {
+    this.loadingManager = loadingManager;
+  }
 
   getById(id: number): Texture {
     const t = this.textures[id];
@@ -38,7 +42,7 @@ export class TextureFactory {
       case "perlin":
         return new PerlinTexture(data as IPerlinTexture);
       case "image":
-        return new ImageTexture(data as IImageTexture);
+        return new ImageTexture(data as IImageTexture, this.loadingManager);
       default:
         throw new InvalidTextureTypeError();
     }

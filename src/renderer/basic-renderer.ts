@@ -1,4 +1,9 @@
-import { maxRayDepth, samplesPerPixel, tileSize } from "../config";
+import {
+  maxRayDepth,
+  renderByPixels,
+  samplesPerPixel,
+  tileSize,
+} from "../config";
 import { Color, random, sleep, Vec3 } from "../utils";
 import { Canvas } from "../core/canvas";
 import { Ray } from "../core/ray";
@@ -86,7 +91,7 @@ export class BasicRenderer {
     });
   }
 
-  async render() {
+  async renderBySamples() {
     for (let nspp = 0; nspp < this.spp; ++nspp) {
       console.time();
       await this.processTiles((x, y) => {
@@ -100,6 +105,26 @@ export class BasicRenderer {
       });
       console.log(`spp: ${nspp + 1}`);
       console.timeEnd();
+    }
+  }
+
+  async renderUtil() {
+    if (renderByPixels) {
+      this.renderByPixels();
+    } else {
+      this.renderBySamples();
+    }
+  }
+
+  async render() {
+    // not so happy with this workaround
+    // issue: onLoad will not be called if there are no textures to load
+    if (this.scene.isLoading) {
+      this.scene.setOnLoad(() => {
+        this.renderUtil();
+      });
+    } else {
+      this.renderUtil();
     }
   }
 }

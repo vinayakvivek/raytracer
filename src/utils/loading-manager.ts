@@ -16,13 +16,23 @@ export class LoadingManager {
   onLoad: OnLoadCallback;
   loaded: number = 0;
   total: number = 0;
+  isLoading = false;
 
   constructor() {
+    this.reset();
+  }
+
+  reset() {
+    this.items = [];
+    this.isLoading = false;
+    this.loaded = 0;
+    this.total = 0;
     this.onProgress = () => {};
     this.onLoad = () => {};
   }
 
   addItem(name: string): number {
+    this.isLoading = true;
     const id = this.total;
     this.items.push({
       name,
@@ -43,8 +53,13 @@ export class LoadingManager {
     item.loaded = true;
     this.loaded++;
     this.onProgress(item.name, this.loaded, this.total);
+    this.checkLoading();
+  }
+
+  checkLoading() {
     if (this.loaded === this.total) {
       // finished loading
+      this.isLoading = false;
       this.onLoad(this.total);
     }
   }
