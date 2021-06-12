@@ -1,6 +1,6 @@
 import { Array3 } from "../utils";
 
-export type TextureType = "solid" | "checker" | "perlin";
+export type TextureType = "solid" | "checker" | "perlin" | "image";
 
 export interface ITexture {
   type: TextureType;
@@ -20,4 +20,9 @@ export interface ICheckerTexture extends ITexture {
 export interface IPerlinTexture extends ITexture {
   type: "perlin";
   scale: number;
+}
+
+export interface IImageTexture extends ITexture {
+  type: "image";
+  src: string;
 }
