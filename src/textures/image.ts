@@ -12,12 +12,12 @@ export class ImageTexture extends Texture {
   width: number;
   height: number;
 
-  constructor(src: string, onLoad: OnLoadCallback = () => {}) {
-    super();
-    this.src = src;
-    const loadId = loadingManager.addItem(`Image: ${src}`);
+  constructor(props: IImageTexture, onLoad: OnLoadCallback = () => {}) {
+    super(props);
+    this.src = props.src;
+    const loadId = loadingManager.addItem(`Image: ${this.src}`);
     const image = new Image();
-    image.src = src;
+    image.src = this.src;
     image.onload = () => {
       const canvas = document.createElement("canvas");
       this.width = canvas.width = image.width;
@@ -45,16 +45,5 @@ export class ImageTexture extends Texture {
     const pixel = this.context.getImageData(i, j, 1, 1).data;
     const colorScale = 1 / 255;
     return new Color(pixel[0], pixel[1], pixel[2]).multScalar(colorScale);
-  }
-
-  toJson(): IImageTexture {
-    return {
-      type: "image",
-      src: this.src,
-    };
-  }
-
-  static fromJson(data: IImageTexture) {
-    return new ImageTexture(data.src, (t) => {});
   }
 }

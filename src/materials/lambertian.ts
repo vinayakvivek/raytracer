@@ -9,9 +9,9 @@ import { Material, Scatter } from "./material";
 export class LambertianMaterial extends Material {
   albedo: Texture;
 
-  constructor(albedo: Texture) {
-    super();
-    this.albedo = albedo;
+  constructor(props: ILambertianMaterial, textureFactory: TextureFactory) {
+    super(props);
+    this.albedo = textureFactory.getById(props.textureId);
   }
 
   scatter(rayIn: Ray, intersection: Intersection): Scatter {
@@ -32,19 +32,5 @@ export class LambertianMaterial extends Material {
       attenuation: this.albedo.value(uv, p),
       rayOut: scatteredRay,
     };
-  }
-
-  toJson(): ILambertianMaterial {
-    return {
-      type: "lambertian",
-      properties: {
-        albedo: this.albedo.toJson(),
-      },
-    };
-  }
-
-  static fromJson(data: ILambertianMaterial) {
-    const albedo = TextureFactory.fromJson(data.properties.albedo);
-    return new LambertianMaterial(albedo);
   }
 }

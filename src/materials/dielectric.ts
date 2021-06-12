@@ -14,9 +14,9 @@ const reflectance = (cosine: number, refIdx: number) => {
 export class DielectricMaterial extends Material {
   refractiveIndex: number;
 
-  constructor(refractiveIndex: number) {
-    super();
-    this.refractiveIndex = refractiveIndex;
+  constructor(props: IDielectricMaterial) {
+    super(props);
+    this.refractiveIndex = props.refractiveIndex;
   }
 
   scatter(rayIn: Ray, intersection: Intersection): Scatter {
@@ -44,18 +44,5 @@ export class DielectricMaterial extends Material {
       rayOut: new Ray(p, direction, rayIn.time),
       attenuation: new Color(1, 1, 1),
     };
-  }
-
-  toJson(): IDielectricMaterial {
-    return {
-      type: "dielectric",
-      properties: {
-        refractiveIndex: this.refractiveIndex,
-      },
-    };
-  }
-
-  static fromJson(data: IDielectricMaterial) {
-    return new DielectricMaterial(data.properties.refractiveIndex);
   }
 }

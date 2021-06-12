@@ -1,8 +1,9 @@
 import { Array3 } from "../utils";
+import { IEntity } from "./entity.model";
 
 export type TextureType = "solid" | "checker" | "perlin" | "image";
 
-export interface ITexture {
+export interface ITexture extends IEntity {
   type: TextureType;
 }
 
@@ -13,8 +14,8 @@ export interface ISolidColorTexture extends ITexture {
 
 export interface ICheckerTexture extends ITexture {
   type: "checker";
-  odd: ITexture;
-  even: ITexture;
+  oddId: number;
+  evenId: number;
 }
 
 export interface IPerlinTexture extends ITexture {

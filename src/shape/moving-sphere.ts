@@ -17,24 +17,17 @@ export class MovingSphere extends Shape {
   timeDiff: number;
   moveDir: Vec3;
 
-  constructor(
-    startCenter: Point3,
-    endCenter: Point3,
-    radius: number,
-    time: TimeInterval,
-    material: Material,
-    unbounded = false
-  ) {
-    super(material);
-    this.startCenter = startCenter;
-    this.endCenter = endCenter;
-    this.startTime = time.start;
-    this.endTime = time.end;
-    this.radius = radius;
-    this.moveDir = endCenter.clone().sub(startCenter);
-    this.timeDiff = time.end - time.start;
+  constructor(props: IMovingSphere, materialFactory: MaterialFactory) {
+    super(props, materialFactory);
+    this.startCenter = Point3.fromJson(props.startCenter);
+    this.endCenter = Point3.fromJson(props.endCenter);
+    this.startTime = props.time.start;
+    this.endTime = props.time.end;
+    this.radius = props.radius;
+    this.moveDir = this.endCenter.clone().sub(this.startCenter);
+    this.timeDiff = this.endTime - this.startTime;
 
-    this.boundingBox = unbounded ? null : this._boundingBox();
+    this.boundingBox = props.unbounded ? null : this._boundingBox();
   }
 
   _boundingBox(): AABB {
@@ -84,38 +77,6 @@ export class MovingSphere extends Shape {
     return center.addScaled(
       this.moveDir,
       (time - this.startTime) / this.timeDiff
-    );
-  }
-
-  toJson(): IMovingSphere {
-    return {
-      name: this.name,
-      type: "moving-sphere",
-      properties: {
-        startCenter: this.startCenter.toJson(),
-        endCenter: this.endCenter.toJson(),
-        time: {
-          start: this.startTime,
-          end: this.endTime,
-        },
-        radius: this.radius,
-        material: this.material.toJson(),
-      },
-    };
-  }
-
-  static fromJson(data: IMovingSphere) {
-    const props = data.properties;
-    const material = MaterialFactory.fromJson(props.material);
-    const sc = Point3.fromJson(props.startCenter);
-    const ec = Point3.fromJson(props.endCenter);
-    return new MovingSphere(
-      sc,
-      ec,
-      props.radius,
-      props.time,
-      material,
-      !!data.unbounded
     );
   }
 }

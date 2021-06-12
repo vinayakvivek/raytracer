@@ -8,10 +8,10 @@ export class MetalMaterial extends Material {
   albedo: Color;
   fuzz: number;
 
-  constructor(albedo: Color, fuzz = 0.0) {
-    super();
-    this.albedo = albedo;
-    this.fuzz = clamp(fuzz, 0, 1);
+  constructor(props: IMetalMaterial) {
+    super(props);
+    this.albedo = Color.fromJson(props.albedo);
+    this.fuzz = clamp(props.fuzz, 0, 1);
   }
 
   scatter(rayIn: Ray, intersection: Intersection): Scatter {
@@ -30,20 +30,5 @@ export class MetalMaterial extends Material {
       rayOut: new Ray(p, reflectedDir, rayIn.time),
       attenuation: this.albedo,
     };
-  }
-
-  toJson(): IMetalMaterial {
-    return {
-      type: "metal",
-      properties: {
-        albedo: this.albedo.toJson(),
-        fuzz: this.fuzz,
-      },
-    };
-  }
-
-  static fromJson(data: IMetalMaterial) {
-    const { albedo, fuzz } = data.properties;
-    return new MetalMaterial(Color.fromJson(albedo), fuzz);
   }
 }

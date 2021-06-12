@@ -15,8 +15,7 @@ export class BasicRenderer {
   maxDepth = maxRayDepth;
 
   constructor(canvas: Canvas, sceneData: IScene) {
-    this.scene = new Scene();
-    this.scene.parse(sceneData);
+    this.scene = new Scene(sceneData);
     this.canvas = canvas;
     this.width = canvas.width;
     this.height = canvas.height;

@@ -12,10 +12,10 @@ export class Plane extends Shape {
   position: Point3;
   normal: Vec3;
 
-  constructor(position: Point3, normal: Vec3, material: Material) {
-    super(material);
-    this.normal = normal.clone();
-    this.position = position.clone();
+  constructor(props: IPlane, materialFactory: MaterialFactory) {
+    super(props, materialFactory);
+    this.normal = Vec3.fromJson(props.normal);
+    this.position = Point3.fromJson(props.position);
     this.boundingBox = null;
   }
 
@@ -44,25 +44,5 @@ export class Plane extends Shape {
       t,
       material: this.material,
     };
-  }
-
-  toJson(): IPlane {
-    return {
-      name: this.name,
-      type: "plane",
-      properties: {
-        normal: this.normal.toJson(),
-        position: this.position.toJson(),
-        material: this.material.toJson(),
-      },
-    };
-  }
-
-  static fromJson(data: IPlane) {
-    const props = data.properties;
-    const material = MaterialFactory.fromJson(props.material);
-    const position = Vec3.fromJson(props.position);
-    const normal = Vec3.fromJson(props.normal);
-    return new Plane(position, normal, material);
   }
 }

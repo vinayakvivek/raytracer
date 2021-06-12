@@ -6,24 +6,12 @@ import { Texture } from "./texture";
 export class SolidColorTexture extends Texture {
   color: Color;
 
-  constructor(color: Color) {
-    super();
-    this.color = color;
+  constructor(props: ISolidColorTexture) {
+    super(props);
+    this.color = Color.fromJson(props.color);
   }
 
   value(uv: UV, p: Point3): Color {
     return this.color;
-  }
-
-  toJson(): ISolidColorTexture {
-    return {
-      type: "solid",
-      color: this.color.toJson(),
-    };
-  }
-
-  static fromJson(data: ISolidColorTexture) {
-    const c = Color.fromJson(data.color);
-    return new SolidColorTexture(c);
   }
 }

@@ -1,42 +1,31 @@
 import { Array3 } from "../utils";
+import { IEntity } from "./entity.model";
 import { IMaterial } from "./material.model";
 import { TimeInterval } from "./scene.model";
 
 export type ShapeType = "sphere" | "moving-sphere" | "plane";
 
-export interface IShape {
-  name: string;
+export interface IShape extends IEntity {
   type: ShapeType;
   unbounded?: boolean;
-  properties: ShapeProps;
+  materialId: number;
 }
-
-export interface ShapeProps {
-  material: IMaterial;
-}
-
 export interface ISphere extends IShape {
   type: "sphere";
-  properties: ShapeProps & {
-    center: Array3;
-    radius: number;
-  };
+  center: Array3;
+  radius: number;
 }
 
 export interface IMovingSphere extends IShape {
   type: "moving-sphere";
-  properties: ShapeProps & {
-    startCenter: Array3;
-    endCenter: Array3;
-    radius: number;
-    time: TimeInterval;
-  };
+  startCenter: Array3;
+  endCenter: Array3;
+  radius: number;
+  time: TimeInterval;
 }
 
 export interface IPlane extends IShape {
   type: "plane";
-  properties: ShapeProps & {
-    normal: Array3;
-    position: Array3;
-  };
+  normal: Array3;
+  position: Array3;
 }

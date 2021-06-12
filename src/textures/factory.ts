@@ -5,26 +5,48 @@ import {
   ISolidColorTexture,
   ITexture,
 } from "../models/texture.model";
-import { InvalidTextureTypeError } from "../utils/errors";
+import { InvalidTextureTypeError, TextureNotFoundError } from "../utils/errors";
 import { CheckerTexture } from "./checker";
 import { ImageTexture } from "./image";
 import { PerlinTexture } from "./perlin";
 import { SolidColorTexture } from "./solid-color";
 import { Texture } from "./texture";
 
+export type TextureIdMap = {
+  [x: number]: Texture;
+};
+
 export class TextureFactory {
-  static fromJson(data: ITexture): Texture {
+  textures: TextureIdMap = {};
+
+  constructor() {}
+
+  getById(id: number): Texture {
+    const t = this.textures[id];
+    if (!t) {
+      throw new TextureNotFoundError(`id: ${id}`);
+    }
+    return t;
+  }
+
+  _createUtil(data: ITexture): Texture {
     switch (data.type) {
       case "solid":
-        return SolidColorTexture.fromJson(data as ISolidColorTexture);
+        return new SolidColorTexture(data as ISolidColorTexture);
       case "checker":
-        return CheckerTexture.fromJson(data as ICheckerTexture);
+        return new CheckerTexture(data as ICheckerTexture, this);
       case "perlin":
-        return PerlinTexture.fromJson(data as IPerlinTexture);
+        return new PerlinTexture(data as IPerlinTexture);
       case "image":
-        return ImageTexture.fromJson(data as IImageTexture);
+        return new ImageTexture(data as IImageTexture);
       default:
         throw new InvalidTextureTypeError();
     }
+  }
+
+  create(data: ITexture): Texture {
+    const texture = this._createUtil(data);
+    this.textures[data.id] = texture;
+    return texture;
   }
 }

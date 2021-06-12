@@ -12,6 +12,7 @@ import { BasicRenderer } from "./renderer/basic-renderer";
 import { IScene } from "./models/scene.model";
 import * as sceneData from "./sample-scenes/earth_scene.json";
 import { ImageTexture } from "./textures/image";
+import { Scene } from "./core/scene";
 
 const canvas = new Canvas(width, Math.round(width / aspectRatio));
 

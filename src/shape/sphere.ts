@@ -1,8 +1,6 @@
 import { AABB } from "../core/aabb";
 import { Ray } from "../core/ray";
 import { MaterialFactory } from "../materials/factory";
-import { Material } from "../materials/material";
-import { TimeInterval } from "../models/scene.model";
 import { ISphere } from "../models/shape.model";
 import { Point3, Vec3 } from "../utils";
 import { Shape, UV } from "./shape";
@@ -11,16 +9,11 @@ export class Sphere extends Shape {
   center: Point3;
   radius: number;
 
-  constructor(
-    center: Point3,
-    radius: number,
-    material: Material,
-    unbounded = false
-  ) {
-    super(material);
-    this.center = center.clone();
-    this.radius = radius;
-    this.boundingBox = unbounded ? null : this._boundingBox();
+  constructor(props: ISphere, materialFactory: MaterialFactory) {
+    super(props, materialFactory);
+    this.center = Point3.fromJson(props.center);
+    this.radius = props.radius;
+    this.boundingBox = props.unbounded ? null : this._boundingBox();
   }
 
   _boundingBox(): AABB {
@@ -73,24 +66,5 @@ export class Sphere extends Shape {
 
   normal(p: Point3) {
     return p.clone().sub(this.center).divScalar(this.radius);
-  }
-
-  toJson(): ISphere {
-    return {
-      name: this.name,
-      type: "sphere",
-      properties: {
-        center: this.center.toJson(),
-        radius: this.radius,
-        material: this.material.toJson(),
-      },
-    };
-  }
-
-  static fromJson(data: ISphere) {
-    const props = data.properties;
-    const material = MaterialFactory.fromJson(props.material);
-    const center = Point3.fromJson(props.center);
-    return new Sphere(center, props.radius, material, !!data.unbounded);
   }
 }

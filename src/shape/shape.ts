@@ -1,5 +1,7 @@
 import { AABB } from "../core/aabb";
+import { Entity } from "../core/entity";
 import { Ray } from "../core/ray";
+import { MaterialFactory } from "../materials/factory";
 import { Material } from "../materials/material";
 import { TimeInterval } from "../models/scene.model";
 import { IShape } from "../models/shape.model";
@@ -20,13 +22,13 @@ export interface Intersection {
   material?: Material;
 }
 
-export class Shape {
-  name: string = "foo-shape";
+export class Shape extends Entity {
   material: Material;
   boundingBox: AABB;
 
-  constructor(material: Material) {
-    this.material = material;
+  constructor(props: IShape, materialFactory: MaterialFactory) {
+    super(props);
+    this.material = materialFactory.getById(props.materialId);
   }
 
   getUV(p: Point3): UV {

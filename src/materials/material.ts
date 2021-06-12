@@ -1,3 +1,4 @@
+import { Entity } from "../core/entity";
 import { Ray } from "../core/ray";
 import { IMaterial } from "../models/material.model";
 import { Intersection } from "../shape/shape";
@@ -10,7 +11,11 @@ export interface Scatter {
   rayOut?: Ray;
 }
 
-export class Material {
+export class Material extends Entity {
+  constructor(props: IMaterial) {
+    super(props);
+  }
+
   scatter(rayIn: Ray, intersection: Intersection): Scatter {
     throw new UnimplementedError();
   }

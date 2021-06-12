@@ -7,9 +7,9 @@ import { Texture } from "./texture";
 export class PerlinTexture extends Texture {
   scale = 1.0;
 
-  constructor(scale: number) {
-    super();
-    this.scale = scale;
+  constructor(props: IPerlinTexture) {
+    super(props);
+    this.scale = props.scale || 1.0;
   }
 
   value(uv: UV, p: Point3): Color {
@@ -19,16 +19,5 @@ export class PerlinTexture extends Texture {
     const noise =
       0.5 * (1 + Math.sin(this.scale * p.z + 10 * perlinNoiseTurb(p)));
     return new Color(1, 1, 1).multScalar(noise);
-  }
-
-  toJson(): IPerlinTexture {
-    return {
-      type: "perlin",
-      scale: this.scale,
-    };
-  }
-
-  static fromJson(data: IPerlinTexture) {
-    return new PerlinTexture(data.scale);
   }
 }

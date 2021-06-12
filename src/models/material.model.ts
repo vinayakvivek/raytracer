@@ -1,29 +1,23 @@
 import { Array3 } from "../utils";
+import { IEntity } from "./entity.model";
 import { ITexture } from "./texture.model";
 
 export type MaterialType = "lambertian" | "metal" | "dielectric";
 
-export interface IMaterial {
+export interface IMaterial extends IEntity {
   type: MaterialType;
-  properties: any;
 }
 
 export interface ILambertianMaterial extends IMaterial {
   type: "lambertian";
-  properties: {
-    albedo: ITexture;
-  };
+  textureId: number;
 }
 export interface IMetalMaterial extends IMaterial {
   type: "metal";
-  properties: {
-    albedo: Array3;
-    fuzz: number;
-  };
+  albedo: Array3;
+  fuzz: number;
 }
 export interface IDielectricMaterial extends IMaterial {
   type: "dielectric";
-  properties: {
-    refractiveIndex: number;
-  };
+  refractiveIndex: number;
 }

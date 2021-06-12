@@ -1,6 +1,4 @@
 import { useBvh } from "../config";
-import { IWorld } from "../models/scene.model";
-import { ShapeFactory } from "../shape/factory";
 import { Intersection, Shape } from "../shape/shape";
 import { BvhNode } from "./bvh-node";
 import { Ray } from "./ray";
@@ -10,7 +8,15 @@ export class World {
   bvhNode: BvhNode;
   unboundedShapes: Shape[] = [];
 
-  constructor() {}
+  constructor(shapes: Shape[]) {
+    this.shapes = shapes;
+    if (useBvh) {
+      this.createBvh();
+    } else {
+      // if BVH is not enabled, all shapes are unbounded
+      this.unboundedShapes = this.shapes;
+    }
+  }
 
   addShape(...shapes: Shape[]) {
     this.shapes.push(...shapes);
@@ -21,14 +27,9 @@ export class World {
   }
 
   createBvh() {
-    if (useBvh) {
-      this.unboundedShapes = this.shapes.filter((s) => !s.boundingBox);
-      const boundedShapes = this.shapes.filter((s) => !!s.boundingBox);
-      this.bvhNode = new BvhNode(boundedShapes);
-    } else {
-      // if BVH is not enabled, all shapes are unbounded
-      this.unboundedShapes = this.shapes;
-    }
+    this.unboundedShapes = this.shapes.filter((s) => !s.boundingBox);
+    const boundedShapes = this.shapes.filter((s) => !!s.boundingBox);
+    this.bvhNode = new BvhNode(boundedShapes);
   }
 
   // seems like intersecting BVH first gives better performance
@@ -44,19 +45,5 @@ export class World {
       }
     });
     return closest;
-  }
-
-  toJson(): IWorld {
-    return {
-      shapes: this.shapes.map((s) => s.toJson()),
-    };
-  }
-
-  static fromJson(data: IWorld) {
-    const w = new World();
-    for (const shapeData of data.shapes) {
-      w.addShape(ShapeFactory.fromJson(shapeData));
-    }
-    return w;
   }
 }

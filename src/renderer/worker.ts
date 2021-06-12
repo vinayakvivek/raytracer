@@ -95,8 +95,7 @@ const initColors = () => {
 
 renderWorkerCtx.addEventListener("message", (event) => {
   const data = event.data;
-  const scene = new Scene();
-  scene.parse(data.sceneData);
+  const scene = new Scene(data.sceneData);
   camera = scene.camera;
   world = scene.world;
 

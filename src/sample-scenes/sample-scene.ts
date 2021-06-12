@@ -9,7 +9,5 @@ export class SampleScene {
   world: World;
   camera: Camera;
 
-  constructor() {
-    this.world = new World();
-  }
+  constructor() {}
 }

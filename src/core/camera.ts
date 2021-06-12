@@ -69,10 +69,6 @@ class Camera {
   toJson(): ICamera {
     return this.props;
   }
-
-  static fromJson(props: ICamera) {
-    return new Camera(props);
-  }
 }
 
 export { Camera };

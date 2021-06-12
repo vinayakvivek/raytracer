@@ -12,40 +12,50 @@
     }
   },
   "world": {
-    "shapes": [
+    "textures": [
       {
-        "name": "ground",
-        "type": "sphere",
-        "properties": {
-          "center": [0, -1000, 0],
-          "radius": 1000,
-          "material": {
-            "type": "lambertian",
-            "properties": {
-              "albedo": {
-                "type": "perlin",
-                "scale": 4.0
-              }
-            }
-          }
-        }
+        "id": 0,
+        "name": "perlin-texture",
+        "type": "perlin",
+        "scale": 4.0
       },
       {
+        "id": 1,
+        "name": "earth-texture",
+        "type": "image",
+        "src": "/textures/earth.jpg"
+      }
+    ],
+    "materials": [
+      {
+        "id": 0,
+        "name": "ground-material",
+        "type": "lambertian",
+        "textureId": 0
+      },
+      {
+        "id": 1,
+        "name": "earth-material",
+        "type": "lambertian",
+        "textureId": 1
+      }
+    ],
+    "shapes": [
+      {
+        "id": 0,
+        "name": "ground",
+        "type": "sphere",
+        "center": [0, -1000, 0],
+        "radius": 1000,
+        "materialId": 0
+      },
+      {
+        "id": 1,
         "name": "small",
         "type": "sphere",
-        "properties": {
-          "center": [0, 2, 0],
-          "radius": 2,
-          "material": {
-            "type": "lambertian",
-            "properties": {
-              "albedo": {
-                "type": "image",
-                "src": "/textures/earth.jpg"
-              }
-            }
-          }
-        }
+        "center": [0, 2, 0],
+        "radius": 2,
+        "materialId": 1
       }
     ]
   }
