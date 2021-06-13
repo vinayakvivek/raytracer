@@ -1,8 +1,8 @@
 import { Entity } from "../core/entity";
 import { Ray } from "../core/ray";
 import { IMaterial } from "../models/material.model";
-import { Intersection } from "../shape/shape";
-import { Color } from "../utils";
+import { Intersection, UV } from "../shape/shape";
+import { Color, Point3 } from "../utils";
 import { UnimplementedError } from "../utils/errors";
 
 export interface Scatter {
@@ -18,6 +18,10 @@ export class Material extends Entity {
 
   scatter(rayIn: Ray, intersection: Intersection): Scatter {
     throw new UnimplementedError();
+  }
+
+  emitted(uv: UV, p: Point3): Color {
+    return new Color();
   }
 
   toJson(): IMaterial {

@@ -1,5 +1,6 @@
 import {
   IDielectricMaterial,
+  IDiffuseLightMaterial,
   ILambertianMaterial,
   IMaterial,
   IMetalMaterial,
@@ -10,6 +11,7 @@ import {
   MaterialNotFoundError,
 } from "../utils/errors";
 import { DielectricMaterial } from "./dielectric";
+import { DiffuseLight } from "./diffuse-light";
 import { LambertianMaterial } from "./lambertian";
 import { Material } from "./material";
 import { MetalMaterial } from "./metal";
@@ -43,6 +45,11 @@ export class MaterialFactory {
         return new MetalMaterial(data as IMetalMaterial, this.textureFactory);
       case "dielectric":
         return new DielectricMaterial(data as IDielectricMaterial);
+      case "diffuse-light":
+        return new DiffuseLight(
+          data as IDiffuseLightMaterial,
+          this.textureFactory
+        );
       default:
         throw new InvalidMaterialTypeError();
     }

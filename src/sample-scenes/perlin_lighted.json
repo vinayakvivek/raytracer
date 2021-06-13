@@ -1,10 +1,10 @@
 {
-  "background": [0.7, 0.8, 1],
+  "background": [0.1, 0.2, 0.5],
   "camera": {
-    "position": [13, 2, 3],
+    "position": [10, 4, 8],
     "lookAt": [0, 0, 0],
     "up": [0, 1, 0],
-    "vfov": 20,
+    "vfov": 60,
     "aperture": 0,
     "focusDist": 1,
     "time": {
@@ -19,6 +19,12 @@
         "name": "perlin-text",
         "type": "perlin",
         "scale": 4.0
+      },
+      {
+        "id": 1,
+        "name": "solid",
+        "type": "solid",
+        "color": [1, 0, 0]
       }
     ],
     "materials": [
@@ -27,6 +33,12 @@
         "name": "marble",
         "type": "lambertian",
         "textureId": 0
+      },
+      {
+        "id": 1,
+        "name": "light",
+        "type": "diffuse-light",
+        "textureId": 1
       }
     ],
     "shapes": [
@@ -45,6 +57,14 @@
         "center": [0, 2, 0],
         "radius": 2,
         "materialId": 0
+      },
+      {
+        "id": 2,
+        "name": "small",
+        "type": "sphere",
+        "center": [4, 4, 0],
+        "radius": 1,
+        "materialId": 1
       }
     ]
   }

@@ -2,6 +2,7 @@ import { MaterialFactory } from "../materials/factory";
 import { IScene } from "../models/scene.model";
 import { ShapeFactory } from "../shape/factory";
 import { TextureFactory } from "../textures/factory";
+import { Color } from "../utils";
 import { LoadingManager } from "../utils/loading-manager";
 import { Camera } from "./camera";
 import { World } from "./world";
@@ -9,6 +10,7 @@ import { World } from "./world";
 export class Scene {
   world: World;
   camera: Camera;
+  background: Color;
   loadingManager: LoadingManager;
 
   constructor(data: IScene) {
@@ -26,6 +28,11 @@ export class Scene {
 
   parseScene = (data: IScene) => {
     console.log("Parsing scene ..");
+    this.background = new Color(1, 1, 1); // white background
+    if (data.background) {
+      this.background = Color.fromJson(data.background);
+    }
+
     const textureFactory = new TextureFactory(this.loadingManager);
     for (const textureData of data.world.textures) {
       console.log(`Creating texture: ${textureData.name}`);

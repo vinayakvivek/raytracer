@@ -22,6 +22,7 @@ export interface IWorld {
 export interface IScene {
   camera: ICamera;
   world: IWorld;
+  background?: Array3;
 }
 
 export interface TimeInterval {

@@ -24,6 +24,7 @@ export class BasicRenderer {
     this.canvas = canvas;
     this.width = canvas.width;
     this.height = canvas.height;
+    console.log(this.scene.background);
   }
 
   rayColor(ray: Ray, depth = 5): Color {
@@ -32,20 +33,20 @@ export class BasicRenderer {
     }
     const intersection = this.scene.world.intersect(ray, 0.001, Infinity);
     if (intersection.valid) {
-      const { p, n, material } = intersection;
+      const { p, n, material, uv } = intersection;
+      const emitted = material.emitted(uv, p);
       const scatter = material.scatter(ray, intersection);
       if (scatter.valid) {
-        return this.rayColor(scatter.rayOut, depth - 1).mult(
-          scatter.attenuation
-        );
+        return this.rayColor(scatter.rayOut, depth - 1)
+          .clone()
+          .mult(scatter.attenuation)
+          .add(emitted);
+      } else {
+        return emitted;
       }
-      return new Color(0, 0, 0);
     }
-    const t = 0.5 * (ray.direction.y + 1.0);
-    const color = new Color(1.0, 1.0, 1.0)
-      .multScalar(1 - t)
-      .addScaled(new Color(0.5, 0.7, 1.0), t);
-    return color;
+    // no intersection
+    return this.scene.background;
   }
 
   processPixel(x: number, y: number) {
