@@ -4,7 +4,7 @@ import { Canvas } from "./core/canvas";
 import { WorkerRenderer } from "./renderer/worker-renderer";
 import { BasicRenderer } from "./renderer/basic-renderer";
 import { IScene } from "./models/scene.model";
-import * as sceneData from "./sample-scenes/perlin_lighted.json";
+import * as sceneData from "./sample-scenes/simple_light.json";
 
 const canvas = new Canvas(width, Math.round(width / aspectRatio));
 

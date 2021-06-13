@@ -1,10 +1,17 @@
 import { Sphere } from "./sphere";
-import { IMovingSphere, IPlane, IShape, ISphere } from "../models/shape.model";
+import {
+  IMovingSphere,
+  IPlane,
+  IRectangle,
+  IShape,
+  ISphere,
+} from "../models/shape.model";
 import { InvalidShapeTypeError, ShapeNotFoundError } from "../utils/errors";
 import { Plane } from "./plane";
 import { MovingSphere } from "./moving-sphere";
 import { Shape } from "./shape";
 import { MaterialFactory } from "../materials/factory";
+import { Rectangle } from "./rectangle";
 
 type ShapeIdMap = {
   [x: number]: Shape;
@@ -33,6 +40,8 @@ export class ShapeFactory {
         return new MovingSphere(data as IMovingSphere, this.materialFactory);
       case "plane":
         return new Plane(data as IPlane, this.materialFactory);
+      case "rectangle":
+        return new Rectangle(data as IRectangle, this.materialFactory);
       default:
         throw new InvalidShapeTypeError();
     }

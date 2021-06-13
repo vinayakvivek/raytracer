@@ -1,9 +1,8 @@
 import { EPSILON } from "./constants";
+import { roundTo2 } from "./utils";
 
 export type Array3 = [number, number, number];
 
-const roundTo2 = (num: number) =>
-  Math.round((num + Number.EPSILON) * 100) / 100;
 class Vec3 {
   x: number;
   y: number;

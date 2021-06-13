@@ -1,9 +1,10 @@
 import { Array3 } from "../utils";
+import { Array2 } from "../utils/vec2";
 import { IEntity } from "./entity.model";
 import { IMaterial } from "./material.model";
 import { TimeInterval } from "./scene.model";
 
-export type ShapeType = "sphere" | "moving-sphere" | "plane";
+export type ShapeType = "sphere" | "moving-sphere" | "plane" | "rectangle";
 
 export interface IShape extends IEntity {
   type: ShapeType;
@@ -28,4 +29,11 @@ export interface IPlane extends IShape {
   type: "plane";
   normal: Array3;
   position: Array3;
+}
+
+export interface IRectangle extends IShape {
+  type: "rectangle";
+  width: number;
+  height: number;
+  center: Array3;
 }

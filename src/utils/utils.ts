@@ -6,6 +6,9 @@ export const sleep = (ms: number) => {
 
 export const degToRad = (degrees: number) => (degrees * Math.PI) / 180.0;
 
+export const roundTo2 = (num: number) =>
+  Math.round((num + Number.EPSILON) * 100) / 100;
+
 // just adding here so that it'll be easier if we want to update
 // the random number generation algorithm
 export const random = () => Math.random();
