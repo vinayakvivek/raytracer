@@ -7,6 +7,7 @@ import { Scene } from "../core/scene";
 
 const renderWorkerCtx: Worker = self as any;
 
+let scene: Scene;
 let world: World;
 let camera: Camera;
 let width: number;
@@ -18,24 +19,26 @@ const maxDepth = maxRayDepth;
 const spp = samplesPerPixel;
 let colors: Color[][] = [];
 
-const rayColor = (ray: Ray, depth: number): Color => {
+const rayColor = (ray: Ray, depth = 5): Color => {
   if (depth <= 0) {
     return new Color(0, 0, 0);
   }
-  const intersection = world.intersect(ray, 0.001, Infinity);
+  const intersection = scene.world.intersect(ray, 0.001, Infinity);
   if (intersection.valid) {
-    const { p, n, material } = intersection;
+    const { p, n, material, uv } = intersection;
+    const emitted = material.emitted(uv, p);
     const scatter = material.scatter(ray, intersection);
     if (scatter.valid) {
-      return rayColor(scatter.rayOut, depth - 1).mult(scatter.attenuation);
+      return rayColor(scatter.rayOut, depth - 1)
+        .clone()
+        .mult(scatter.attenuation)
+        .add(emitted);
+    } else {
+      return emitted;
     }
-    return new Color(0, 0, 0);
   }
-  const t = 0.5 * (ray.direction.y + 1.0);
-  const color = new Color(1.0, 1.0, 1.0)
-    .multScalar(1 - t)
-    .addScaled(new Color(0.5, 0.7, 1.0), t);
-  return color;
+  // no intersection
+  return scene.background;
 };
 
 const processPixel = (x: number, y: number) => {
@@ -101,7 +104,7 @@ const renderUtil = () => {
 
 renderWorkerCtx.addEventListener("message", (event) => {
   const data = event.data;
-  const scene = new Scene(data.sceneData);
+  scene = new Scene(data.sceneData);
   camera = scene.camera;
   world = scene.world;
 

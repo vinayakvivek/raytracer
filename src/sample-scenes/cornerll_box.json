@@ -1,0 +1,119 @@
+{
+  "background": [0.5, 0.5, 0.5],
+  "camera": {
+    "position": [278, 278, -800],
+    "lookAt": [278, 278, 0],
+    "up": [0, 1, 0],
+    "vfov": 40,
+    "aperture": 0,
+    "focusDist": 1,
+    "time": {
+      "start": 0,
+      "end": 0
+    }
+  },
+  "world": {
+    "textures": [
+      {
+        "id": 0,
+        "name": "red",
+        "type": "solid",
+        "color": [0.65, 0.05, 0.05]
+      },
+      {
+        "id": 1,
+        "name": "white",
+        "type": "solid",
+        "color": [0.73, 0.73, 0.73]
+      },
+      {
+        "id": 2,
+        "name": "green",
+        "type": "solid",
+        "color": [0.12, 0.45, 0.15]
+      },
+      {
+        "id": 3,
+        "name": "light",
+        "type": "solid",
+        "color": [15, 15, 15]
+      }
+    ],
+    "materials": [
+      {
+        "id": 0,
+        "name": "red",
+        "type": "lambertian",
+        "textureId": 0
+      },
+      {
+        "id": 1,
+        "name": "white",
+        "type": "lambertian",
+        "textureId": 1
+      },
+      {
+        "id": 2,
+        "name": "green",
+        "type": "lambertian",
+        "textureId": 2
+      },
+      {
+        "id": 3,
+        "name": "light",
+        "type": "diffuse-light",
+        "textureId": 3
+      }
+    ],
+    "shapes": [
+      {
+        "id": 0,
+        "name": "light",
+        "type": "sphere",
+        "center": [278, 570, 200],
+        "radius": 50,
+        "materialId": 3
+      },
+      {
+        "id": 1,
+        "name": "right-wall",
+        "type": "plane",
+        "position": [0, 0, 0],
+        "normal": [-1, 0, 0],
+        "materialId": 0
+      },
+      {
+        "id": 2,
+        "name": "left-wall",
+        "type": "plane",
+        "position": [555, 0, 0],
+        "normal": [1, 0, 0],
+        "materialId": 2
+      },
+      {
+        "id": 3,
+        "name": "back-wall",
+        "type": "plane",
+        "position": [0, 0, 555],
+        "normal": [0, 0, -1],
+        "materialId": 1
+      },
+      {
+        "id": 4,
+        "name": "top-wall",
+        "type": "plane",
+        "position": [0, 555, 555],
+        "normal": [0, -1, 0],
+        "materialId": 1
+      },
+      {
+        "id": 5,
+        "name": "floor",
+        "type": "plane",
+        "position": [0, 0, 0],
+        "normal": [0, 1, 0],
+        "materialId": 1
+      }
+    ]
+  }
+}

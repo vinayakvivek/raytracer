@@ -7,6 +7,7 @@ export class World {
   shapes: Shape[] = [];
   bvhNode: BvhNode;
   unboundedShapes: Shape[] = [];
+  enableBvh = false;
 
   constructor(shapes: Shape[]) {
     this.shapes = shapes;
@@ -29,13 +30,16 @@ export class World {
   createBvh() {
     this.unboundedShapes = this.shapes.filter((s) => !s.boundingBox);
     const boundedShapes = this.shapes.filter((s) => !!s.boundingBox);
-    this.bvhNode = new BvhNode(boundedShapes);
+    if (boundedShapes.length > 0) {
+      this.bvhNode = new BvhNode(boundedShapes);
+      this.enableBvh = true;
+    }
   }
 
   // seems like intersecting BVH first gives better performance
   intersect(ray: Ray, tMin: number, tMax: number): Intersection {
     let closest: Intersection = { valid: false, t: tMax };
-    if (useBvh) {
+    if (this.enableBvh) {
       closest = this.bvhNode.intersect(ray, tMin, tMax);
     }
     this.unboundedShapes.forEach((shape) => {

@@ -4,11 +4,11 @@ import { Canvas } from "./core/canvas";
 import { WorkerRenderer } from "./renderer/worker-renderer";
 import { BasicRenderer } from "./renderer/basic-renderer";
 import { IScene } from "./models/scene.model";
-import * as sceneData from "./sample-scenes/simple_light.json";
+import * as sceneData from "./sample-scenes/cornerll_box.json";
 
 const canvas = new Canvas(width, Math.round(width / aspectRatio));
 
-const renderer = new BasicRenderer(canvas, sceneData as unknown as IScene);
+const renderer = new WorkerRenderer(canvas, sceneData as unknown as IScene);
 renderer.render();
 
 // const sceneCreator = new RayTracingWeekendSceneCreator();
