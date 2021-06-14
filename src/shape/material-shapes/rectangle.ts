@@ -1,12 +1,13 @@
-import { AABB } from "../core/aabb";
-import { Ray } from "../core/ray";
-import { MaterialFactory } from "../materials/factory";
-import { IRectangle } from "../models/shape.model";
-import { Point3, Vec3 } from "../utils";
-import { Point2 } from "../utils/vec2";
-import { Intersection, Shape, UV } from "./shape";
+import { AABB } from "../../core/aabb";
+import { Ray } from "../../core/ray";
+import { MaterialFactory } from "../../materials/factory";
+import { Intersection, UV } from "../../models/intersection.model";
+import { IRectangle } from "../../models/shape.model";
+import { Point3, Vec3 } from "../../utils";
+import { Point2 } from "../../utils/vec2";
+import { MaterialShape } from "./material-shape";
 
-export class Rectangle extends Shape {
+export class Rectangle extends MaterialShape {
   min: Point2;
   max: Point2;
   k: number; // plane z = k

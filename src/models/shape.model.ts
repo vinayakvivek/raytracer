@@ -1,23 +1,37 @@
 import { Array3 } from "../utils";
-import { Array2 } from "../utils/vec2";
 import { IEntity } from "./entity.model";
 import { IMaterial } from "./material.model";
 import { TimeInterval } from "./scene.model";
 
-export type ShapeType = "sphere" | "moving-sphere" | "plane" | "rectangle";
+export type TransformShapeType = "translation" | "rotation";
 
-export interface IShape extends IEntity {
+export type ShapeType =
+  | "sphere"
+  | "moving-sphere"
+  | "plane"
+  | "rectangle"
+  | "box";
+
+export interface IAbstractShape {
+  type: TransformShapeType | ShapeType;
+}
+
+export interface ITransformShape extends IAbstractShape {
+  type: TransformShapeType;
+}
+
+export interface IMaterialShape extends IAbstractShape {
   type: ShapeType;
   unbounded?: boolean;
   materialId: number;
 }
-export interface ISphere extends IShape {
+export interface ISphere extends IMaterialShape {
   type: "sphere";
   center: Array3;
   radius: number;
 }
 
-export interface IMovingSphere extends IShape {
+export interface IMovingSphere extends IMaterialShape {
   type: "moving-sphere";
   startCenter: Array3;
   endCenter: Array3;
@@ -25,15 +39,20 @@ export interface IMovingSphere extends IShape {
   time: TimeInterval;
 }
 
-export interface IPlane extends IShape {
+export interface IPlane extends IMaterialShape {
   type: "plane";
   normal: Array3;
   position: Array3;
 }
 
-export interface IRectangle extends IShape {
+export interface IRectangle extends IMaterialShape {
   type: "rectangle";
   width: number;
   height: number;
   center: Array3;
+}
+
+export interface IBox extends IMaterialShape {
+  type: "box";
+  size: Array3;
 }

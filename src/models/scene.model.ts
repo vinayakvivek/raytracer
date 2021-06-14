@@ -1,6 +1,6 @@
 import { Array3 } from "../utils";
 import { IMaterial } from "./material.model";
-import { IShape } from "./shape.model";
+import { IAbstractShape } from "./shape.model";
 import { ITexture } from "./texture.model";
 
 export interface ICamera {
@@ -16,7 +16,7 @@ export interface ICamera {
 export interface IWorld {
   textures: ITexture[];
   materials: IMaterial[];
-  shapes: IShape[];
+  shapes: IAbstractShape[];
 }
 
 export interface IScene {

@@ -1,8 +1,9 @@
 import { Ray } from "../core/ray";
+import { Intersection } from "../models/intersection.model";
 import { IDielectricMaterial } from "../models/material.model";
-import { Intersection } from "../shape/shape";
+import { Scatter } from "../models/scatter.model";
 import { Point3, Color, random } from "../utils";
-import { Material, Scatter } from "./material";
+import { Material } from "./material";
 
 const reflectance = (cosine: number, refIdx: number) => {
   // Use Schlick's approximation for reflectance.

@@ -1,15 +1,10 @@
 import { Entity } from "../core/entity";
 import { Ray } from "../core/ray";
+import { Intersection, UV } from "../models/intersection.model";
 import { IMaterial } from "../models/material.model";
-import { Intersection, UV } from "../shape/shape";
+import { Scatter } from "../models/scatter.model";
 import { Color, Point3 } from "../utils";
 import { UnimplementedError } from "../utils/errors";
-
-export interface Scatter {
-  valid: boolean;
-  attenuation?: Color;
-  rayOut?: Ray;
-}
 
 export class Material extends Entity {
   constructor(props: IMaterial) {

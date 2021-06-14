@@ -1,15 +1,16 @@
 import { useBvh } from "../config";
-import { Intersection, Shape } from "../shape/shape";
+import { Intersection } from "../models/intersection.model";
+import { AbstractShape } from "../shape/abstract-shape";
 import { BvhNode } from "./bvh-node";
 import { Ray } from "./ray";
 
 export class World {
-  shapes: Shape[] = [];
+  shapes: AbstractShape[] = [];
   bvhNode: BvhNode;
-  unboundedShapes: Shape[] = [];
+  unboundedShapes: AbstractShape[] = [];
   enableBvh = false;
 
-  constructor(shapes: Shape[]) {
+  constructor(shapes: AbstractShape[]) {
     this.shapes = shapes;
     if (useBvh) {
       this.createBvh();
@@ -19,7 +20,7 @@ export class World {
     }
   }
 
-  addShape(...shapes: Shape[]) {
+  addShape(...shapes: AbstractShape[]) {
     this.shapes.push(...shapes);
   }
 

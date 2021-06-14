@@ -1,13 +1,11 @@
-import { AABB } from "../core/aabb";
-import { Ray } from "../core/ray";
-import { MaterialFactory } from "../materials/factory";
-import { Material } from "../materials/material";
-import { TimeInterval } from "../models/scene.model";
-import { IMovingSphere } from "../models/shape.model";
-import { Point3, Vec3 } from "../utils";
-import { Shape } from "./shape";
+import { AABB } from "../../core/aabb";
+import { Ray } from "../../core/ray";
+import { MaterialFactory } from "../../materials/factory";
+import { IMovingSphere } from "../../models/shape.model";
+import { Point3, Vec3 } from "../../utils";
+import { MaterialShape } from "./material-shape";
 
-export class MovingSphere extends Shape {
+export class MovingSphere extends MaterialShape {
   startCenter: Point3;
   endCenter: Point3;
   radius: number;

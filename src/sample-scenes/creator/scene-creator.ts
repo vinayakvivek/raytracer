@@ -6,7 +6,7 @@ import {
   IMetalMaterial,
 } from "../../models/material.model";
 import { ICamera, IScene } from "../../models/scene.model";
-import { IShape, ISphere } from "../../models/shape.model";
+import { IAbstractShape, ISphere } from "../../models/shape.model";
 import {
   IImageTexture,
   ISolidColorTexture,
@@ -17,7 +17,7 @@ import { BasicRenderer } from "../../renderer/basic-renderer";
 export class SceneCreator {
   textures: ITexture[] = [];
   materials: IMaterial[] = [];
-  shapes: IShape[] = [];
+  shapes: IAbstractShape[] = [];
   camera: ICamera;
 
   constructor() {
@@ -62,8 +62,6 @@ export class SceneCreator {
     this.materials.push(mat1);
 
     const s1: ISphere = {
-      id: 0,
-      name: "s1",
       type: "sphere",
       materialId: 0,
       center: [0, -1000, 0],
@@ -87,8 +85,6 @@ export class SceneCreator {
     };
     this.materials.push(metalMat);
     const rightSphere: ISphere = {
-      id: 1,
-      name: "s1",
       type: "sphere",
       materialId: metalMat.id,
       center: [1, 0.5, -1],
@@ -105,8 +101,6 @@ export class SceneCreator {
     };
     this.materials.push(glassMat);
     const leftSphere: ISphere = {
-      id: this.shapes.length,
-      name: "leftSphere",
       type: "sphere",
       materialId: glassMat.id,
       center: [-1, 0.5, -1],
@@ -114,8 +108,6 @@ export class SceneCreator {
     };
     this.shapes.push(leftSphere);
     const leftSphereInner: ISphere = {
-      id: this.shapes.length,
-      name: "leftSphereInner",
       type: "sphere",
       materialId: glassMat.id,
       center: [-1, 0.5, -1],
@@ -141,8 +133,6 @@ export class SceneCreator {
     this.materials.push(earthMat);
 
     const centerSphere: ISphere = {
-      id: this.shapes.length,
-      name: "s1",
       type: "sphere",
       materialId: earthMat.id,
       center: [0, 0.5, -1],

@@ -1,13 +1,14 @@
-import { Intersection, Shape } from "../shape/shape";
+import { Intersection } from "../models/intersection.model";
+import { AbstractShape } from "../shape/abstract-shape";
 import { random } from "../utils";
 import { AABB } from "./aabb";
 import { Ray } from "./ray";
 
-const shapeCompareX = (a: Shape, b: Shape) =>
+const shapeCompareX = (a: AbstractShape, b: AbstractShape) =>
   a.boundingBox.min.x < b.boundingBox.min.x ? -1 : 1;
-const shapeCompareY = (a: Shape, b: Shape) =>
+const shapeCompareY = (a: AbstractShape, b: AbstractShape) =>
   a.boundingBox.min.y < b.boundingBox.min.y ? -1 : 1;
-const shapeCompareZ = (a: Shape, b: Shape) =>
+const shapeCompareZ = (a: AbstractShape, b: AbstractShape) =>
   a.boundingBox.min.z < b.boundingBox.min.z ? -1 : 1;
 
 const randomShapeCompare = () => {
@@ -21,12 +22,12 @@ const randomShapeCompare = () => {
  * Keep a separate list for shapes with null boundingBox
  */
 export class BvhNode {
-  left: BvhNode | Shape;
-  right: BvhNode | Shape;
+  left: BvhNode | AbstractShape;
+  right: BvhNode | AbstractShape;
   boundingBox: AABB;
   count: number;
 
-  constructor(shapes: Shape[]) {
+  constructor(shapes: AbstractShape[]) {
     const n = shapes.length;
     this.count = n;
     if (n == 0) {

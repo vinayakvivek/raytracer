@@ -1,10 +1,11 @@
-import { Material, Scatter } from "./material";
+import { Material } from "./material";
 import { IDiffuseLightMaterial } from "../models/material.model";
 import { TextureFactory } from "../textures/factory";
 import { Color, Point3 } from "../utils";
 import { Texture } from "../textures/texture";
-import { Intersection, UV } from "../shape/shape";
 import { Ray } from "../core/ray";
+import { Intersection, UV } from "../models/intersection.model";
+import { Scatter } from "../models/scatter.model";
 
 export class DiffuseLight extends Material {
   color: Texture;

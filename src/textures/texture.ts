@@ -1,6 +1,6 @@
 import { Entity } from "../core/entity";
+import { UV } from "../models/intersection.model";
 import { ITexture } from "../models/texture.model";
-import { UV } from "../shape/shape";
 import { Color, Point3 } from "../utils";
 import { UnimplementedError } from "../utils/errors";
 

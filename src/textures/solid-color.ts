@@ -1,5 +1,5 @@
+import { UV } from "../models/intersection.model";
 import { ISolidColorTexture } from "../models/texture.model";
-import { UV } from "../shape/shape";
 import { Color, Point3 } from "../utils";
 import { Texture } from "./texture";
 

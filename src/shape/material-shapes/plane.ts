@@ -1,14 +1,12 @@
-import { AABB } from "../core/aabb";
-import { Ray } from "../core/ray";
-import { MaterialFactory } from "../materials/factory";
-import { Material } from "../materials/material";
-import { TimeInterval } from "../models/scene.model";
-import { IPlane } from "../models/shape.model";
-import { Point3, Vec3 } from "../utils";
-import { EPSILON } from "../utils/constants";
-import { Intersection, Shape } from "./shape";
+import { Ray } from "../../core/ray";
+import { MaterialFactory } from "../../materials/factory";
+import { Intersection } from "../../models/intersection.model";
+import { IPlane } from "../../models/shape.model";
+import { Point3, Vec3 } from "../../utils";
+import { EPSILON } from "../../utils/constants";
+import { MaterialShape } from "./material-shape";
 
-export class Plane extends Shape {
+export class Plane extends MaterialShape {
   position: Point3;
   normal: Vec3;
 

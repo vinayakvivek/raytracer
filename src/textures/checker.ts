@@ -1,8 +1,7 @@
-import { ICheckerTexture, ISolidColorTexture } from "../models/texture.model";
-import { UV } from "../shape/shape";
+import { UV } from "../models/intersection.model";
+import { ICheckerTexture } from "../models/texture.model";
 import { Point3, Color } from "../utils";
 import { TextureFactory } from "./factory";
-import { SolidColorTexture } from "./solid-color";
 import { Texture } from "./texture";
 
 export class CheckerTexture extends Texture {

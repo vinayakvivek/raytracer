@@ -1,11 +1,12 @@
-import { AABB } from "../core/aabb";
-import { Ray } from "../core/ray";
-import { MaterialFactory } from "../materials/factory";
-import { ISphere } from "../models/shape.model";
-import { Point3, Vec3 } from "../utils";
-import { Shape, UV } from "./shape";
+import { AABB } from "../../core/aabb";
+import { Ray } from "../../core/ray";
+import { MaterialFactory } from "../../materials/factory";
+import { UV } from "../../models/intersection.model";
+import { ISphere } from "../../models/shape.model";
+import { Point3, Vec3 } from "../../utils";
+import { MaterialShape } from "./material-shape";
 
-export class Sphere extends Shape {
+export class Sphere extends MaterialShape {
   center: Point3;
   radius: number;
 

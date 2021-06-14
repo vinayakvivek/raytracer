@@ -1,24 +1,20 @@
-import { Sphere } from "./sphere";
+import { MaterialFactory } from "../materials/factory";
 import {
+  ISphere,
   IMovingSphere,
   IPlane,
   IRectangle,
-  IShape,
-  ISphere,
+  IAbstractShape,
 } from "../models/shape.model";
-import { InvalidShapeTypeError, ShapeNotFoundError } from "../utils/errors";
-import { Plane } from "./plane";
-import { MovingSphere } from "./moving-sphere";
-import { Shape } from "./shape";
-import { MaterialFactory } from "../materials/factory";
-import { Rectangle } from "./rectangle";
-
-type ShapeIdMap = {
-  [x: number]: Shape;
-};
+import { ShapeNotFoundError, InvalidShapeTypeError } from "../utils/errors";
+import { AbstractShape } from "./abstract-shape";
+import { MovingSphere } from "./material-shapes/moving-sphere";
+import { Plane } from "./material-shapes/plane";
+import { Rectangle } from "./material-shapes/rectangle";
+import { Sphere } from "./material-shapes/sphere";
 
 export class ShapeFactory {
-  shapes: ShapeIdMap = {};
+  shapes: AbstractShape[] = [];
   materialFactory: MaterialFactory;
 
   constructor(materialFactory: MaterialFactory) {
@@ -32,7 +28,7 @@ export class ShapeFactory {
     throw new ShapeNotFoundError(`id: ${id}`);
   }
 
-  _createUtil(data: IShape) {
+  _createUtil(data: IAbstractShape) {
     switch (data.type) {
       case "sphere":
         return new Sphere(data as ISphere, this.materialFactory);
@@ -47,9 +43,9 @@ export class ShapeFactory {
     }
   }
 
-  create(data: IShape): Shape {
+  create(data: IAbstractShape): AbstractShape {
     const shape = this._createUtil(data);
-    this.shapes[shape.id] = shape;
+    this.shapes.push(shape);
     return shape;
   }
 }

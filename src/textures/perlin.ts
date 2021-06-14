@@ -1,5 +1,5 @@
+import { UV } from "../models/intersection.model";
 import { IPerlinTexture } from "../models/texture.model";
-import { UV } from "../shape/shape";
 import { Color, Point3 } from "../utils";
 import { perlinNoise, perlinNoiseTurb } from "../utils/perlin";
 import { Texture } from "./texture";

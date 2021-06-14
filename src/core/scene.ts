@@ -47,12 +47,11 @@ export class Scene {
 
     const shapeFactory = new ShapeFactory(materialFactory);
     for (const shapeData of data.world.shapes) {
-      console.log(`Creating shape: ${shapeData.name}`);
+      console.log(`Creating shape: ${shapeData}`);
       shapeFactory.create(shapeData);
     }
 
-    const shapes = Object.values(shapeFactory.shapes);
-    this.world = new World(shapes);
+    this.world = new World(shapeFactory.shapes);
     this.camera = new Camera(data.camera);
   };
 }

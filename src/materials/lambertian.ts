@@ -1,10 +1,11 @@
 import { Ray } from "../core/ray";
+import { Intersection } from "../models/intersection.model";
 import { ILambertianMaterial } from "../models/material.model";
-import { Intersection } from "../shape/shape";
+import { Scatter } from "../models/scatter.model";
 import { TextureFactory } from "../textures/factory";
 import { Texture } from "../textures/texture";
-import { Color, Point3, Vec3 } from "../utils";
-import { Material, Scatter } from "./material";
+import { Vec3 } from "../utils";
+import { Material } from "./material";
 
 export class LambertianMaterial extends Material {
   albedo: Texture;

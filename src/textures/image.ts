@@ -1,5 +1,5 @@
+import { UV } from "../models/intersection.model";
 import { IImageTexture } from "../models/texture.model";
-import { UV } from "../shape/shape";
 import { clamp, Color, Point3 } from "../utils";
 import { LoadingManager } from "../utils/loading-manager";
 import { Texture } from "./texture";
