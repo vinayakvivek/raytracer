@@ -2,7 +2,7 @@
   "background": [1, 1, 1],
   "camera": {
     "position": [5, 5, 5],
-    "lookAt": [0, 1, 0],
+    "lookAt": [0, 0, 0],
     "up": [0, 1, 0],
     "vfov": 30,
     "aperture": 0,
@@ -18,7 +18,7 @@
         "id": 0,
         "name": "solid",
         "type": "solid",
-        "color": [0, 1.0, 0.5]
+        "color": [0.1, 1.0, 0.5]
       },
       {
         "id": 1,
@@ -44,7 +44,8 @@
         "id": 1,
         "name": "red",
         "type": "lambertian",
-        "textureId": 1
+        "textureId": 1,
+        "fuzz": 0.0
       },
       {
         "id": 2,
@@ -57,12 +58,12 @@
       {
         "type": "translation",
         "x": -0.5,
-        "y": 0.7,
-        "z": 1.1,
+        "y": 1.1,
+        "z": 0,
         "shape": {
-          "type": "rectangle",
-          "width": 1,
-          "height": 2.2,
+          "name": "sample-box",
+          "type": "box",
+          "size": [1, 1, 1],
           "materialId": 2
         }
       },
@@ -70,6 +71,13 @@
         "name": "sample-box",
         "type": "box",
         "size": [1, 1, 1],
+        "materialId": 1
+      },
+      {
+        "name": "sample-sphere",
+        "type": "sphere",
+        "center": [1, 0.5, -1],
+        "radius": 0.5,
         "materialId": 1
       },
       {

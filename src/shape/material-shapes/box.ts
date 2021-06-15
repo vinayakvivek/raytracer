@@ -7,9 +7,13 @@ import {
   UV,
 } from "../../models/intersection.model";
 import { IBox } from "../../models/shape.model";
-import { Point3, Vec3 } from "../../utils";
+import { Point3, random, Vec3 } from "../../utils";
 import { UnimplementedError } from "../../utils/errors";
 import { MaterialShape } from "./material-shape";
+
+const max = Math.max;
+const min = Math.min;
+const isEqual = (x1: number, x2: number) => Math.abs(x1 - x2) < Number.EPSILON;
 
 export class Box extends MaterialShape {
   size: Vec3;
@@ -21,44 +25,84 @@ export class Box extends MaterialShape {
   }
 
   _boundingBox(): AABB {
-    const margin = 0.01;
+    const margin = 0.1;
     return new AABB(
       new Point3().subScalar(margin),
       this.size.clone().addScalar(margin)
     );
   }
 
-  intersect(ray: Ray, tMin: number, tMax: number): Intersection {
-    const max = this.size.toJson();
-    const d = ray.direction.toJson();
-    const o = ray.origin.toJson();
-    let side = 0;
-    for (let i = 0; i < 3; ++i) {
-      const invD = 1 / d[i];
-      let t0 = -o[i] * invD;
-      let t1 = (max[i] - o[i]) * invD;
-      if (invD < 0) {
-        [t0, t1] = [t1, t0];
-      }
-      if (t0 > tMin) {
-        tMin = t0;
-        side = i;
-      }
-      tMax = t1 < tMax ? t1 : tMax;
-      if (tMax < tMin) {
-        return { valid: false };
-      }
+  getT(ray: Ray) {
+    const dir = ray.direction;
+    const origin = ray.origin;
+    const invD = new Vec3();
+    invD.x = 1 / dir.x;
+    invD.y = 1 / dir.y;
+    invD.z = 1 / dir.z;
+
+    let t1 = -origin.x * invD.x;
+    let t2 = (this.size.x - origin.x) * invD.x;
+    if (t2 < t1) {
+      [t1, t2] = [t2, t1];
     }
-    const t = tMin;
+
+    let t3 = -origin.y * invD.y;
+    let t4 = (this.size.y - origin.y) * invD.y;
+    if (t4 < t3) {
+      [t3, t4] = [t4, t3];
+    }
+
+    let t5 = -origin.z * invD.z;
+    let t6 = (this.size.z - origin.z) * invD.z;
+    if (t6 < t5) {
+      [t5, t6] = [t6, t5];
+    }
+
+    const tmin = max(max(t1, t3), t5);
+    const tmax = min(min(t2, t4), t6);
+
+    // if tmax < 0, ray (line) is intersecting AABB, but the whole AABB is behind us
+    if (tmax < 0) {
+      return null;
+    }
+
+    // if tmin > tmax, ray doesn't intersect AABB
+    if (tmin > tmax) {
+      return null;
+    }
+
+    let side = -1;
+    if (isEqual(tmin, t1)) {
+      side = 0;
+    } else if (isEqual(tmin, t3)) {
+      side = 1;
+    } else {
+      side = 2;
+    }
+
+    return [tmin, side];
+  }
+
+  intersect(ray: Ray, tMin: number, tMax: number): Intersection {
+    const tRes = this.getT(ray);
+    if (!tRes) {
+      return this._noIntersection;
+    }
+
+    const [t, side] = tRes;
+    if (!t || t < tMin || t > tMax) {
+      return this._noIntersection;
+    }
+
     const p = ray.at(t);
     const n = new Vec3(0, 0, 0);
     const uv: UV = { u: 0, v: 0 }; // TODO: update
     if (side == 0) {
-      n.x = p.x > 0.01 ? 1 : -1;
+      n.x = p.x > 0.001 ? 1 : -1;
     } else if (side == 1) {
-      n.y = p.y > 0.01 ? 1 : -1;
+      n.y = p.y > 0.001 ? 1 : -1;
     } else {
-      n.z = p.z > 0.01 ? 1 : -1;
+      n.z = p.z > 0.001 ? 1 : -1;
     }
     const rec = { valid: true, t, p, n, material: this.material, uv };
     setFaceNormal(rec, ray.direction);

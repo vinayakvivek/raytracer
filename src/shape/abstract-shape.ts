@@ -16,4 +16,8 @@ export class AbstractShape {
   intersect(ray: Ray, tMin: number, tMax: number): Intersection {
     throw new UnimplementedError();
   }
+
+  get _noIntersection() {
+    return { valid: false };
+  }
 }
