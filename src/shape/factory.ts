@@ -6,9 +6,11 @@ import {
   IRectangle,
   IAbstractShape,
   ITranslate,
+  IBox,
 } from "../models/shape.model";
 import { ShapeNotFoundError, InvalidShapeTypeError } from "../utils/errors";
 import { AbstractShape } from "./abstract-shape";
+import { Box } from "./material-shapes/box";
 import { MovingSphere } from "./material-shapes/moving-sphere";
 import { Plane } from "./material-shapes/plane";
 import { Rectangle } from "./material-shapes/rectangle";
@@ -40,7 +42,8 @@ export class ShapeFactory {
         return new Plane(data as IPlane, this.materialFactory);
       case "rectangle":
         return new Rectangle(data as IRectangle, this.materialFactory);
-
+      case "box":
+        return new Box(data as IBox, this.materialFactory);
       // transform shapes
       case "translation":
         return new Translate(data as ITranslate, this);

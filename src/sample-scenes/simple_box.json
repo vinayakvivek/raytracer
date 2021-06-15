@@ -1,10 +1,10 @@
 {
   "background": [1, 1, 1],
   "camera": {
-    "position": [0, 2, 5],
+    "position": [5, 5, 5],
     "lookAt": [0, 1, 0],
     "up": [0, 1, 0],
-    "vfov": 60,
+    "vfov": 30,
     "aperture": 0,
     "focusDist": 1,
     "time": {
@@ -58,7 +58,7 @@
         "type": "translation",
         "x": -0.5,
         "y": 0.7,
-        "z": 1,
+        "z": 1.1,
         "shape": {
           "type": "rectangle",
           "width": 1,
@@ -67,10 +67,9 @@
         }
       },
       {
-        "name": "sample-rect",
-        "type": "rectangle",
-        "width": 1,
-        "height": 2.2,
+        "name": "sample-box",
+        "type": "box",
+        "size": [1, 1, 1],
         "materialId": 1
       },
       {
