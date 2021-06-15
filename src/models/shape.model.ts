@@ -18,6 +18,14 @@ export interface IAbstractShape {
 
 export interface ITransformShape extends IAbstractShape {
   type: TransformShapeType;
+  shape: IAbstractShape;
+}
+
+export interface ITranslate extends ITransformShape {
+  type: "translation";
+  x?: number;
+  y?: number;
+  z?: number;
 }
 
 export interface IMaterialShape extends IAbstractShape {
@@ -49,7 +57,6 @@ export interface IRectangle extends IMaterialShape {
   type: "rectangle";
   width: number;
   height: number;
-  center: Array3;
 }
 
 export interface IBox extends IMaterialShape {

@@ -1,0 +1,86 @@
+{
+  "background": [1, 1, 1],
+  "camera": {
+    "position": [0, 2, 5],
+    "lookAt": [0, 1, 0],
+    "up": [0, 1, 0],
+    "vfov": 60,
+    "aperture": 0,
+    "focusDist": 1,
+    "time": {
+      "start": 0,
+      "end": 0
+    }
+  },
+  "world": {
+    "textures": [
+      {
+        "id": 0,
+        "name": "solid",
+        "type": "solid",
+        "color": [0, 1.0, 0.5]
+      },
+      {
+        "id": 1,
+        "name": "red",
+        "type": "solid",
+        "color": [1, 0, 0]
+      },
+      {
+        "id": 2,
+        "name": "noise",
+        "type": "perlin",
+        "scale": 5
+      }
+    ],
+    "materials": [
+      {
+        "id": 0,
+        "name": "teal",
+        "type": "lambertian",
+        "textureId": 0
+      },
+      {
+        "id": 1,
+        "name": "red",
+        "type": "lambertian",
+        "textureId": 1
+      },
+      {
+        "id": 2,
+        "name": "noise",
+        "type": "lambertian",
+        "textureId": 2
+      }
+    ],
+    "shapes": [
+      {
+        "type": "translation",
+        "x": -0.5,
+        "y": 0.7,
+        "z": 1,
+        "shape": {
+          "type": "rectangle",
+          "width": 1,
+          "height": 2.2,
+          "materialId": 2
+        }
+      },
+      {
+        "name": "sample-rect",
+        "type": "rectangle",
+        "width": 1,
+        "height": 2.2,
+        "materialId": 1
+      },
+      {
+        "name": "ground",
+        "type": "plane",
+        "unbounded": true,
+        "position": [0, 0, 0],
+        "normal": [0, 1, 0],
+        "materialId": 0
+      }
+    ]
+  }
+}

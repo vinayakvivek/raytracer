@@ -1,3 +1,4 @@
+import { Ray } from "../core/ray";
 import { Material } from "../materials/material";
 import { Point3, Vec3 } from "../utils";
 
@@ -15,3 +16,12 @@ export interface Intersection {
   uv?: UV;
   material?: Material;
 }
+
+export const setFaceNormal = (intersection: Intersection, direction: Vec3) => {
+  intersection.frontFace = true;
+  const n = intersection.n;
+  if (direction.dot(n) > 0) {
+    n.negate();
+    intersection.frontFace = false;
+  }
+};

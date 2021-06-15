@@ -25,6 +25,7 @@ export class Sphere extends MaterialShape {
   }
 
   getUV(p: Point3): UV {
+    // TODO: consider rotation
     const theta = Math.acos(-p.y);
     const phi = Math.atan2(-p.z, p.x) + Math.PI;
     return {
