@@ -1,7 +1,7 @@
 {
   "background": [1, 1, 1],
   "camera": {
-    "position": [0, 5, -15],
+    "position": [5, 5, 5],
     "lookAt": [0, 0, 0],
     "up": [0, 1, 0],
     "vfov": 30,
@@ -69,19 +69,23 @@
     "shapes": [
       {
         "type": "translation",
-        "z": 1.5,
-        "y": 0.5,
+        "y": 2.0,
+        "z": 2,
         "shape": {
-          "type": "rectangle",
-          "width": 1,
-          "height": 1.5,
-          "plane": 2,
-          "materialId": 3
+          "type": "rotationY",
+          "angle": 30,
+          "shape": {
+            "type": "rectangle",
+            "width": 1,
+            "height": 1.5,
+            "plane": 2,
+            "materialId": 3
+          }
         }
       },
       {
         "type": "translation",
-        "x": -0.5,
+        "x": -2.5,
         "y": 1.1,
         "z": 0,
         "shape": {
@@ -92,16 +96,25 @@
         }
       },
       {
-        "name": "sample-box",
-        "type": "box",
-        "size": [1.4, 1, 1],
-        "materialId": 2
+        "type": "rotationY",
+        "angle": -40,
+        "shape": {
+          "type": "translation",
+          "x": -0.7,
+          "z": -0.5,
+          "shape": {
+            "name": "sample-box",
+            "type": "box",
+            "size": [1.4, 1, 1],
+            "materialId": 2
+          }
+        }
       },
       {
         "name": "sample-sphere",
         "type": "sphere",
-        "center": [1, 0.5, -1],
-        "radius": 0.5,
+        "center": [0, 1, 0],
+        "radius": 0.05,
         "materialId": 1
       },
       {
