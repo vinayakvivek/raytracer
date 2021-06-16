@@ -17,10 +17,10 @@ export class Rectangle extends MaterialShape {
   }
 
   _boundingBox(): AABB {
-    const margin = 0.1;
+    const margin = 0.001;
     return new AABB(
-      new Point3(-margin, -margin, -margin),
-      new Point3(this.width + margin, this.height + margin, margin)
+      new Point3(0, 0, -margin),
+      new Point3(this.width, this.height, margin)
     );
   }
 

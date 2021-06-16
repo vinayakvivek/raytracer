@@ -58,6 +58,18 @@
       {
         "type": "translation",
         "x": -0.5,
+        "y": 0.7,
+        "z": 1.5,
+        "shape": {
+          "type": "rectangle",
+          "width": 1,
+          "height": 1.5,
+          "materialId": 2
+        }
+      },
+      {
+        "type": "translation",
+        "x": -0.5,
         "y": 1.1,
         "z": 0,
         "shape": {
@@ -70,7 +82,7 @@
       {
         "name": "sample-box",
         "type": "box",
-        "size": [1, 1, 1],
+        "size": [1.4, 1, 1],
         "materialId": 1
       },
       {

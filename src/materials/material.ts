@@ -18,8 +18,4 @@ export class Material extends Entity {
   emitted(uv: UV, p: Point3): Color {
     return new Color();
   }
-
-  toJson(): IMaterial {
-    throw new UnimplementedError();
-  }
 }

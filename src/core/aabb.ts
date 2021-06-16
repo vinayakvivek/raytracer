@@ -11,10 +11,10 @@ export class AABB {
   }
 
   hit(ray: Ray, tMin: number, tMax: number): boolean {
-    const min = this.min.toJson();
-    const max = this.max.toJson();
-    const d = ray.direction.toJson();
-    const o = ray.origin.toJson();
+    const min = this.min.toArray();
+    const max = this.max.toArray();
+    const d = ray.direction.toArray();
+    const o = ray.origin.toArray();
     for (let i = 0; i < 3; ++i) {
       const invD = 1 / d[i];
       let t0 = (min[i] - o[i]) * invD;

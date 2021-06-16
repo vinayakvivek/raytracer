@@ -12,8 +12,4 @@ export class Texture extends Entity {
   value(uv: UV, p: Point3): Color {
     throw new UnimplementedError();
   }
-
-  toJson(): ITexture {
-    throw new UnimplementedError();
-  }
 }

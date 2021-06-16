@@ -28,6 +28,10 @@ class Vec3 {
     return [roundTo2(this.x), roundTo2(this.y), roundTo2(this.z)];
   }
 
+  toArray(): Array3 {
+    return [this.x, this.y, this.z];
+  }
+
   static fromJson(v: any) {
     return new Vec3(v[0], v[1], v[2]);
   }
