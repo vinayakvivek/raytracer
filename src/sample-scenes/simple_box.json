@@ -31,6 +31,12 @@
         "name": "noise",
         "type": "perlin",
         "scale": 5
+      },
+      {
+        "id": 3,
+        "name": "earth",
+        "type": "image",
+        "src": "/textures/earth.jpg"
       }
     ],
     "materials": [
@@ -52,19 +58,25 @@
         "name": "noise",
         "type": "lambertian",
         "textureId": 2
+      },
+      {
+        "id": 3,
+        "name": "earth-diffuse",
+        "type": "lambertian",
+        "textureId": 3
       }
     ],
     "shapes": [
       {
         "type": "translation",
-        "x": -0.5,
-        "y": 0.7,
         "z": 1.5,
+        "y": 0.5,
         "shape": {
           "type": "rectangle",
           "width": 1,
           "height": 1.5,
-          "materialId": 2
+          "plane": 2,
+          "materialId": 3
         }
       },
       {
@@ -83,7 +95,7 @@
         "name": "sample-box",
         "type": "box",
         "size": [1.4, 1, 1],
-        "materialId": 1
+        "materialId": 3
       },
       {
         "name": "sample-sphere",

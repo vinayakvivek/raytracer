@@ -57,6 +57,7 @@ export interface IRectangle extends IMaterialShape {
   type: "rectangle";
   width: number;
   height: number;
+  plane?: 0 | 1 | 2;
 }
 
 export interface IBox extends IMaterialShape {
