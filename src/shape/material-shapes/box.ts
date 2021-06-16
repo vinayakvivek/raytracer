@@ -57,13 +57,16 @@ export class Box extends MaterialShape {
     const t = tMin;
     const p = ray.at(t);
     const n = new Vec3(0, 0, 0);
-    const uv: UV = { u: 0, v: 0 }; // TODO: update
+    let uv: UV;
     if (side == 0) {
       n.x = p.x > 0.001 ? 1 : -1;
+      uv = { u: p.y / max[1], v: p.z / max[2] };
     } else if (side == 1) {
       n.y = p.y > 0.001 ? 1 : -1;
+      uv = { u: p.x / max[0], v: p.z / max[2] };
     } else {
       n.z = p.z > 0.001 ? 1 : -1;
+      uv = { u: p.x / max[0], v: p.y / max[1] };
     }
     const rec = { valid: true, t, p, n, material: this.material, uv };
     setFaceNormal(rec, ray.direction);
