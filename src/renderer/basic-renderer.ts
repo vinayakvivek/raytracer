@@ -24,7 +24,6 @@ export class BasicRenderer {
     this.canvas = canvas;
     this.width = canvas.width;
     this.height = canvas.height;
-    console.log(this.scene.background);
   }
 
   rayColor(ray: Ray, depth = 5): Color {

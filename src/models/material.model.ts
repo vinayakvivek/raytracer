@@ -19,7 +19,7 @@ export interface ILambertianMaterial extends IMaterial {
 export interface IMetalMaterial extends IMaterial {
   type: "metal";
   textureId: number;
-  fuzz: number;
+  fuzz?: number;
 }
 export interface IDielectricMaterial extends IMaterial {
   type: "dielectric";

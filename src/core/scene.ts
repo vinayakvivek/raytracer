@@ -35,19 +35,19 @@ export class Scene {
 
     const textureFactory = new TextureFactory(this.loadingManager);
     for (const textureData of data.world.textures) {
-      console.log(`Creating texture: ${textureData.name}`);
+      // console.log(`Creating texture: ${textureData.name}`);
       textureFactory.create(textureData);
     }
 
     const materialFactory = new MaterialFactory(textureFactory);
     for (const materialData of data.world.materials) {
-      console.log(`Creating material: ${materialData.name}`);
+      // console.log(`Creating material: ${materialData.name}`);
       materialFactory.create(materialData);
     }
 
     const shapeFactory = new ShapeFactory(materialFactory);
     for (const shapeData of data.world.shapes) {
-      console.log(`Creating shape: ${shapeData}`);
+      // console.log(`Creating shape: ${shapeData}`);
       shapeFactory.createAndPush(shapeData);
     }
 

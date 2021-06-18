@@ -14,7 +14,7 @@ export class MetalMaterial extends Material {
   constructor(props: IMetalMaterial, textureFactory: TextureFactory) {
     super(props);
     this.albedo = textureFactory.getById(props.textureId);
-    this.fuzz = clamp(props.fuzz, 0, 1);
+    this.fuzz = clamp(props.fuzz || 0, 0, 1);
   }
 
   scatter(rayIn: Ray, intersection: Intersection): Scatter {

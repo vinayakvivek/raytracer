@@ -4,25 +4,29 @@ import {
   ILambertianMaterial,
   IMaterial,
   IMetalMaterial,
+  MaterialType,
 } from "../../models/material.model";
 import { ICamera, IScene } from "../../models/scene.model";
-import { IAbstractShape, ISphere } from "../../models/shape.model";
+import { IAbstractShape, ISphere, ShapeType } from "../../models/shape.model";
 import {
   IImageTexture,
   ISolidColorTexture,
   ITexture,
+  TextureType,
 } from "../../models/texture.model";
 import { BasicRenderer } from "../../renderer/basic-renderer";
+import { Array3 } from "../../utils";
 
 export class SceneCreator {
   textures: ITexture[] = [];
   materials: IMaterial[] = [];
   shapes: IAbstractShape[] = [];
   camera: ICamera;
+  background: Array3 = [1, 1, 1];
 
   constructor() {
     this.camera = {
-      position: [-1.5, 0.5, 0],
+      position: [-3, 0.5, 1],
       lookAt: [0, 0, -1],
       up: [0, 1, 0],
       vfov: 75,
@@ -44,106 +48,109 @@ export class SceneCreator {
     return this.shapes.length;
   }
 
+  texture(type: TextureType, props: any, name = ""): ITexture {
+    const texture = {
+      ...props,
+      id: this.textureId,
+      name,
+      type,
+    };
+    this.textures.push(texture);
+    return texture;
+  }
+
+  material(
+    type: MaterialType,
+    texture: ITexture | null,
+    props: any,
+    name = ""
+  ): IMaterial {
+    const material = {
+      ...props,
+      id: this.materialId,
+      name,
+      type,
+      textureId: texture?.id,
+    };
+    this.materials.push(material);
+    return material;
+  }
+
+  shape(
+    type: ShapeType,
+    material: IMaterial,
+    props: any,
+    name = ""
+  ): IAbstractShape {
+    const shape = {
+      ...props,
+      type,
+      materialId: material.id,
+      name,
+    };
+    this.shapes.push(shape);
+    return shape;
+  }
+
+  solidTexture(color: Array3): ITexture {
+    return this.texture("solid", { color });
+  }
+
+  imageTexture(src: string): ITexture {
+    return this.texture("image", { src });
+  }
+
+  diffuseMaterial(color: Array3): IMaterial {
+    const texture = this.solidTexture(color);
+    return this.material("lambertian", texture, {});
+  }
+
+  metalMaterial(color: Array3, fuzz = 0): IMaterial {
+    const texture = this.solidTexture(color);
+    return this.material("metal", texture, { fuzz });
+  }
+
+  glassMaterial(ri = 1.5) {
+    return this.material("dielectric", null, { refractiveIndex: ri });
+  }
+
   generate() {
-    const groundColor: ISolidColorTexture = {
-      id: 0,
-      name: "tex1",
-      type: "solid",
-      color: [0.8, 0.8, 0],
-    };
-    this.textures.push(groundColor);
-
-    const mat1: ILambertianMaterial = {
-      id: 0,
-      name: "mat1",
-      type: "lambertian",
-      textureId: 0,
-    };
-    this.materials.push(mat1);
-
-    const s1: ISphere = {
-      type: "sphere",
-      materialId: 0,
+    const groundMaterial = this.diffuseMaterial([0.4, 0.1, 0.5]);
+    const ground = this.shape("sphere", groundMaterial, {
       center: [0, -1000, 0],
       radius: 1000,
-    };
-    this.shapes.push(s1);
+    });
 
-    const color1: ISolidColorTexture = {
-      id: 1,
-      name: "color1",
-      type: "solid",
-      color: [0, 0.6, 0.2],
-    };
-    this.textures.push(color1);
-    const metalMat: IMetalMaterial = {
-      id: color1.id,
-      name: "mat1",
-      type: "metal",
-      textureId: 1,
-      fuzz: 0,
-    };
-    this.materials.push(metalMat);
-    const rightSphere: ISphere = {
-      type: "sphere",
-      materialId: metalMat.id,
+    const metalMat = this.metalMaterial([0, 0.6, 0.8]);
+    const rightSphere = this.shape("sphere", metalMat, {
       center: [1, 0.5, -1],
       radius: 0.5,
-    };
-    this.shapes.push(rightSphere);
+    });
 
     // leftSphere
-    const glassMat: IDielectricMaterial = {
-      id: 2,
-      name: "mat1",
-      type: "dielectric",
-      refractiveIndex: 1.5,
-    };
-    this.materials.push(glassMat);
-    const leftSphere: ISphere = {
-      type: "sphere",
-      materialId: glassMat.id,
+    const glassMat = this.glassMaterial();
+    const leftSphere = this.shape("sphere", glassMat, {
       center: [-1, 0.5, -1],
       radius: 0.5,
-    };
-    this.shapes.push(leftSphere);
-    const leftSphereInner: ISphere = {
-      type: "sphere",
-      materialId: glassMat.id,
-      center: [-1, 0.5, -1],
-      radius: -0.45,
-    };
-    this.shapes.push(leftSphereInner);
+    });
+    const leftSphereInner = this.shape("sphere", glassMat, {
+      center: [-1, 0.1, 0.5],
+      radius: 0.25,
+    });
 
     // center sphere
-    const earthTex: IImageTexture = {
-      id: this.textures.length,
-      name: "tex1",
-      type: "image",
-      src: "/textures/earth.jpg",
-    };
-    this.textures.push(earthTex);
-
-    const earthMat: ILambertianMaterial = {
-      id: this.materials.length,
-      name: "mat1",
-      type: "lambertian",
-      textureId: earthTex.id,
-    };
-    this.materials.push(earthMat);
-
-    const centerSphere: ISphere = {
-      type: "sphere",
-      materialId: earthMat.id,
+    const earthTexture = this.imageTexture("/textures/earth.jpg");
+    const earthMat = this.material("lambertian", earthTexture, {});
+    const centerSphere = this.shape("sphere", earthMat, {
       center: [0, 0.5, -1],
       radius: 0.5,
-    };
-    this.shapes.push(centerSphere);
+    });
   }
 
   exportJson(): IScene {
     return {
       camera: this.camera,
+      background: this.background,
       world: {
         textures: this.textures,
         materials: this.materials,
@@ -155,7 +162,7 @@ export class SceneCreator {
   renderScene(canvas: Canvas) {
     this.generate();
     const sceneData = this.exportJson();
-    console.log(sceneData);
+    // console.log(sceneData);
     const renderer = new BasicRenderer(canvas, sceneData);
     renderer.render();
   }
