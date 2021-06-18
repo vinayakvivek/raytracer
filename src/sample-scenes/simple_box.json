@@ -1,7 +1,7 @@
 {
   "background": [1, 1, 1],
   "camera": {
-    "position": [5, 2, 5],
+    "position": [10, 5, 2],
     "lookAt": [0, 0, 0],
     "up": [0, 1, 0],
     "vfov": 30,
@@ -102,7 +102,7 @@
         "shape": {
           "type": "rotation",
           "angle": 30,
-          "axis": "z",
+          "axis": "x",
           "shape": {
             "type": "translation",
             "x": -0.7,
@@ -115,6 +115,20 @@
               "materialId": 2
             }
           }
+        }
+      },
+      {
+        "type": "transform",
+        "transforms": [
+          { "type": "translation", "x": -0.7, "y": -0.5, "z": -0.5 },
+          { "type": "rotation", "angle": 30, "axis": "x" },
+          { "type": "translation", "x": 0.7, "y": 0.5, "z": 1.5 },
+          { "type": "rotation", "angle": 30, "axis": "y" }
+        ],
+        "shape": {
+          "type": "box",
+          "size": [1, 1, 1],
+          "materialId": 1
         }
       },
       {

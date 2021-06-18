@@ -8,9 +8,9 @@ import { ShapeFactory } from "../factory";
 export class TransformShape extends AbstractShape {
   shape: AbstractShape;
 
-  constructor(props: ITransformShape, shapeFactory: ShapeFactory) {
+  constructor(props: ITransformShape, shape: AbstractShape) {
     super();
-    this.shape = shapeFactory.create(props.shape);
+    this.shape = shape;
   }
 
   intersect(ray: Ray, tMin: number, tMax: number): Intersection {

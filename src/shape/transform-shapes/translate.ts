@@ -3,14 +3,14 @@ import { Ray } from "../../core/ray";
 import { Intersection, setFaceNormal } from "../../models/intersection.model";
 import { ITranslate } from "../../models/shape.model";
 import { Vec3 } from "../../utils";
-import { ShapeFactory } from "../factory";
+import { AbstractShape } from "../abstract-shape";
 import { TransformShape } from "./transform-shape";
 
 export class Translate extends TransformShape {
   offset: Vec3;
 
-  constructor(props: ITranslate, shapeFactory: ShapeFactory) {
-    super(props, shapeFactory);
+  constructor(props: ITranslate, shape: AbstractShape) {
+    super(props, shape);
     this.offset = new Vec3(props.x || 0, props.y || 0, props.z || 0);
     this.boundingBox = this._boundingBox();
   }

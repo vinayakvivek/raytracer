@@ -3,6 +3,7 @@ import { Ray } from "../../core/ray";
 import { Intersection, setFaceNormal } from "../../models/intersection.model";
 import { IRotate } from "../../models/shape.model";
 import { degToRad, Point3, Vec3 } from "../../utils";
+import { AbstractShape } from "../abstract-shape";
 import { ShapeFactory } from "../factory";
 import { TransformShape } from "./transform-shape";
 
@@ -12,8 +13,8 @@ export class Rotate extends TransformShape {
   cosTheta: number;
   _rotated: (v: Vec3, inverse: boolean) => Vec3;
 
-  constructor(props: IRotate, shapeFactory: ShapeFactory) {
-    super(props, shapeFactory);
+  constructor(props: IRotate, shape: AbstractShape) {
+    super(props, shape);
     this.angle = degToRad(props.angle);
     this.sinTheta = Math.sin(this.angle);
     this.cosTheta = Math.cos(this.angle);

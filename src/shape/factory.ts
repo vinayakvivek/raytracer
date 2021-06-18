@@ -8,6 +8,8 @@ import {
   ITranslate,
   IBox,
   IRotate,
+  ITransformShape,
+  ITransform,
 } from "../models/shape.model";
 import { ShapeNotFoundError, InvalidShapeTypeError } from "../utils/errors";
 import { AbstractShape } from "./abstract-shape";
@@ -17,6 +19,7 @@ import { Plane } from "./material-shapes/plane";
 import { Rectangle } from "./material-shapes/rectangle";
 import { Sphere } from "./material-shapes/sphere";
 import { Rotate } from "./transform-shapes/rotate";
+import { TransformShape } from "./transform-shapes/transform-shape";
 import { Translate } from "./transform-shapes/translate";
 
 export class ShapeFactory {
@@ -34,23 +37,41 @@ export class ShapeFactory {
     throw new ShapeNotFoundError(`id: ${id}`);
   }
 
-  create(data: IAbstractShape) {
+  create(data: IAbstractShape): AbstractShape {
+    try {
+      switch (data.type) {
+        case "sphere":
+          return new Sphere(data as ISphere, this.materialFactory);
+        case "moving-sphere":
+          return new MovingSphere(data as IMovingSphere, this.materialFactory);
+        case "plane":
+          return new Plane(data as IPlane, this.materialFactory);
+        case "rectangle":
+          return new Rectangle(data as IRectangle, this.materialFactory);
+        case "box":
+          return new Box(data as IBox, this.materialFactory);
+      }
+      const tData = <ITransformShape>data;
+      const shape = this.create(tData.shape);
+      return this.createTransform(tData, shape);
+    } catch (err) {
+      console.error(`Error while creating shape: ${err.message}`, data);
+    }
+  }
+
+  createTransform(data: ITransformShape, shape: AbstractShape) {
     switch (data.type) {
-      case "sphere":
-        return new Sphere(data as ISphere, this.materialFactory);
-      case "moving-sphere":
-        return new MovingSphere(data as IMovingSphere, this.materialFactory);
-      case "plane":
-        return new Plane(data as IPlane, this.materialFactory);
-      case "rectangle":
-        return new Rectangle(data as IRectangle, this.materialFactory);
-      case "box":
-        return new Box(data as IBox, this.materialFactory);
-      // transform shapes
       case "translation":
-        return new Translate(data as ITranslate, this);
+        return new Translate(data as ITranslate, shape);
       case "rotation":
-        return new Rotate(data as IRotate, this);
+        return new Rotate(data as IRotate, shape);
+      case "transform":
+        const transforms = (<ITransform>data).transforms;
+        let tShape = shape;
+        transforms.forEach((transform) => {
+          tShape = this.createTransform(<ITransformShape>transform, tShape);
+        });
+        return tShape;
       default:
         throw new InvalidShapeTypeError();
     }
