@@ -3,7 +3,7 @@ import { IEntity } from "./entity.model";
 import { IMaterial } from "./material.model";
 import { TimeInterval } from "./scene.model";
 
-export type TransformShapeType = "translation" | "rotationY";
+export type TransformShapeType = "translation" | "rotation";
 
 export type ShapeType =
   | "sphere"
@@ -28,8 +28,9 @@ export interface ITranslate extends ITransformShape {
   z?: number;
 }
 
-export interface IRotateY extends ITransformShape {
-  type: "rotationY";
+export interface IRotate extends ITransformShape {
+  type: "rotation";
+  axis: "x" | "y" | "z";
   angle: number;
 }
 

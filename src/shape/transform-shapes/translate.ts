@@ -31,12 +31,10 @@ export class Translate extends TransformShape {
       ray.time
     );
     const intersection = this.shape.intersect(movedRay, tMin, tMax);
-    if (!intersection.valid) {
-      return intersection; // { valid: false }
+    if (intersection.valid) {
+      intersection.p.add(this.offset);
+      setFaceNormal(intersection, movedRay.direction);
     }
-
-    intersection.p.add(this.offset);
-    setFaceNormal(intersection, movedRay.direction); // !! required?
     return intersection;
   }
 }

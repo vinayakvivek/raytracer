@@ -1,21 +1,29 @@
 import { AABB } from "../../core/aabb";
 import { Ray } from "../../core/ray";
 import { Intersection, setFaceNormal } from "../../models/intersection.model";
-import { IRotateY } from "../../models/shape.model";
+import { IRotate } from "../../models/shape.model";
 import { degToRad, Point3, Vec3 } from "../../utils";
 import { ShapeFactory } from "../factory";
 import { TransformShape } from "./transform-shape";
 
-export class RotateY extends TransformShape {
+export class Rotate extends TransformShape {
   angle: number;
   sinTheta: number;
   cosTheta: number;
+  _rotated: (v: Vec3, inverse: boolean) => Vec3;
 
-  constructor(props: IRotateY, shapeFactory: ShapeFactory) {
+  constructor(props: IRotate, shapeFactory: ShapeFactory) {
     super(props, shapeFactory);
     this.angle = degToRad(props.angle);
     this.sinTheta = Math.sin(this.angle);
     this.cosTheta = Math.cos(this.angle);
+    const axis = props.axis || "y"; // default axis of rotation is Y
+    const rotations = {
+      x: this._rotatedByX,
+      y: this._rotatedByY,
+      z: this._rotatedByZ,
+    };
+    this._rotated = rotations[axis];
     this.boundingBox = this._boundingBox();
   }
 
@@ -32,10 +40,7 @@ export class RotateY extends TransformShape {
           const y = j * box.max.y + (1 - j) * box.min.y;
           const z = k * box.max.z + (1 - k) * box.min.z;
 
-          const newx = this.cosTheta * x + this.sinTheta * z;
-          const newz = -this.sinTheta * x + this.cosTheta * z;
-
-          const tester = new Vec3(newx, y, newz);
+          const tester = this._rotated(new Vec3(x, y, z), true);
           min = Vec3.min(min, tester);
           max = Vec3.max(max, tester);
         }
@@ -44,7 +49,15 @@ export class RotateY extends TransformShape {
     return new AABB(min, max);
   }
 
-  _rotated(v: Vec3, inverse = false) {
+  _rotatedByX(v: Vec3, inverse = false) {
+    const res = v.clone();
+    const sinTheta = this.sinTheta * (inverse ? -1 : 1);
+    res.y = this.cosTheta * v.y + sinTheta * v.z;
+    res.z = -sinTheta * v.y + this.cosTheta * v.z;
+    return res;
+  }
+
+  _rotatedByY(v: Vec3, inverse = false) {
     const res = v.clone();
     const sinTheta = this.sinTheta * (inverse ? -1 : 1);
     res.x = this.cosTheta * v.x - sinTheta * v.z;
@@ -52,19 +65,25 @@ export class RotateY extends TransformShape {
     return res;
   }
 
+  _rotatedByZ(v: Vec3, inverse = false) {
+    const res = v.clone();
+    const sinTheta = this.sinTheta * (inverse ? -1 : 1);
+    res.x = this.cosTheta * v.x - sinTheta * v.y;
+    res.y = sinTheta * v.x + this.cosTheta * v.y;
+    return res;
+  }
+
   intersect(ray: Ray, tMin: number, tMax: number): Intersection {
-    const o = this._rotated(ray.origin);
-    const d = this._rotated(ray.direction);
+    const o = this._rotated(ray.origin, false);
+    const d = this._rotated(ray.direction, false);
 
     const rotatedRay = new Ray(o, d, ray.time);
     const intersection = this.shape.intersect(rotatedRay, tMin, tMax);
-    if (!intersection.valid) {
-      return intersection;
+    if (intersection.valid) {
+      intersection.p = this._rotated(intersection.p, true);
+      intersection.n = this._rotated(intersection.n, true);
+      setFaceNormal(intersection, rotatedRay.direction);
     }
-
-    intersection.p = this._rotated(intersection.p, true);
-    intersection.n = this._rotated(intersection.n, true);
-    setFaceNormal(intersection, rotatedRay.direction);
     return intersection;
   }
 }

@@ -7,7 +7,7 @@ import {
   IAbstractShape,
   ITranslate,
   IBox,
-  IRotateY,
+  IRotate,
 } from "../models/shape.model";
 import { ShapeNotFoundError, InvalidShapeTypeError } from "../utils/errors";
 import { AbstractShape } from "./abstract-shape";
@@ -16,7 +16,7 @@ import { MovingSphere } from "./material-shapes/moving-sphere";
 import { Plane } from "./material-shapes/plane";
 import { Rectangle } from "./material-shapes/rectangle";
 import { Sphere } from "./material-shapes/sphere";
-import { RotateY } from "./transform-shapes/rotate-y";
+import { Rotate } from "./transform-shapes/rotate";
 import { Translate } from "./transform-shapes/translate";
 
 export class ShapeFactory {
@@ -49,8 +49,8 @@ export class ShapeFactory {
       // transform shapes
       case "translation":
         return new Translate(data as ITranslate, this);
-      case "rotationY":
-        return new RotateY(data as IRotateY, this);
+      case "rotation":
+        return new Rotate(data as IRotate, this);
       default:
         throw new InvalidShapeTypeError();
     }
