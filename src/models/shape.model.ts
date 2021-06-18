@@ -34,9 +34,10 @@ export interface IRotate extends ITransformShape {
   angle: number;
 }
 
+export type ITransformItem = { type: TransformShapeType; [x: string]: any };
 export interface ITransform extends ITransformShape {
   type: "transform";
-  transforms: { type: TransformShapeType; [x: string]: any }[];
+  transforms: ITransformItem[];
 }
 
 export interface IMaterialShape extends IAbstractShape {

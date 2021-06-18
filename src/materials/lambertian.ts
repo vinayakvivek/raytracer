@@ -17,10 +17,10 @@ export class LambertianMaterial extends Material {
 
   scatter(rayIn: Ray, intersection: Intersection): Scatter {
     const { n, p, uv } = intersection;
-    // const targetDir = n.add(Vec3.randomInUnitSphere());  // simple diffuse
-    // const targetDir = n.add(Vec3.random().normalize()); // true lambertian
-    // const targetDir = Vec3.randomInHemisphere(n); // diffuse (hemispherical)
-    let scatterDir = n.add(Vec3.random().normalize());
+    // let scatterDir = n.clone().add(Vec3.randomInUnitSphere());  // simple diffuse
+    // let scatterDir = n.clone().add(Vec3.random().normalize()); // true lambertian
+    // let scatterDir = Vec3.randomInHemisphere(n); // diffuse (hemispherical)
+    let scatterDir = n.clone().add(Vec3.random().normalize());
 
     // check if direction is exactly opposite to normal
     if (scatterDir.isNearZero()) {

@@ -7,7 +7,14 @@ import {
   MaterialType,
 } from "../../models/material.model";
 import { ICamera, IScene } from "../../models/scene.model";
-import { IAbstractShape, ISphere, ShapeType } from "../../models/shape.model";
+import {
+  IAbstractShape,
+  ISphere,
+  ITransform,
+  ITransformItem,
+  ITransformShape,
+  ShapeType,
+} from "../../models/shape.model";
 import {
   IImageTexture,
   ISolidColorTexture,
@@ -80,14 +87,20 @@ export class SceneCreator {
     type: ShapeType,
     material: IMaterial,
     props: any,
-    name = ""
+    transforms: ITransformItem[] = []
   ): IAbstractShape {
-    const shape = {
+    let shape = {
       ...props,
       type,
       materialId: material.id,
-      name,
     };
+    if (transforms.length) {
+      shape = {
+        type: "transform",
+        transforms,
+        shape,
+      };
+    }
     this.shapes.push(shape);
     return shape;
   }
@@ -112,6 +125,23 @@ export class SceneCreator {
 
   glassMaterial(ri = 1.5) {
     return this.material("dielectric", null, { refractiveIndex: ri });
+  }
+
+  transform(shape: IAbstractShape): ITransform {
+    if (shape.type === "transform") return <ITransform>shape;
+    return {
+      type: "transform",
+      transforms: [],
+      shape,
+    };
+  }
+
+  translate(x = 0, y = 0, z = 0): ITransformItem {
+    return { type: "translation", x, y, z };
+  }
+
+  rotate(axis: "x" | "y" | "z", angle: number): ITransformItem {
+    return { type: "rotation", axis, angle };
   }
 
   generate() {
@@ -162,7 +192,6 @@ export class SceneCreator {
   renderScene(canvas: Canvas) {
     this.generate();
     const sceneData = this.exportJson();
-    // console.log(sceneData);
     const renderer = new BasicRenderer(canvas, sceneData);
     renderer.render();
   }

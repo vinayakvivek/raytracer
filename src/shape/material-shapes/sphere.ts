@@ -1,7 +1,7 @@
 import { AABB } from "../../core/aabb";
 import { Ray } from "../../core/ray";
 import { MaterialFactory } from "../../materials/factory";
-import { UV } from "../../models/intersection.model";
+import { setFaceNormal, UV } from "../../models/intersection.model";
 import { ISphere } from "../../models/shape.model";
 import { Point3, Vec3 } from "../../utils";
 import { MaterialShape } from "./material-shape";
@@ -12,7 +12,7 @@ export class Sphere extends MaterialShape {
 
   constructor(props: ISphere, materialFactory: MaterialFactory) {
     super(props, materialFactory);
-    this.center = Point3.fromJson(props.center);
+    this.center = Point3.fromJson(props.center || [0, 0, 0]);
     this.radius = props.radius;
     this.boundingBox = props.unbounded ? null : this._boundingBox();
   }
@@ -25,7 +25,6 @@ export class Sphere extends MaterialShape {
   }
 
   getUV(p: Point3): UV {
-    // TODO: consider rotation
     const theta = Math.acos(-p.y);
     const phi = Math.atan2(-p.z, p.x) + Math.PI;
     return {
@@ -56,14 +55,10 @@ export class Sphere extends MaterialShape {
     }
     const p = ray.at(t);
     const n = this.normal(p);
-    let frontFace = true;
-    // check normal direction
-    if (ray.direction.dot(n) > 0) {
-      n.negate();
-      frontFace = false;
-    }
     const uv = this.getUV(n);
-    return { valid: true, t, p, n, frontFace, material: this.material, uv };
+    const rec = { valid: true, t, p, n, material: this.material, uv };
+    setFaceNormal(rec, ray.direction);
+    return rec;
   }
 
   normal(p: Point3) {
