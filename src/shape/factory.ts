@@ -11,9 +11,11 @@ import {
   ITransformShape,
   ITransform,
   IConstantMedium,
+  IGroupShape,
 } from "../models/shape.model";
 import { ShapeNotFoundError, InvalidShapeTypeError } from "../utils/errors";
 import { AbstractShape } from "./abstract-shape";
+import { GroupShape } from "./group";
 import { Box } from "./material-shapes/box";
 import { ConstantMedium } from "./material-shapes/constant-medium";
 import { MovingSphere } from "./material-shapes/moving-sphere";
@@ -51,11 +53,14 @@ export class ShapeFactory {
         case "rectangle":
           return new Rectangle(data as IRectangle, this.materialFactory);
         case "box":
-          return new Box(data as IBox, this.materialFactory);
+          return new Box(data as IBox, this.materialFactory, this);
         case "constant-medium":
           const props = <IConstantMedium>data;
           const boundary = this.create(props.boundary);
           return new ConstantMedium(props, this.materialFactory, boundary);
+        case "group":
+          const shapes = (<IGroupShape>data).shapes.map((s) => this.create(s));
+          return new GroupShape(shapes);
       }
       const tData = <ITransformShape>data;
       const shape = this.create(tData.shape);

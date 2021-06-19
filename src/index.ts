@@ -16,5 +16,5 @@ const canvas = new Canvas(width, Math.round(width / aspectRatio));
 // const renderer = new BasicRenderer(canvas, sceneData as unknown as IScene);
 // renderer.render();
 
-const sceneCreator = new TestSceneCreator();
+const sceneCreator = new CornellBoxFogSceneCreator();
 sceneCreator.renderScene(canvas);

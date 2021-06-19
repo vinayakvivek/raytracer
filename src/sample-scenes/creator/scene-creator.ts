@@ -94,7 +94,7 @@ export class SceneCreator {
     let shape = {
       ...props,
       type,
-      materialId: material.id,
+      materialId: material?.id,
     };
     if (transforms.length) {
       shape = {
@@ -144,14 +144,14 @@ export class SceneCreator {
     return this.material("diffuse-light", this.solidTexture(color), {});
   }
 
-  transform(shape: IAbstractShape): ITransform {
-    if (shape.type === "transform") return <ITransform>shape;
-    return {
-      type: "transform",
-      transforms: [],
-      shape,
-    };
-  }
+  // transform(shape: IAbstractShape): ITransform {
+  //   if (shape.type === "transform") return <ITransform>shape;
+  //   return {
+  //     type: "transform",
+  //     transforms: [],
+  //     shape,
+  //   };
+  // }
 
   translate(x = 0, y = 0, z = 0): ITransformItem {
     return { type: "translation", x, y, z };
@@ -159,6 +159,10 @@ export class SceneCreator {
 
   rotate(axis: "x" | "y" | "z", angle: number): ITransformItem {
     return { type: "rotation", axis, angle };
+  }
+
+  group(shapes: IAbstractShape[]) {
+    return this.shape("group", null, { shapes });
   }
 
   generate() {

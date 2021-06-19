@@ -29,17 +29,11 @@ export class ConstantMedium extends MaterialShape {
   }
 
   intersect(ray: Ray, tMin: number, tMax: number): Intersection {
-    const enableDebug = true;
-    const debugging = enableDebug && random() < 0.0001;
-
     const rec1 = this.boundary.intersect(ray, -Infinity, Infinity);
     if (!rec1.valid) return this._noIntersection;
 
     const rec2 = this.boundary.intersect(ray, rec1.t + 0.0001, Infinity);
-    // if (debugging) console.log(rec1, rec2);
-
-    // if (!rec2.valid) return this._noIntersection;
-    rec2.t = rec1.t + 100;
+    if (!rec2.valid) return this._noIntersection;
 
     // if (debugging) console.log(`tMin: ${tMin}, tMax: ${tMax}`);
 
@@ -63,7 +57,7 @@ export class ConstantMedium extends MaterialShape {
     rec.t = rec1.t + hitDistance / rayLength;
     rec.p = ray.at(rec.t);
 
-    if (debugging) console.log({ hitDistance, t: rec.t, p: rec.p });
+    // if (debugging) console.log({ hitDistance, t: rec.t, p: rec.p });
 
     rec.n = new Vec3(1, 0, 0); // arbitrary
     rec.frontFace = true;

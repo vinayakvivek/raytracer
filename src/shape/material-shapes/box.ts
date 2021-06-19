@@ -1,27 +1,72 @@
 import { AABB } from "../../core/aabb";
 import { Ray } from "../../core/ray";
 import { MaterialFactory } from "../../materials/factory";
+import { Intersection } from "../../models/intersection.model";
 import {
-  Intersection,
-  setFaceNormal,
-  UV,
-} from "../../models/intersection.model";
-import { IBox } from "../../models/shape.model";
-import { Point3, random, Vec3 } from "../../utils";
-import { UnimplementedError } from "../../utils/errors";
+  IAbstractShape,
+  IBox,
+  IGroupShape,
+  IRectangle,
+  ITranslate,
+} from "../../models/shape.model";
+import { Point3, Vec3 } from "../../utils";
+import { ShapeFactory } from "../factory";
+import { GroupShape } from "../group";
 import { MaterialShape } from "./material-shape";
-
-const max = Math.max;
-const min = Math.min;
-const isEqual = (x1: number, x2: number) => Math.abs(x1 - x2) < Number.EPSILON;
 
 export class Box extends MaterialShape {
   size: Vec3;
+  group: GroupShape;
 
-  constructor(props: IBox, materialFactory: MaterialFactory) {
+  constructor(
+    props: IBox,
+    materialFactory: MaterialFactory,
+    shapeFactory: ShapeFactory
+  ) {
     super(props, materialFactory);
     this.size = Vec3.fromJson(props.size);
+    this.group = <GroupShape>(
+      shapeFactory.create(
+        this._createBox(this.size.x, this.size.y, this.size.z)
+      )
+    );
     this.boundingBox = props.unbounded ? null : this._boundingBox();
+  }
+
+  _createBox(x: number, y: number, z: number): IGroupShape {
+    const z1 = this._createSide(x, y, 0, 0);
+    const z2 = this._createSide(x, y, z, 0);
+
+    const y1 = this._createSide(z, x, 0, 2);
+    const y2 = this._createSide(z, x, y, 2);
+
+    const x1 = this._createSide(y, z, 0, 1);
+    const x2 = this._createSide(y, z, x, 1);
+    return {
+      type: "group",
+      shapes: [z1, z2, y1, y2, x1, x2],
+    };
+  }
+
+  _createSide(w: number, h: number, d: number, p: 0 | 1 | 2): IAbstractShape {
+    let rect = <IRectangle>{
+      type: "rectangle",
+      materialId: this.material.id,
+      width: w,
+      height: h,
+      plane: p,
+    };
+    if (d > 0) {
+      const t = <ITranslate>{
+        type: "translation",
+        shape: rect,
+      };
+      if (p == 0) t.z = d;
+      else if (p == 1) t.x = d;
+      else t.y = d;
+      return t;
+    }
+    return rect;
   }
 
   _boundingBox(): AABB {
@@ -29,52 +74,6 @@ export class Box extends MaterialShape {
   }
 
   intersect(ray: Ray, tMin: number, tMax: number): Intersection {
-    const enableDebug = true;
-    const debugging = enableDebug && random() < 0.0001;
-
-    const max = this.size.toArray();
-    const d = ray.direction.toArray();
-    const o = ray.origin.toArray();
-    let side = -1;
-    for (let i = 0; i < 3; ++i) {
-      const invD = 1 / d[i];
-      let t0 = -o[i] * invD;
-      let t1 = (max[i] - o[i]) * invD;
-      if (invD < 0) {
-        [t0, t1] = [t1, t0];
-      }
-      if (t0 > tMin) {
-        tMin = t0;
-        side = i;
-      }
-      tMax = t1 < tMax ? t1 : tMax;
-      if (tMax < tMin) {
-        return this._noIntersection;
-      }
-    }
-
-    if (side < 0) {
-      return this._noIntersection;
-    }
-
-    // if (debugging) console.log("yo");
-
-    const t = tMin;
-    const p = ray.at(t);
-    const n = new Vec3(0, 0, 0);
-    let uv: UV;
-    if (side == 0) {
-      n.x = p.x > 0.001 ? 1 : -1;
-      uv = { u: p.y / max[1], v: p.z / max[2] };
-    } else if (side == 1) {
-      n.y = p.y > 0.001 ? 1 : -1;
-      uv = { u: p.x / max[0], v: p.z / max[2] };
-    } else {
-      n.z = p.z > 0.001 ? 1 : -1;
-      uv = { u: p.x / max[0], v: p.y / max[1] };
-    }
-    const rec = { valid: true, t, p, n, material: this.material, uv };
-    setFaceNormal(rec, ray.direction);
-    return rec;
+    return this.group.intersect(ray, tMin, tMax);
   }
 }

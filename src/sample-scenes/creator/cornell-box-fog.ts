@@ -47,14 +47,17 @@ export class CornellBoxFogSceneCreator extends SceneCreator {
     this.shape("rectangle", white, props, [this.translate(0, 0, 555)]);
 
     // light
-    this.shape("rectangle", light, { width: 200, height: 200, plane: 2 }, [
-      this.translate(170, 554, 127),
+    this.shape("rectangle", light, { width: 330, height: 305, plane: 2 }, [
+      this.translate(113, 554, 127),
     ]);
 
-    this.shape("box", blue, { size: [165, 165, 165] }, [
-      this.translate(160, 0, 65),
-      this.rotate("y", -18),
-    ]);
+    const box1 = this.shape(
+      "box",
+      blue,
+      { size: [165, 165, 165] },
+      [this.translate(160, 0, 65), this.rotate("y", -18)],
+      true
+    );
     const box2 = this.shape(
       "box",
       blue,
@@ -63,35 +66,20 @@ export class CornellBoxFogSceneCreator extends SceneCreator {
         this.translate(-165 / 2, 0, -165 / 2),
         this.rotate("y", 30),
         this.rotate("x", -10),
-        this.translate(265 + 165 / 2, 100, 295 + 165 / 2),
+        this.translate(265 + 165 / 2, 0, 295 + 165 / 2),
       ],
       true
     );
 
-    const sphere = this.shape(
-      "sphere",
-      red,
-      { center: [0, 0, 0], radius: 100 },
-      [this.rotate("y", 100), this.translate(400, 300, 200)],
-      true
-    );
-    const fogBox = this.shape(
-      "box",
-      red,
-      { size: [200, 200, 200] },
-      [this.translate(200, 200)],
-      true
-    );
-
-    const fogColor = this.solidTexture([0, 0, 0]);
-    this.constantMedium(0.01, fogColor, box2);
+    this.constantMedium(0.01, this.solidTexture([1, 1, 1]), box1);
+    this.constantMedium(0.01, this.solidTexture([0, 0, 0]), box2);
   }
 
   renderScene(canvas: Canvas) {
     this.generate();
     const sceneData = this.exportJson();
     console.log(sceneData);
-    const renderer = new BasicRenderer(canvas, sceneData);
+    const renderer = new WorkerRenderer(canvas, sceneData);
     renderer.render();
   }
 }

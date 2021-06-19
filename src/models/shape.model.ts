@@ -11,7 +11,8 @@ export type ShapeType =
   | "plane"
   | "rectangle"
   | "box"
-  | "constant-medium";
+  | "constant-medium"
+  | "group";
 
 export interface IAbstractShape {
   type: TransformShapeType | ShapeType;
@@ -46,6 +47,12 @@ export interface IMaterialShape extends IAbstractShape {
   unbounded?: boolean;
   materialId: number;
 }
+
+export interface IGroupShape extends IAbstractShape {
+  type: "group";
+  shapes: IAbstractShape[];
+}
+
 export interface ISphere extends IMaterialShape {
   type: "sphere";
   center: Array3;
