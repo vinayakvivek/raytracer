@@ -1,0 +1,80 @@
+{
+  "background": [0, 0, 0],
+  "camera": {
+    "position": [26, 3, 6],
+    "lookAt": [0, 2, 0],
+    "up": [0, 1, 0],
+    "vfov": 20,
+    "aperture": 0,
+    "focusDist": 1,
+    "time": {
+      "start": 0,
+      "end": 0
+    }
+  },
+  "world": {
+    "textures": [
+      {
+        "id": 0,
+        "name": "perlin-text",
+        "type": "perlin",
+        "scale": 4.0
+      },
+      {
+        "id": 1,
+        "name": "solid",
+        "type": "solid",
+        "color": [3, 3, 3]
+      }
+    ],
+    "materials": [
+      {
+        "id": 0,
+        "name": "marble",
+        "type": "lambertian",
+        "textureId": 0
+      },
+      {
+        "id": 1,
+        "name": "light",
+        "type": "diffuse-light",
+        "textureId": 1
+      }
+    ],
+    "shapes": [
+      {
+        "id": 0,
+        "name": "ground",
+        "type": "sphere",
+        "center": [0, -1000, 0],
+        "radius": 1000,
+        "materialId": 0
+      },
+      {
+        "id": 1,
+        "name": "small",
+        "type": "sphere",
+        "center": [0, 2, 0],
+        "radius": 2,
+        "materialId": 0
+      },
+      {
+        "id": 2,
+        "name": "rect-light",
+        "type": "rectangle",
+        "center": [4, 2, -2],
+        "width": 2,
+        "height": 2,
+        "materialId": 1
+      },
+      {
+        "id": 3,
+        "name": "sphere-light",
+        "type": "sphere",
+        "center": [0, 7, 0],
+        "radius": 2,
+        "materialId": 1
+      }
+    ]
+  }
+}

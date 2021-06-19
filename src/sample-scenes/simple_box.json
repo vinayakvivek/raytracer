@@ -1,0 +1,142 @@
+{
+  "background": [1, 1, 1],
+  "camera": {
+    "position": [10, 5, 2],
+    "lookAt": [0, 0, 0],
+    "up": [0, 1, 0],
+    "vfov": 30,
+    "aperture": 0,
+    "focusDist": 1,
+    "time": {
+      "start": 0,
+      "end": 0
+    }
+  },
+  "world": {
+    "textures": [
+      {
+        "id": 0,
+        "name": "solid",
+        "type": "solid",
+        "color": [0.1, 1.0, 0.5]
+      },
+      {
+        "id": 1,
+        "name": "red",
+        "type": "solid",
+        "color": [1, 0, 0]
+      },
+      {
+        "id": 2,
+        "name": "noise",
+        "type": "perlin",
+        "scale": 5
+      },
+      {
+        "id": 3,
+        "name": "earth",
+        "type": "image",
+        "src": "/textures/earth.jpg"
+      }
+    ],
+    "materials": [
+      {
+        "id": 0,
+        "name": "teal",
+        "type": "lambertian",
+        "textureId": 0
+      },
+      {
+        "id": 1,
+        "name": "red",
+        "type": "lambertian",
+        "textureId": 1,
+        "fuzz": 0.0
+      },
+      {
+        "id": 2,
+        "name": "noise",
+        "type": "lambertian",
+        "textureId": 2
+      },
+      {
+        "id": 3,
+        "name": "earth-diffuse",
+        "type": "lambertian",
+        "textureId": 3
+      }
+    ],
+    "shapes": [
+      {
+        "type": "translation",
+        "y": 2.0,
+        "z": 2,
+        "shape": {
+          "type": "rotation",
+          "angle": 30,
+          "shape": {
+            "type": "rectangle",
+            "width": 1,
+            "height": 1.5,
+            "plane": 2,
+            "materialId": 3
+          }
+        }
+      },
+      {
+        "type": "translation",
+        "x": -2.5,
+        "y": 1.1,
+        "z": 0,
+        "shape": {
+          "name": "sample-box",
+          "type": "box",
+          "size": [1, 1, 1],
+          "materialId": 3
+        }
+      },
+      {
+        "type": "transform",
+        "transforms": [
+          { "type": "translation", "x": -0.7, "y": -0.5, "z": -0.5 },
+          { "type": "rotation", "angle": 30, "axis": "x" },
+          { "type": "rotation", "angle": 30, "axis": "y" }
+        ],
+        "shape": {
+          "name": "sample-box",
+          "type": "box",
+          "size": [1.4, 1, 1],
+          "materialId": 2
+        }
+      },
+      {
+        "type": "transform",
+        "transforms": [
+          { "type": "rotation", "angle": -50, "axis": "y" },
+          { "type": "translation", "x": 0.5, "y": 0.5, "z": 1.5 }
+        ],
+        "shape": {
+          "type": "sphere",
+          "center": [0, 0, 0],
+          "radius": 1,
+          "materialId": 3
+        }
+      },
+      {
+        "name": "sample-sphere",
+        "type": "sphere",
+        "center": [0, 1, 0],
+        "radius": 0.05,
+        "materialId": 1
+      },
+      {
+        "name": "ground",
+        "type": "plane",
+        "unbounded": true,
+        "position": [0, -2, 0],
+        "normal": [0, 1, 0],
+        "materialId": 0
+      }
+    ]
+  }
+}
