@@ -10,7 +10,8 @@ export type ShapeType =
   | "moving-sphere"
   | "plane"
   | "rectangle"
-  | "box";
+  | "box"
+  | "constant-medium";
 
 export interface IAbstractShape {
   type: TransformShapeType | ShapeType;
@@ -75,4 +76,11 @@ export interface IRectangle extends IMaterialShape {
 export interface IBox extends IMaterialShape {
   type: "box";
   size: Array3;
+}
+
+export interface IConstantMedium extends IMaterialShape {
+  type: "constant-medium";
+  density: number;
+  boundary: IAbstractShape;
+  textureId: number;
 }

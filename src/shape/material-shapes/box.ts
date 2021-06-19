@@ -29,6 +29,9 @@ export class Box extends MaterialShape {
   }
 
   intersect(ray: Ray, tMin: number, tMax: number): Intersection {
+    const enableDebug = true;
+    const debugging = enableDebug && random() < 0.0001;
+
     const max = this.size.toArray();
     const d = ray.direction.toArray();
     const o = ray.origin.toArray();
@@ -53,6 +56,8 @@ export class Box extends MaterialShape {
     if (side < 0) {
       return this._noIntersection;
     }
+
+    // if (debugging) console.log("yo");
 
     const t = tMin;
     const p = ray.at(t);

@@ -9,6 +9,7 @@ import {
 import { ICamera, IScene } from "../../models/scene.model";
 import {
   IAbstractShape,
+  IConstantMedium,
   ISphere,
   ITransform,
   ITransformItem,
@@ -87,7 +88,8 @@ export class SceneCreator {
     type: ShapeType,
     material: IMaterial,
     props: any,
-    transforms: ITransformItem[] = []
+    transforms: ITransformItem[] = [],
+    transient = false
   ): IAbstractShape {
     let shape = {
       ...props,
@@ -101,6 +103,17 @@ export class SceneCreator {
         shape,
       };
     }
+    if (!transient) this.shapes.push(shape);
+    return shape;
+  }
+
+  constantMedium(density: number, texture: ITexture, boundary: IAbstractShape) {
+    const shape = <IConstantMedium>{
+      type: "constant-medium",
+      density,
+      textureId: texture.id,
+      boundary,
+    };
     this.shapes.push(shape);
     return shape;
   }
@@ -125,6 +138,10 @@ export class SceneCreator {
 
   glassMaterial(ri = 1.5) {
     return this.material("dielectric", null, { refractiveIndex: ri });
+  }
+
+  light(color: Array3) {
+    return this.material("diffuse-light", this.solidTexture(color), {});
   }
 
   transform(shape: IAbstractShape): ITransform {

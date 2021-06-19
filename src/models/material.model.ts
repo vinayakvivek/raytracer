@@ -6,7 +6,8 @@ export type MaterialType =
   | "lambertian"
   | "metal"
   | "dielectric"
-  | "diffuse-light";
+  | "diffuse-light"
+  | "isotropic";
 
 export interface IMaterial extends IEntity {
   type: MaterialType;
@@ -28,5 +29,10 @@ export interface IDielectricMaterial extends IMaterial {
 
 export interface IDiffuseLightMaterial extends IMaterial {
   type: "diffuse-light";
+  textureId: number;
+}
+
+export interface IIsotropicMaterial extends IMaterial {
+  type: "isotropic";
   textureId: number;
 }

@@ -1,6 +1,7 @@
 import {
   IDielectricMaterial,
   IDiffuseLightMaterial,
+  IIsotropicMaterial,
   ILambertianMaterial,
   IMaterial,
   IMetalMaterial,
@@ -12,6 +13,7 @@ import {
 } from "../utils/errors";
 import { DielectricMaterial } from "./dielectric";
 import { DiffuseLight } from "./diffuse-light";
+import { IsotropicMaterial } from "./isotropic";
 import { LambertianMaterial } from "./lambertian";
 import { Material } from "./material";
 import { MetalMaterial } from "./metal";
@@ -38,16 +40,21 @@ export class MaterialFactory {
     switch (data.type) {
       case "lambertian":
         return new LambertianMaterial(
-          data as ILambertianMaterial,
+          <ILambertianMaterial>data,
           this.textureFactory
         );
       case "metal":
-        return new MetalMaterial(data as IMetalMaterial, this.textureFactory);
+        return new MetalMaterial(<IMetalMaterial>data, this.textureFactory);
       case "dielectric":
-        return new DielectricMaterial(data as IDielectricMaterial);
+        return new DielectricMaterial(<IDielectricMaterial>data);
       case "diffuse-light":
         return new DiffuseLight(
-          data as IDiffuseLightMaterial,
+          <IDiffuseLightMaterial>data,
+          this.textureFactory
+        );
+      case "isotropic":
+        return new IsotropicMaterial(
+          <IIsotropicMaterial>data,
           this.textureFactory
         );
       default:

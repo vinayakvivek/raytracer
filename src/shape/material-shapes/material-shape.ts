@@ -10,9 +10,13 @@ import { AbstractShape } from "../abstract-shape";
 export class MaterialShape extends AbstractShape {
   material: Material;
 
-  constructor(props: IMaterialShape, materialFactory: MaterialFactory) {
+  constructor(
+    props: IMaterialShape,
+    materialFactory: MaterialFactory,
+    getMaterial = true
+  ) {
     super();
-    this.material = materialFactory.getById(props.materialId);
+    if (getMaterial) this.material = materialFactory.getById(props.materialId);
   }
 
   getUV(p: Point3): UV {

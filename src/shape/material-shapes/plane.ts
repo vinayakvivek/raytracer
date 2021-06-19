@@ -12,8 +12,8 @@ export class Plane extends MaterialShape {
 
   constructor(props: IPlane, materialFactory: MaterialFactory) {
     super(props, materialFactory);
-    this.normal = Vec3.fromJson(props.normal);
-    this.position = Point3.fromJson(props.position);
+    this.normal = Vec3.fromJson(props.normal || [0, 1, 0]);
+    this.position = Point3.fromJson(props.position || [0, 0, 0]);
     this.boundingBox = null;
   }
 

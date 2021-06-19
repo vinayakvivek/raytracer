@@ -10,10 +10,12 @@ import {
   IRotate,
   ITransformShape,
   ITransform,
+  IConstantMedium,
 } from "../models/shape.model";
 import { ShapeNotFoundError, InvalidShapeTypeError } from "../utils/errors";
 import { AbstractShape } from "./abstract-shape";
 import { Box } from "./material-shapes/box";
+import { ConstantMedium } from "./material-shapes/constant-medium";
 import { MovingSphere } from "./material-shapes/moving-sphere";
 import { Plane } from "./material-shapes/plane";
 import { Rectangle } from "./material-shapes/rectangle";
@@ -50,6 +52,10 @@ export class ShapeFactory {
           return new Rectangle(data as IRectangle, this.materialFactory);
         case "box":
           return new Box(data as IBox, this.materialFactory);
+        case "constant-medium":
+          const props = <IConstantMedium>data;
+          const boundary = this.create(props.boundary);
+          return new ConstantMedium(props, this.materialFactory, boundary);
       }
       const tData = <ITransformShape>data;
       const shape = this.create(tData.shape);
