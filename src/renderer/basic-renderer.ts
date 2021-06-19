@@ -74,8 +74,8 @@ export class BasicRenderer {
             callback(x, y);
           }
         }
-        this.canvas.writeImage();
-        await sleep(0);
+        // this.canvas.writeImage();
+        // await sleep(0);
       }
     }
   }
@@ -104,6 +104,7 @@ export class BasicRenderer {
         this.canvas.setPixel(x, y, currColor);
       });
       console.log(`spp: ${nspp + 1}`);
+      this.canvas.writeImage(nspp + 1);
       console.timeEnd();
     }
   }

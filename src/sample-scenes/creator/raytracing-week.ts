@@ -56,7 +56,7 @@ export class RayTracingInWeekSceneCreator extends SceneCreator {
   }
 
   _earth() {
-    const texture = this.imageTexture("/textures/earth.jpg");
+    const texture = this.imageTexture("./static/textures/earth.jpg");
     const material = this.material("lambertian", texture, {});
     this.shape("sphere", material, { center: [400, 200, 400], radius: 100 });
   }
@@ -131,7 +131,6 @@ export class RayTracingInWeekSceneCreator extends SceneCreator {
   renderScene(canvas: Canvas) {
     this.generate();
     const sceneData = this.exportJson();
-    console.log(sceneData);
     const renderer = new BasicRenderer(canvas, sceneData);
     renderer.render();
   }
