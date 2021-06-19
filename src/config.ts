@@ -1,8 +1,8 @@
 type RendererType = "basic" | "worker";
 
-export const width = 600;
+export const width = 800;
 export const aspectRatio = 1;
-export const samplesPerPixel = 1000;
+export const samplesPerPixel = 10;
 export const maxRayDepth = 50;
 export const rendererType: RendererType = "basic";
 export const renderByPixels = false;

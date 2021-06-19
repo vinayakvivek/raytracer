@@ -1,31 +1,45 @@
+import { useBvh } from "../config";
 import { AABB } from "../core/aabb";
+import { BvhNode } from "../core/bvh-node";
 import { Ray } from "../core/ray";
 import { Intersection } from "../models/intersection.model";
 import { AbstractShape } from "./abstract-shape";
 
 export class GroupShape extends AbstractShape {
   shapes: AbstractShape[];
+  bvhNode: BvhNode;
+  unboundedShapes: AbstractShape[] = [];
+  enableBvh = false;
 
   constructor(shapes: AbstractShape[]) {
     super();
     this.shapes = shapes;
-    this.boundingBox = this._boundingBox();
-  }
-
-  _boundingBox() {
-    // if at-least one shape has no bounding box, no box for group
-    if (!this.shapes.length || this.shapes.find((s) => !s.boundingBox))
-      return null;
-    let box = this.shapes[0].boundingBox;
-    for (let i = 1; i < this.shapes.length; ++i) {
-      box = AABB.surroundingBox(box, this.shapes[i].boundingBox);
+    if (useBvh) {
+      this.createBvh();
+      this.boundingBox = this.bvhNode.boundingBox;
+    } else {
+      // if BVH is not enabled, all shapes are unbounded
+      this.unboundedShapes = this.shapes;
+      this.boundingBox = null;
     }
-    return box;
   }
 
+  createBvh() {
+    this.unboundedShapes = this.shapes.filter((s) => !s.boundingBox);
+    const boundedShapes = this.shapes.filter((s) => !!s.boundingBox);
+    if (boundedShapes.length > 0) {
+      this.bvhNode = new BvhNode(boundedShapes);
+      this.enableBvh = true;
+    }
+  }
+
+  // seems like intersecting BVH first gives better performance
   intersect(ray: Ray, tMin: number, tMax: number): Intersection {
     let closest: Intersection = { valid: false, t: tMax };
-    this.shapes.forEach((shape) => {
+    if (this.enableBvh) {
+      closest = this.bvhNode.intersect(ray, tMin, tMax);
+    }
+    this.unboundedShapes.forEach((shape) => {
       const intersection = shape.intersect(ray, tMin, closest.t);
       if (intersection.valid) {
         closest = intersection;

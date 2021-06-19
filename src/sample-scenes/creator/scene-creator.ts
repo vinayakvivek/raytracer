@@ -165,6 +165,15 @@ export class SceneCreator {
     return this.shape("group", null, { shapes });
   }
 
+  groupItem(
+    type: ShapeType,
+    material: IMaterial,
+    props: any,
+    transforms: ITransformItem[] = []
+  ) {
+    return this.shape(type, material, props, transforms, true);
+  }
+
   generate() {
     const groundMaterial = this.diffuseMaterial([0.4, 0.1, 0.5]);
     const ground = this.shape("sphere", groundMaterial, {

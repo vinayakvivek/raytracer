@@ -35,7 +35,7 @@ export class BvhNode {
       return;
     }
     if (n == 1) {
-      this.left = this.right = shapes[0];
+      this.left = shapes[0];
     } else if (n == 2) {
       [this.left, this.right] = shapes;
     } else {
@@ -45,9 +45,13 @@ export class BvhNode {
       this.left = new BvhNode(lShapes);
       this.right = new BvhNode(rShapes);
     }
-    const b1 = this.left.boundingBox;
-    const b2 = this.right.boundingBox;
-    this.boundingBox = AABB.surroundingBox(b1, b2);
+    this.boundingBox = this.left.boundingBox;
+    if (this.right) {
+      this.boundingBox = AABB.surroundingBox(
+        this.boundingBox,
+        this.right.boundingBox
+      );
+    }
   }
 
   intersect(ray: Ray, tMin: number, tMax: number): Intersection {
@@ -58,8 +62,10 @@ export class BvhNode {
     if (iLeft.valid) {
       tMax = iLeft.t;
     }
-    const iRight = this.right.intersect(ray, tMin, tMax);
-    if (iRight.valid) return iRight;
+    if (this.right) {
+      const iRight = this.right.intersect(ray, tMin, tMax);
+      if (iRight.valid) return iRight;
+    }
     return iLeft;
   }
 }
