@@ -10,11 +10,12 @@ import { SceneCreator } from "./sample-scenes/creator/scene-creator";
 import { CornellBox } from "./sample-scenes/creator/cornell-box";
 import { CornellBoxFogSceneCreator } from "./sample-scenes/creator/cornell-box-fog";
 import { TestSceneCreator } from "./sample-scenes/creator/test";
+import { RayTracingInWeekSceneCreator } from "./sample-scenes/creator/raytracing-week";
 
 const canvas = new Canvas(width, Math.round(width / aspectRatio));
 
 // const renderer = new BasicRenderer(canvas, sceneData as unknown as IScene);
 // renderer.render();
 
-const sceneCreator = new CornellBox();
+const sceneCreator = new RayTracingInWeekSceneCreator();
 sceneCreator.renderScene(canvas);
