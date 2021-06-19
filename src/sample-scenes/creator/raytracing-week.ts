@@ -49,7 +49,7 @@ export class RayTracingInWeekSceneCreator extends SceneCreator {
 
   _subsurfaceSphere() {
     const boundary = this.shape("sphere", this.glassMaterial(), {
-      center: [360, 150, 45],
+      center: [360, 150, 145],
       radius: 70,
     });
     this.constantMedium(0.2, this.solidTexture([0.2, 0.4, 0.9]), boundary);
