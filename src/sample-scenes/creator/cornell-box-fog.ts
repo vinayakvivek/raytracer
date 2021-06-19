@@ -31,7 +31,7 @@ export class CornellBoxFogSceneCreator extends SceneCreator {
     const green = this.diffuseMaterial([0.12, 0.45, 0.15]);
     const light = this.material(
       "diffuse-light",
-      this.solidTexture([7, 7, 7]),
+      this.solidTexture([2, 2, 2]),
       {}
     );
     const blue = this.diffuseMaterial([0.2, 0.5, 0.9]);
