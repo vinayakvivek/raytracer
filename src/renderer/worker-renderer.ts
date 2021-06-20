@@ -1,6 +1,8 @@
 import { Canvas } from "../core/canvas";
-import RenderWorker from "worker-loader!./worker";
 import { IScene } from "../models/scene.model";
+
+import { fork } from "child_process";
+import path from "path";
 
 export class WorkerRenderer {
   canvas: Canvas;
@@ -19,27 +21,31 @@ export class WorkerRenderer {
     offset: { x: number; y: number },
     dim: { width: number; height: number }
   ) {
-    const worker = new RenderWorker();
-    worker.postMessage({
+    const opts = {
+      stdio: [process.stdin, process.stdout, process.stderr, "pipe"],
+    };
+    const worker = fork(path.join(__dirname, "worker.ts"));
+    worker.send({
       sceneData: this.sceneData,
       offset,
       dim,
       fullWidth: this.width,
       fullHeight: this.height,
     });
-    worker.onmessage = (event) => {
-      if (event.data.done) {
-        worker.terminate();
-        return;
-      }
-      const colors = event.data.colors;
-      for (let x = 0; x < dim.width; ++x) {
-        for (let y = 0; y < dim.height; ++y) {
-          this.canvas.setPixel(x + offset.x, y + offset.y, colors[x][y]);
-        }
-      }
-      this.canvas.writeImage();
-    };
+    worker.on("message", (data) => {
+      console.log(data);
+      // if (data.done) {
+      //   worker.kill();
+      //   return;
+      // }
+      // const colors = data.colors;
+      // for (let x = 0; x < dim.width; ++x) {
+      //   for (let y = 0; y < dim.height; ++y) {
+      //     this.canvas.setPixel(x + offset.x, y + offset.y, colors[x][y]);
+      //   }
+      // }
+      // this.canvas.writeImage();
+    });
   }
 
   partition(n = 2) {

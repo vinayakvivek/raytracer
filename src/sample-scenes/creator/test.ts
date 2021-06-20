@@ -1,3 +1,6 @@
+import { Canvas } from "../../core/canvas";
+import { BasicRenderer } from "../../renderer/basic-renderer";
+import { WorkerRenderer } from "../../renderer/worker-renderer";
 import { SceneCreator } from "./scene-creator";
 
 export class TestSceneCreator extends SceneCreator {
@@ -18,5 +21,12 @@ export class TestSceneCreator extends SceneCreator {
     const texture = this.imageTexture("./static/textures/earth.jpg");
     const earthMat = this.material("lambertian", texture, {});
     this.shape("sphere", earthMat, { center: [0, 1, 0], radius: 1 });
+  }
+
+  renderScene(canvas: Canvas) {
+    this.generate();
+    const sceneData = this.exportJson();
+    const renderer = new WorkerRenderer(canvas, sceneData);
+    renderer.render();
   }
 }

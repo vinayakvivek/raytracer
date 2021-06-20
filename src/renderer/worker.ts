@@ -5,8 +5,6 @@ import { Ray } from "../core/ray";
 import { World } from "../core/world";
 import { Scene } from "../core/scene";
 
-const renderWorkerCtx: Worker = self as any;
-
 let scene: Scene;
 let world: World;
 let camera: Camera;
@@ -68,7 +66,8 @@ const processTiles = async (callback: (x: number, y: number) => void) => {
   }
 };
 
-const render = async () => {
+const render = () => {
+  process.send({ message: "rendering" });
   for (let nspp = 0; nspp < spp; ++nspp) {
     console.time();
     for (let x = 0; x < width; ++x) {
@@ -80,8 +79,10 @@ const render = async () => {
           .divScalar(nspp + 1);
       }
     }
+    process.send({ message: "rendered 1 sample" });
+
     console.log(`spp: ${nspp + 1}`);
-    renderWorkerCtx.postMessage({ colors: colors, sendBy: "renderWorker" });
+    process.send({ colors, sendBy: "renderWorker" });
     console.timeEnd();
   }
 };
@@ -97,13 +98,11 @@ const initColors = () => {
 };
 
 const renderUtil = () => {
-  render().then(() => {
-    renderWorkerCtx.postMessage({ done: true });
-  });
+  render();
+  process.send({ done: true });
 };
 
-renderWorkerCtx.addEventListener("message", (event) => {
-  const data = event.data;
+process.on("message", (data) => {
   scene = new Scene(data.sceneData);
   camera = scene.camera;
   world = scene.world;
