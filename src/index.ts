@@ -14,14 +14,14 @@ import sharp from "sharp";
 
 const main = async () => {
   const height = Math.round(width / aspectRatio);
-  const canvas = new Canvas(width, height, "./out/test/");
+  const canvas = new Canvas(width, height, "./out/raytracing-week/");
   await canvas.init();
   // canvas.writeImage();
 
   // const renderer = new BasicRenderer(canvas, sceneData as unknown as IScene);
   // renderer.render();
 
-  const sceneCreator = new TestSceneCreator();
+  const sceneCreator = new RayTracingInWeekSceneCreator();
   sceneCreator.renderScene(canvas);
 };
 

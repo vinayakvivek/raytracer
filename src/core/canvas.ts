@@ -72,7 +72,7 @@ class Canvas {
       raw: { width: this.width, height: this.height, channels: 3 },
     }).toFile(latest);
 
-    if (spp % saveAtSamples == 0) {
+    if ((spp < 10) || (spp < 100 && spp % 10 == 0) || spp % saveAtSamples == 0) {
       const savePath = path.join(this.saveDir, `${spp}-spp.jpg`);
       console.log(`saving: ${savePath}`);
       sharp(Buffer.from(this.pixels), {
