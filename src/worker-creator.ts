@@ -80,7 +80,8 @@ export class WorkerCreator {
       const partPixels = new Uint8ClampedArray(partImg.data.buffer);
       for (let j = 0; j < part.size.height; ++j) {
         const y =
-          (j + (part.size.height - part.offset.y - 1)) * this.fullSize.width;
+          (j + (this.fullSize.height - part.offset.y - 1 - part.size.height)) *
+          this.fullSize.width;
         for (let i = 0; i < part.size.width; ++i) {
           const x = i + part.offset.x;
           const index = (y + x) * 3;

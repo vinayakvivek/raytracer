@@ -13,7 +13,7 @@ import { IScene } from "./models/scene.model";
 const main = async () => {
   const height = Math.round(width / aspectRatio);
   // const sceneData = new RayTracingInWeekSceneCreator().exportJson();
-  const workerCreator = new WorkerCreator(sceneData as unknown as IScene, 2, {
+  const workerCreator = new WorkerCreator(sceneData as unknown as IScene, 4, {
     width,
     height,
   });

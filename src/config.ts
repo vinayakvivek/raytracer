@@ -11,4 +11,4 @@ export const renderByPixels = false;
 export const tileSize = 200;
 export const useBvh = true;
 export const generatePerlin = false;
-export const continueRender = true;
+export const continueRender = false;
