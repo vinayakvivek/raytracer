@@ -74,7 +74,6 @@ export class CornellBox extends SceneCreator {
   }
 
   renderScene(canvas: Canvas) {
-    this.generate();
     const sceneData = this.exportJson();
     const renderer = new WorkerRenderer(canvas, sceneData);
     renderer.render();

@@ -11,18 +11,22 @@ import { CornellBoxFogSceneCreator } from "./sample-scenes/creator/cornell-box-f
 import { TestSceneCreator } from "./sample-scenes/creator/test";
 import { RayTracingInWeekSceneCreator } from "./sample-scenes/creator/raytracing-week";
 import sharp from "sharp";
+import { Renderer } from "./renderer/renderer";
+import { WorkerCreator } from "./worker-creator";
 
 const main = async () => {
   const height = Math.round(width / aspectRatio);
-  const canvas = new Canvas(width, height, "./out/raytracing-week/");
-  await canvas.init();
-  // canvas.writeImage();
-
-  // const renderer = new BasicRenderer(canvas, sceneData as unknown as IScene);
-  // renderer.render();
-
-  const sceneCreator = new RayTracingInWeekSceneCreator();
-  sceneCreator.renderScene(canvas);
+  const sceneData = new TestSceneCreator().exportJson();
+  // const renderer = new Renderer(
+  //   sceneData,
+  //   { width, height },
+  //   { width, height },
+  //   { x: 0, y: 0 },
+  //   "./out/test/p1/"
+  // );
+  // renderer.render(false); // saveSteps: false
+  const workerCreator = new WorkerCreator(sceneData, 2, { width, height });
+  workerCreator.render();
 };
 
 main();

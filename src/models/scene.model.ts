@@ -20,6 +20,7 @@ export interface IWorld {
 }
 
 export interface IScene {
+  name: string;
   camera: ICamera;
   world: IWorld;
   background?: Array3;
@@ -28,4 +29,14 @@ export interface IScene {
 export interface TimeInterval {
   start: number;
   end: number;
+}
+
+export interface Size {
+  width: number;
+  height: number;
+}
+
+export interface Offset {
+  x: number;
+  y: number;
 }

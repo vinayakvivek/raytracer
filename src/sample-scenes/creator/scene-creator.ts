@@ -31,6 +31,7 @@ export class SceneCreator {
   shapes: IAbstractShape[] = [];
   camera: ICamera;
   background: Array3 = [1, 1, 1];
+  name: string = "sample";
 
   constructor() {
     this.camera = {
@@ -42,6 +43,7 @@ export class SceneCreator {
       focusDist: 1.0,
       time: { start: 0, end: 1 },
     };
+    this.generate();
   }
 
   get textureId() {
@@ -209,6 +211,7 @@ export class SceneCreator {
 
   exportJson(): IScene {
     return {
+      name: this.name,
       camera: this.camera,
       background: this.background,
       world: {
@@ -220,7 +223,6 @@ export class SceneCreator {
   }
 
   renderScene(canvas: Canvas) {
-    this.generate();
     const sceneData = this.exportJson();
     const renderer = new BasicRenderer(canvas, sceneData);
     renderer.render();

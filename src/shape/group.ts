@@ -14,8 +14,7 @@ export class GroupShape extends AbstractShape {
   constructor(shapes: AbstractShape[]) {
     super();
     this.shapes = shapes;
-    if (useBvh) {
-      this.createBvh();
+    if (useBvh && this.createBvh()) {
       this.boundingBox = this.bvhNode.boundingBox;
     } else {
       // if BVH is not enabled, all shapes are unbounded
@@ -30,7 +29,9 @@ export class GroupShape extends AbstractShape {
     if (boundedShapes.length > 0) {
       this.bvhNode = new BvhNode(boundedShapes);
       this.enableBvh = true;
+      return true;
     }
+    return false;
   }
 
   // seems like intersecting BVH first gives better performance

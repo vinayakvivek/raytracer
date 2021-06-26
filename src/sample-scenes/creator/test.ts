@@ -4,6 +4,10 @@ import { WorkerRenderer } from "../../renderer/worker-renderer";
 import { SceneCreator } from "./scene-creator";
 
 export class TestSceneCreator extends SceneCreator {
+  constructor() {
+    super();
+  }
+
   generate() {
     this.camera = {
       position: [5, 2, 5],
@@ -24,7 +28,6 @@ export class TestSceneCreator extends SceneCreator {
   }
 
   renderScene(canvas: Canvas) {
-    this.generate();
     const sceneData = this.exportJson();
     const renderer = new WorkerRenderer(canvas, sceneData);
     renderer.render();

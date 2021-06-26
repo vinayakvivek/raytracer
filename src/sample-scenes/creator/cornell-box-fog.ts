@@ -76,9 +76,7 @@ export class CornellBoxFogSceneCreator extends SceneCreator {
   }
 
   renderScene(canvas: Canvas) {
-    this.generate();
     const sceneData = this.exportJson();
-    console.log(sceneData);
     const renderer = new WorkerRenderer(canvas, sceneData);
     renderer.render();
   }

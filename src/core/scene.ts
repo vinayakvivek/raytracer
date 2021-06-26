@@ -27,7 +27,6 @@ export class Scene {
   }
 
   parseScene = (data: IScene) => {
-    console.log("Parsing scene ..");
     this.background = new Color(1, 1, 1); // white background
     if (data.background) {
       this.background = Color.fromJson(data.background);

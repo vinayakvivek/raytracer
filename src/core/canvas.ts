@@ -1,9 +1,8 @@
 import sharp from "sharp";
-import { CANVAS_ID } from "../constants";
 import { clamp, Color } from "../utils";
 import fs from "fs";
 import path from "path";
-import { saveAtSamples } from "../config";
+import { saveAtSamples, saveSteps } from "../config";
 
 class Canvas {
   width: number;
@@ -15,7 +14,7 @@ class Canvas {
     this.width = width;
     this.height = height;
     if (!fs.existsSync(saveDir)) {
-      fs.mkdirSync(saveDir);
+      fs.mkdirSync(saveDir, { recursive: true });
     }
     this.saveDir = saveDir;
   }
@@ -66,19 +65,29 @@ class Canvas {
     return new Color(r * r, g * g, b * b);
   }
 
-  writeImage(spp = 1) {
-    const latest = path.join(this.saveDir, `latest.jpg`);
+  updatePixel(x: number, y: number, color: Color, numSamples: number) {
+    const currColor = this.getPixel(x, y);
+    currColor
+      .multScalar(numSamples - 1)
+      .add(color)
+      .divScalar(numSamples);
+    this.setPixel(x, y, currColor);
+  }
+
+  _writeToFile(fileName: string) {
     sharp(Buffer.from(this.pixels), {
       raw: { width: this.width, height: this.height, channels: 3 },
-    }).toFile(latest);
+    }).toFile(fileName);
+  }
 
-    if ((spp < 10) || (spp < 100 && spp % 10 == 0) || spp % saveAtSamples == 0) {
+  writeImage(spp = 1) {
+    const latest = path.join(this.saveDir, `latest.jpg`);
+    this._writeToFile(latest);
+    if (!saveSteps) return;
+    if (spp < 10 || (spp < 100 && spp % 10 == 0) || spp % saveAtSamples == 0) {
       const savePath = path.join(this.saveDir, `${spp}-spp.jpg`);
       console.log(`saving: ${savePath}`);
-      sharp(Buffer.from(this.pixels), {
-        raw: { width: this.width, height: this.height, channels: 3 },
-      }).toFile(savePath);
-      console.log("copied");
+      this._writeToFile(savePath);
     }
   }
 }
