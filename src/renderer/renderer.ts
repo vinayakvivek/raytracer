@@ -72,10 +72,11 @@ export class Renderer {
   async renderUtil() {
     console.log(`${this.logPrefix} creating canvas`, this.saveDir);
     const canvas = new Canvas(this.size.width, this.size.height, this.saveDir);
-    await canvas.init();
+    let currSpp = await canvas.init();
     let promise: Promise<sharp.OutputInfo>;
     for (let nspp = 0; nspp < this.spp; ++nspp) {
-      const logName = `${this.logPrefix} spp - ${nspp + 1} `;
+      currSpp++;
+      const logName = `${this.logPrefix} spp - ${currSpp} `;
       console.time(logName);
       for (let x = 0; x < this.size.width; ++x) {
         for (let y = 0; y < this.size.height; ++y) {
@@ -86,7 +87,7 @@ export class Renderer {
           canvas.updatePixel(x, y, color);
         }
       }
-      promise = canvas.writeImage(nspp + 1);
+      promise = canvas.writeImage(currSpp);
       console.timeEnd(logName);
     }
     promise.then(() => {

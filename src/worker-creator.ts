@@ -1,5 +1,5 @@
 import { fork } from "child_process";
-import path from "path/posix";
+import path from "path";
 import sharp from "sharp";
 import { IScene, Offset, Size } from "./models/scene.model";
 

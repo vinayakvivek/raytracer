@@ -51,21 +51,21 @@ class Canvas {
       console.log(
         `image exists at ${this.latestPath}, numSamples: ${this.metadata.samples}`
       );
-      return;
+    } else {
+      const { data, info } = await sharp({
+        create: {
+          width: this.width,
+          height: this.height,
+          channels: 3,
+          background: { r: 0, g: 0, b: 0 },
+        },
+      })
+        .raw()
+        .toBuffer({ resolveWithObject: true });
+
+      this.pixels = new Uint8ClampedArray(data.buffer);
     }
-
-    const { data, info } = await sharp({
-      create: {
-        width: this.width,
-        height: this.height,
-        channels: 3,
-        background: { r: 0, g: 0, b: 0 },
-      },
-    })
-      .raw()
-      .toBuffer({ resolveWithObject: true });
-
-    this.pixels = new Uint8ClampedArray(data.buffer);
+    return this.metadata.samples;
   }
 
   _getIndex(x: number, y: number) {
