@@ -75,20 +75,20 @@ class Canvas {
   }
 
   _writeToFile(fileName: string) {
-    sharp(Buffer.from(this.pixels), {
+    return sharp(Buffer.from(this.pixels), {
       raw: { width: this.width, height: this.height, channels: 3 },
     }).toFile(fileName);
   }
 
   writeImage(spp = 1) {
     const latest = path.join(this.saveDir, `latest.jpg`);
-    this._writeToFile(latest);
-    if (!saveSteps) return;
-    if (spp < 10 || (spp < 100 && spp % 10 == 0) || spp % saveAtSamples == 0) {
-      const savePath = path.join(this.saveDir, `${spp}-spp.jpg`);
-      console.log(`saving: ${savePath}`);
-      this._writeToFile(savePath);
-    }
+    return this._writeToFile(latest);
+    // if (!saveSteps) return;
+    // if (spp < 10 || (spp < 100 && spp % 10 == 0) || spp % saveAtSamples == 0) {
+    //   const savePath = path.join(this.saveDir, `${spp}-spp.jpg`);
+    //   console.log(`saving: ${savePath}`);
+    //   this._writeToFile(savePath);
+    // }
   }
 }
 

@@ -1,3 +1,4 @@
+import sharp from "sharp";
 import { maxRayDepth, samplesPerPixel } from "../config";
 import { Canvas } from "../core/canvas";
 import { Ray } from "../core/ray";
@@ -69,10 +70,10 @@ export class Renderer {
   }
 
   async renderUtil() {
-    console.log(`${this.logPrefix} creating canvas`, this.size, this.saveDir);
+    console.log(`${this.logPrefix} creating canvas`, this.saveDir);
     const canvas = new Canvas(this.size.width, this.size.height, this.saveDir);
     await canvas.init();
-
+    let promise: Promise<sharp.OutputInfo>;
     for (let nspp = 0; nspp < this.spp; ++nspp) {
       const logName = `${this.logPrefix} spp - ${nspp + 1} `;
       console.time(logName);
@@ -85,9 +86,12 @@ export class Renderer {
           canvas.updatePixel(x, y, color, nspp + 1);
         }
       }
-      canvas.writeImage(nspp + 1);
+      promise = canvas.writeImage(nspp + 1);
       console.timeEnd(logName);
     }
+    promise.then(() => {
+      process.send({ done: true });
+    });
   }
 
   render() {

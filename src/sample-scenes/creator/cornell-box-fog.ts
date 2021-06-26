@@ -1,6 +1,3 @@
-import { Canvas } from "../../core/canvas";
-import { BasicRenderer } from "../../renderer/basic-renderer";
-import { WorkerRenderer } from "../../renderer/worker-renderer";
 import { SceneCreator } from "./scene-creator";
 
 export class CornellBoxFogSceneCreator extends SceneCreator {
@@ -73,11 +70,5 @@ export class CornellBoxFogSceneCreator extends SceneCreator {
 
     this.constantMedium(0.01, this.solidTexture([1, 1, 1]), box1);
     this.constantMedium(0.01, this.solidTexture([0, 0, 0]), box2);
-  }
-
-  renderScene(canvas: Canvas) {
-    const sceneData = this.exportJson();
-    const renderer = new WorkerRenderer(canvas, sceneData);
-    renderer.render();
   }
 }

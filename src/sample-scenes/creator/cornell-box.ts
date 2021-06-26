@@ -1,5 +1,3 @@
-import { Canvas } from "../../core/canvas";
-import { WorkerRenderer } from "../../renderer/worker-renderer";
 import { SceneCreator } from "./scene-creator";
 
 export class CornellBox extends SceneCreator {
@@ -71,11 +69,5 @@ export class CornellBox extends SceneCreator {
       center: [150, 100, 150],
       radius: 100,
     });
-  }
-
-  renderScene(canvas: Canvas) {
-    const sceneData = this.exportJson();
-    const renderer = new WorkerRenderer(canvas, sceneData);
-    renderer.render();
   }
 }

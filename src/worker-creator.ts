@@ -6,6 +6,7 @@ export class WorkerCreator {
   sceneData: IScene;
   n: number;
   fullSize: Size;
+  parts: string[] = [];
 
   // n => number of divisions on one side, n x n division
   constructor(sceneData: IScene, n: number, size: Size) {
@@ -15,6 +16,8 @@ export class WorkerCreator {
   }
 
   createWorker(id: number, offset: Offset, size: Size) {
+    const savePath = `./out/${this.sceneData.name}/p${id}/`;
+    this.parts.push(savePath);
     const worker = fork(path.join(__dirname, "worker.ts"));
     worker.send({
       id,
@@ -22,9 +25,13 @@ export class WorkerCreator {
       offset,
       size,
       fullSize: this.fullSize,
+      savePath,
     });
-    worker.on("message", (data) => {
-      console.log(data);
+    worker.on("message", (data: any) => {
+      if (data.done) {
+        console.log(`worker-${id} done.`);
+        worker.kill();
+      }
     });
   }
 

@@ -1,7 +1,4 @@
-import { Canvas } from "../../core/canvas";
 import { IAbstractShape } from "../../models/shape.model";
-import { BasicRenderer } from "../../renderer/basic-renderer";
-import { WorkerRenderer } from "../../renderer/worker-renderer";
 import { random, randomBetween } from "../../utils";
 import { SceneCreator } from "./scene-creator";
 
@@ -126,12 +123,5 @@ export class RayTracingInWeekSceneCreator extends SceneCreator {
     this._noiseSphere();
 
     this._tinySpheres();
-  }
-
-  renderScene(canvas: Canvas) {
-    this.generate();
-    const sceneData = this.exportJson();
-    const renderer = new BasicRenderer(canvas, sceneData);
-    renderer.render();
   }
 }
