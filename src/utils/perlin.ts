@@ -34,9 +34,7 @@ if (!generatePerlin && fs.existsSync(perlinDataPath)) {
   py = data.py;
   pz = data.pz;
   randVecs = data.vecs.map((v: Array3) => Vec3.fromJson(v));
-  console.log("used perlin-data");
 } else {
-  console.log("generating perlin data");
   count = 256;
   rands = new Float32Array(count);
   randVecs = [];

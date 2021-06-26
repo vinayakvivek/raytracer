@@ -1,3 +1,4 @@
+import { writeFileSync } from "fs";
 import { Canvas } from "../../core/canvas";
 import {
   IDielectricMaterial,
@@ -220,6 +221,13 @@ export class SceneCreator {
         shapes: this.shapes,
       },
     };
+  }
+
+  saveJson() {
+    writeFileSync(
+      `./src/sample-scenes/${this.name}.json`,
+      JSON.stringify(this.exportJson())
+    );
   }
 
   renderScene(canvas: Canvas) {

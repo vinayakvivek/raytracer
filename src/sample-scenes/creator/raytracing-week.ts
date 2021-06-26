@@ -41,7 +41,8 @@ export class RayTracingInWeekSceneCreator extends SceneCreator {
     const boundary = this.groupItem("sphere", this.glassMaterial(), {
       radius: 5000,
     });
-    this.constantMedium(0.0001, texture, boundary);
+    const mist = this.constantMedium(0.0001, texture, boundary);
+    mist.unbounded = true;
   }
 
   _subsurfaceSphere() {
@@ -59,7 +60,7 @@ export class RayTracingInWeekSceneCreator extends SceneCreator {
   }
 
   _noiseSphere() {
-    const texture = this.texture("perlin", { scale: 0.1 });
+    const texture = this.texture("perlin", { scale: 2 });
     const material = this.material("lambertian", texture, {});
     this.shape("sphere", material, { center: [220, 280, 300], radius: 80 });
   }
@@ -121,7 +122,7 @@ export class RayTracingInWeekSceneCreator extends SceneCreator {
 
     this._earth();
 
-    // this._noiseSphere();
+    this._noiseSphere();
 
     this._tinySpheres();
   }

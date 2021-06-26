@@ -42,6 +42,7 @@ export class WorkerCreator {
         worker.kill();
         this.activeCount--;
         if (this.activeCount == 0) {
+          console.timeEnd("render");
           this.merge();
         }
       }
@@ -49,6 +50,7 @@ export class WorkerCreator {
   }
 
   partition(n: number) {
+    console.time("render");
     const w = Math.floor(this.fullSize.width / n);
     const h = Math.floor(this.fullSize.height / n);
     const size = { width: w, height: h };
