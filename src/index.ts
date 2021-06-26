@@ -21,6 +21,7 @@ const main = async () => {
   // renderer.render(false); // saveSteps: false
   const workerCreator = new WorkerCreator(sceneData, 2, { width, height });
   workerCreator.render();
+  // workerCreator.merge();
 };
 
 main();

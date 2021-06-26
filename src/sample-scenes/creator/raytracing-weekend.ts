@@ -21,6 +21,7 @@ import { SceneCreator } from "./scene-creator";
 export class RayTracingWeekendSceneCreator extends SceneCreator {
   constructor() {
     super();
+    this.name = "raytracing-weekend";
   }
 
   _createGround() {
