@@ -2,7 +2,7 @@
   "name": "raytracer",
   "version": "1.0.0",
   "scripts": {
-    "start": "nodemon src/index.ts"
+    "start": "nodemon src/index.ts --ignore out/"
   },
   "keywords": [
     "raytracer",

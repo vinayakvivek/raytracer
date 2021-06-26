@@ -7,21 +7,13 @@ import { CornellBoxFogSceneCreator } from "./sample-scenes/creator/cornell-box-f
 import { TestSceneCreator } from "./sample-scenes/creator/test";
 import { RayTracingInWeekSceneCreator } from "./sample-scenes/creator/raytracing-week";
 import { WorkerCreator } from "./worker-creator";
+import sharp from "sharp";
 
 const main = async () => {
   const height = Math.round(width / aspectRatio);
-  const sceneData = new RayTracingWeekendSceneCreator().exportJson();
-  // const renderer = new Renderer(
-  //   sceneData,
-  //   { width, height },
-  //   { width, height },
-  //   { x: 0, y: 0 },
-  //   "./out/test/p1/"
-  // );
-  // renderer.render(false); // saveSteps: false
+  const sceneData = new TestSceneCreator().exportJson();
   const workerCreator = new WorkerCreator(sceneData, 2, { width, height });
   workerCreator.render();
-  // workerCreator.merge();
 };
 
 main();

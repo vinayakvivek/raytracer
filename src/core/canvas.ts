@@ -4,11 +4,20 @@ import fs from "fs";
 import path from "path";
 import { saveAtSamples, saveSteps } from "../config";
 
+interface ImageMetadata {
+  samples: number;
+}
+
 class Canvas {
   width: number;
   height: number;
   pixels: Uint8ClampedArray;
   saveDir: string;
+  metadata: ImageMetadata;
+
+  // file paths
+  latestPath: string;
+  metadataPath: string;
 
   constructor(width: number, height: number, saveDir: string) {
     this.width = width;
@@ -17,9 +26,34 @@ class Canvas {
       fs.mkdirSync(saveDir, { recursive: true });
     }
     this.saveDir = saveDir;
+    this.metadata = {
+      samples: 0,
+    };
+
+    this.latestPath = path.join(this.saveDir, `latest.png`);
+    this.metadataPath = path.join(this.saveDir, "metadata.json");
   }
 
   async init() {
+    if (fs.existsSync(this.latestPath)) {
+      const latestImg = await sharp(this.latestPath)
+        .raw()
+        .toBuffer({ resolveWithObject: true });
+      this.pixels = new Uint8ClampedArray(latestImg.data.buffer);
+      if (fs.existsSync(this.metadataPath)) {
+        this.metadata = JSON.parse(
+          fs.readFileSync(this.metadataPath).toString()
+        );
+        if (!this.metadata.samples) {
+          this.metadata.samples = 0;
+        }
+      }
+      console.log(
+        `image exists at ${this.latestPath}, numSamples: ${this.metadata.samples}`
+      );
+      return;
+    }
+
     const { data, info } = await sharp({
       create: {
         width: this.width,
@@ -65,12 +99,13 @@ class Canvas {
     return new Color(r * r, g * g, b * b);
   }
 
-  updatePixel(x: number, y: number, color: Color, numSamples: number) {
+  updatePixel(x: number, y: number, color: Color) {
+    const n = this.metadata.samples;
     const currColor = this.getPixel(x, y);
     currColor
-      .multScalar(numSamples - 1)
+      .multScalar(n)
       .add(color)
-      .divScalar(numSamples);
+      .divScalar(n + 1);
     this.setPixel(x, y, currColor);
   }
 
@@ -81,8 +116,9 @@ class Canvas {
   }
 
   writeImage(spp = 1) {
-    const latest = path.join(this.saveDir, `latest.jpg`);
-    return this._writeToFile(latest);
+    this.metadata.samples++;
+    fs.writeFileSync(this.metadataPath, JSON.stringify(this.metadata));
+    return this._writeToFile(this.latestPath);
     // if (!saveSteps) return;
     // if (spp < 10 || (spp < 100 && spp % 10 == 0) || spp % saveAtSamples == 0) {
     //   const savePath = path.join(this.saveDir, `${spp}-spp.jpg`);

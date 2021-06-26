@@ -83,7 +83,7 @@ export class Renderer {
             x + this.offset.x,
             y + this.offset.y
           );
-          canvas.updatePixel(x, y, color, nspp + 1);
+          canvas.updatePixel(x, y, color);
         }
       }
       promise = canvas.writeImage(nspp + 1);

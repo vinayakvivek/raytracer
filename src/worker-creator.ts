@@ -74,7 +74,7 @@ export class WorkerCreator {
       .toBuffer({ resolveWithObject: true });
     const pixels = new Uint8ClampedArray(data.buffer);
     for (const part of this.parts) {
-      const partImg = await sharp(path.join(part.path, "latest.jpg"))
+      const partImg = await sharp(path.join(part.path, "latest.png"))
         .raw()
         .toBuffer({ resolveWithObject: true });
       const partPixels = new Uint8ClampedArray(partImg.data.buffer);
@@ -92,7 +92,7 @@ export class WorkerCreator {
       }
     }
 
-    const finalPath = `./out/${this.sceneData.name}/final.jpg`;
+    const finalPath = `./out/${this.sceneData.name}/final.png`;
     console.log(`saving final image at ${finalPath}`);
     sharp(Buffer.from(pixels), {
       raw: {
