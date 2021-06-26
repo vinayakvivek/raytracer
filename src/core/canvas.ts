@@ -2,7 +2,7 @@ import sharp from "sharp";
 import { clamp, Color } from "../utils";
 import fs from "fs";
 import path from "path";
-import { saveAtSamples, saveSteps } from "../config";
+import { continueRender, saveAtSamples, saveSteps } from "../config";
 
 interface ImageMetadata {
   samples: number;
@@ -35,7 +35,7 @@ class Canvas {
   }
 
   async init() {
-    if (fs.existsSync(this.latestPath)) {
+    if (continueRender && fs.existsSync(this.latestPath)) {
       const latestImg = await sharp(this.latestPath)
         .raw()
         .toBuffer({ resolveWithObject: true });

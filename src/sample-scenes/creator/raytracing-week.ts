@@ -81,6 +81,7 @@ export class RayTracingInWeekSceneCreator extends SceneCreator {
   }
 
   generate() {
+    this.name = "raytracing-week";
     this.camera = {
       position: [478, 278, -600],
       lookAt: [278, 278, 0],
@@ -120,7 +121,7 @@ export class RayTracingInWeekSceneCreator extends SceneCreator {
 
     this._earth();
 
-    this._noiseSphere();
+    // this._noiseSphere();
 
     this._tinySpheres();
   }

@@ -1,12 +1,16 @@
 import { clamp, randomBetween } from "./utils";
-import { Point3, Vec3 } from "./vec3";
+import { Array3, Point3, Vec3 } from "./vec3";
+import fs from "fs";
+import path from "path";
+import { generatePerlin } from "../config";
 
-const count: number = 256;
-const rands = new Float32Array(count);
-const randVecs: Vec3[] = [];
-const px = new Uint8Array(count);
-const py = new Uint8Array(count);
-const pz = new Uint8Array(count);
+const perlinDataPath = path.join(__dirname, "perlin-data.json");
+let count: number = 256;
+let rands: Float32Array;
+let randVecs: Vec3[];
+let px: Uint8Array;
+let py: Uint8Array;
+let pz: Uint8Array;
 
 const generatePerlinPerm = (p: Uint8Array) => {
   for (let i = 0; i < count; i++) {
@@ -22,12 +26,31 @@ const permute = (p: Uint8Array, n: number) => {
   }
 };
 
-generatePerlinPerm(px);
-generatePerlinPerm(py);
-generatePerlinPerm(pz);
-for (let i = 0; i < count; ++i) {
-  rands[i] = Math.random();
-  randVecs.push(Vec3.random().normalize());
+if (!generatePerlin && fs.existsSync(perlinDataPath)) {
+  const data = JSON.parse(fs.readFileSync(perlinDataPath).toString());
+  count = data.count;
+  rands = data.rands;
+  px = data.px;
+  py = data.py;
+  pz = data.pz;
+  randVecs = data.vecs.map((v: Array3) => Vec3.fromJson(v));
+  console.log("used perlin-data");
+} else {
+  console.log("generating perlin data");
+  count = 256;
+  rands = new Float32Array(count);
+  randVecs = [];
+  px = new Uint8Array(count);
+  py = new Uint8Array(count);
+  pz = new Uint8Array(count);
+
+  generatePerlinPerm(px);
+  generatePerlinPerm(py);
+  generatePerlinPerm(pz);
+  for (let i = 0; i < count; ++i) {
+    rands[i] = Math.random();
+    randVecs.push(Vec3.random().normalize());
+  }
 }
 
 const trilinearInterp = (c: Vec3[][][], u: number, v: number, w: number) => {
@@ -92,4 +115,10 @@ export const perlinNoiseTurb = (p: Point3, depth = 7) => {
   }
 
   return Math.abs(accum);
+};
+
+const savePerlinData = () => {
+  const vecs = randVecs.map((v) => v.toArray());
+  const data = { count, px, py, pz, rands, vecs };
+  fs.writeFileSync(perlinDataPath, JSON.stringify(data));
 };

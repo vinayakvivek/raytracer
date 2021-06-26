@@ -1,8 +1,9 @@
 {
   "background": [0.7, 0.8, 1],
+  "name": "two-perlin-spheres",
   "camera": {
-    "position": [13, 2, 3],
-    "lookAt": [0, 0, 0],
+    "position": [13, 2, 8],
+    "lookAt": [0, 1, 0],
     "up": [0, 1, 0],
     "vfov": 20,
     "aperture": 0,
@@ -19,6 +20,12 @@
         "name": "perlin-text",
         "type": "perlin",
         "scale": 4.0
+      },
+      {
+        "id": 1,
+        "name": "red",
+        "type": "solid",
+        "color": [0.9, 0.2, 0.2]
       }
     ],
     "materials": [
@@ -27,6 +34,12 @@
         "name": "marble",
         "type": "lambertian",
         "textureId": 0
+      },
+      {
+        "id": 1,
+        "name": "red",
+        "type": "lambertian",
+        "textureId": 1
       }
     ],
     "shapes": [
@@ -45,6 +58,12 @@
         "center": [0, 2, 0],
         "radius": 2,
         "materialId": 0
+      },
+      {
+        "type": "sphere",
+        "center": [5, 1, 2],
+        "radius": 0.5,
+        "materialId": 1
       }
     ]
   }
