@@ -28,46 +28,32 @@ export class CornellBox extends SceneCreator {
     const green = this.diffuseMaterial([0.12, 0.45, 0.15]);
     const light = this.material(
       "diffuse-light",
-      this.solidTexture([7, 7, 7]),
+      this.solidTexture([15, 15, 15]),
       {}
     );
-    const glass = this.glassMaterial();
-    const metal = this.metalMaterial([0.3, 0.5, 0.7]);
-    const metalWallMat = this.metalMaterial([0.73, 0.73, 0.73]);
-
     const size = 555;
     const props = { width: size, height: size, plane: 1 };
-    this.shape("rectangle", green, props, [this.translate(0)]);
-    this.shape("rectangle", red, props, [this.translate(555)]);
+    this.shape("rectangle", red, props, [this.translate(0)]);
+    this.shape("rectangle", green, props, [this.translate(555)]);
     props.plane = 2;
-    this.shape("rectangle", metalWallMat, props);
+    this.shape("rectangle", white, props);
     this.shape("rectangle", white, props, [this.translate(0, 555)]);
     props.plane = 0;
     this.shape("rectangle", white, props, [this.translate(0, 0, 555)]);
 
     // light
-    this.shape("rectangle", light, { width: 330, height: 305, plane: 2 }, [
-      this.translate(113, 554, 127),
+    this.shape("rectangle", light, { width: 105, height: 130, plane: 2 }, [
+      this.translate(213, 554, 227),
     ]);
 
-    // this.shape("box", metal, { size: [165, 165, 165] }, [
-    //   this.translate(160, 0, 65),
-    //   this.rotate("y", -18),
-    // ]);
-    // this.shape("box", metal, { size: [165, 330, 165] }, [
-    //   this.translate(-165 / 2, 0, -165 / 2),
-    //   this.rotate("y", 45),
-    //   this.rotate("x", -30),
-    //   this.translate(265 + 165 / 2, 10, 295 + 165 / 2),
-    // ]);
+    this.shape("box", white, { size: [165, 330, 165] }, [
+      this.translate(180, 0, 350),
+      this.rotate("y", 15),
+    ]);
 
-    this.shape("sphere", metal, {
-      center: [350, 150, 350],
-      radius: 150,
-    });
-    this.shape("sphere", glass, {
-      center: [150, 100, 150],
-      radius: 100,
-    });
+    this.shape("box", white, { size: [165, 165, 165] }, [
+      this.translate(130, 0, 40),
+      this.rotate("y", -18),
+    ]);
   }
 }

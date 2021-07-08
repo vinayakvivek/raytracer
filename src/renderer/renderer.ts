@@ -4,7 +4,7 @@ import { Canvas } from "../core/canvas";
 import { Ray } from "../core/ray";
 import { Scene } from "../core/scene";
 import { IScene, Offset, Size } from "../models/scene.model";
-import { Color, random } from "../utils";
+import { Color, Point3, random, randomBetween } from "../utils";
 
 export class Renderer {
   scene: Scene;
@@ -45,21 +45,47 @@ export class Renderer {
       return new Color(0, 0, 0);
     }
     const intersection = this.scene.world.intersect(ray, 0.001, Infinity);
-    if (intersection.valid) {
-      const { p, n, material, uv } = intersection;
-      const emitted = material.emitted(uv, p);
-      const scatter = material.scatter(ray, intersection);
-      if (scatter.valid) {
-        return this._rayColor(scatter.rayOut, depth - 1)
-          .clone()
-          .mult(scatter.attenuation)
-          .add(emitted);
-      } else {
-        return emitted;
-      }
+
+    if (!intersection.valid) {
+      // no intersection
+      return this.scene.background;
     }
-    // no intersection
-    return this.scene.background;
+
+    const { p, n, material, uv } = intersection;
+    const emitted = material.emitted(uv, p);
+    const scatter = material.scatter(ray, intersection);
+
+    if (!scatter.valid) {
+      return emitted;
+    }
+
+    const onLight = new Point3(
+      randomBetween(213, 343),
+      554,
+      randomBetween(227, 332)
+    );
+    const toLight = onLight.clone().sub(p);
+    const distSq = toLight.lengthSq();
+    toLight.normalize();
+
+    if (toLight.dot(n) < 0) {
+      return emitted;
+    }
+
+    const lightArea = (343 - 213) * (332 - 227);
+    const lightCosine = Math.abs(toLight.y);
+    if (lightCosine < 1e-6) {
+      return emitted;
+    }
+
+    const pdf = distSq / (lightCosine * lightArea);
+    const scattered = new Ray(p, toLight, ray.time);
+
+    return this._rayColor(scattered, depth - 1)
+      .clone()
+      .multScalar(material.scatteringPdf(ray, intersection, scattered) / pdf)
+      .mult(scatter.attenuation)
+      .add(emitted);
   }
 
   _processPixel(x: number, y: number) {

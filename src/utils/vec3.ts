@@ -197,6 +197,18 @@ class Vec3 {
     return new Vec3(r * Math.cos(theta), r * Math.sin(theta), 0);
   }
 
+  static randomCosineDirection() {
+    const r1 = Math.random();
+    const r2 = Math.random();
+    const z = Math.sqrt(1 - r2);
+
+    const phi = 2 * Math.PI * r1;
+    const sqrt_r2 = Math.sqrt(r2);
+    const x = Math.cos(phi) * sqrt_r2;
+    const y = Math.sin(phi) * sqrt_r2;
+    return new Vec3(x, y, z);
+  }
+
   static max(v1: Vec3, v2: Vec3) {
     return new Vec3(
       Math.max(v1.x, v2.x),

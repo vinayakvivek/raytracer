@@ -15,6 +15,10 @@ export class Material extends Entity {
     throw new UnimplementedError();
   }
 
+  scatteringPdf(rayIn: Ray, intersection: Intersection, rayOut: Ray): number {
+    throw new UnimplementedError();
+  }
+
   emitted(uv: UV, p: Point3): Color {
     return new Color();
   }

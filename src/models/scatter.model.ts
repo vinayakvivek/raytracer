@@ -5,4 +5,5 @@ export interface Scatter {
   valid: boolean;
   attenuation?: Color;
   rayOut?: Ray;
+  pdf?: number;
 }

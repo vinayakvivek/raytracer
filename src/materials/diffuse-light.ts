@@ -20,6 +20,6 @@ export class DiffuseLight extends Material {
   }
 
   emitted(uv: UV, p: Point3): Color {
-    return this.color.value(uv, p).clone().multScalar(2.0);
+    return this.color.value(uv, p);
   }
 }
