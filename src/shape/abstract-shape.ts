@@ -17,6 +17,14 @@ export class AbstractShape {
     throw new UnimplementedError();
   }
 
+  pdfValue(o: Point3, v: Vec3): number {
+    throw new UnimplementedError();
+  }
+
+  random(o: Vec3): Vec3 {
+    throw new UnimplementedError();
+  }
+
   get _noIntersection() {
     return { valid: false };
   }

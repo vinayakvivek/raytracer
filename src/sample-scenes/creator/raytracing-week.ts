@@ -95,7 +95,7 @@ export class RayTracingInWeekSceneCreator extends SceneCreator {
     this.background = [0, 0, 0];
 
     // main light
-    const lightMat = this.light([2, 2, 2]);
+    const lightMat = this.lightMaterial([2, 2, 2]);
     this.shape("rectangle", lightMat, { width: 300, height: 265, plane: 2 }, [
       this.translate(123, 554, 147),
     ]);

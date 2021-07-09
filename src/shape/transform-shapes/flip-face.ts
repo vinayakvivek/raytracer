@@ -1,6 +1,7 @@
 import { Ray } from "../../core/ray";
 import { Intersection, setFaceNormal } from "../../models/intersection.model";
 import { IFlipFace } from "../../models/shape.model";
+import { Point3, Vec3 } from "../../utils";
 import { AbstractShape } from "../abstract-shape";
 import { TransformShape } from "./transform-shape";
 
@@ -20,5 +21,13 @@ export class FlipFace extends TransformShape {
       // }
     }
     return rec;
+  }
+
+  pdfValue(o: Point3, v: Vec3): number {
+    return this.shape.pdfValue(o, v);
+  }
+
+  random(o: Vec3) {
+    return this.shape.random(o);
   }
 }

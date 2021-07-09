@@ -4,6 +4,11 @@ import { Canvas } from "../core/canvas";
 import { Ray } from "../core/ray";
 import { Scene } from "../core/scene";
 import { IScene, Offset, Size } from "../models/scene.model";
+import { CosinePDF } from "../pdf/cosine-pdf";
+import { MixturePDF } from "../pdf/mixture-pdf";
+import { ShapePDF } from "../pdf/shape-pdf";
+import { FlipFace } from "../shape/transform-shapes/flip-face";
+import { Translate } from "../shape/transform-shapes/translate";
 import { Color, Point3, random, randomBetween } from "../utils";
 
 export class Renderer {
@@ -38,6 +43,11 @@ export class Renderer {
 
     this.invWidth = 1 / (fullSize.width - 1);
     this.invHeight = 1 / (fullSize.height - 1);
+
+    // console.log(
+    //   ((this.scene.world.lights[0] as Translate).shape as FlipFace).shape
+    // );
+    // console.log(this.scene.world.group.shapes);
   }
 
   _rayColor(ray: Ray, depth = 5): Color {
@@ -59,32 +69,23 @@ export class Renderer {
       return emitted;
     }
 
-    const onLight = new Point3(
-      randomBetween(213, 343),
-      554,
-      randomBetween(227, 332)
-    );
-    const toLight = onLight.clone().sub(p);
-    const distSq = toLight.lengthSq();
-    toLight.normalize();
+    // const cp = new CosinePDF(n);
+    // const scattered = new Ray(p, cp.generate(), ray.time);
+    // const pdfVal = cp.value(scattered.direction);
 
-    if (toLight.dot(n) < 0) {
-      return emitted;
-    }
+    const p0 = new ShapePDF(this.scene.world.lights[0], p);
+    const p1 = new CosinePDF(n);
+    const pdf = new MixturePDF(p0, p1);
 
-    const lightArea = (343 - 213) * (332 - 227);
-    const lightCosine = Math.abs(toLight.y);
-    if (lightCosine < 1e-6) {
-      return emitted;
-    }
+    const scattered = new Ray(p, pdf.generate(), ray.time);
+    const pdfVal = pdf.value(scattered.direction);
 
-    const pdf = distSq / (lightCosine * lightArea);
-    const scattered = new Ray(p, toLight, ray.time);
+    // const scattered = scatter.rayOut;
 
     return this._rayColor(scattered, depth - 1)
       .clone()
-      .multScalar(material.scatteringPdf(ray, intersection, scattered) / pdf)
-      .mult(scatter.attenuation)
+      .multScalar(material.scatteringPdf(ray, intersection, scattered) / pdfVal)
+      .multScaled(scatter.attenuation, 0.9)
       .add(emitted);
   }
 

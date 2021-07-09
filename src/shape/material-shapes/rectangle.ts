@@ -7,7 +7,7 @@ import {
   UV,
 } from "../../models/intersection.model";
 import { IRectangle } from "../../models/shape.model";
-import { Point3, random, Vec3 } from "../../utils";
+import { Point3, random, randomBetween, Vec3 } from "../../utils";
 import { MaterialShape } from "./material-shape";
 
 export class Rectangle extends MaterialShape {
@@ -96,5 +96,28 @@ export class Rectangle extends MaterialShape {
     };
     setFaceNormal(rec, ray.direction);
     return rec;
+  }
+
+  pdfValue(o: Point3, v: Vec3): number {
+    const rec = this.intersect(new Ray(o, v, 0), 0.001, Infinity);
+    if (!rec.valid) return 0;
+
+    const area = this.width * this.height;
+    const distSq = rec.t * rec.t * v.lengthSq();
+    const cosine = Math.abs(v.dot(rec.n) / v.length());
+    return distSq / (cosine * area);
+  }
+
+  random(o: Vec3) {
+    const r1 = randomBetween(0, this.width);
+    const r2 = randomBetween(0, this.height);
+    switch (this.plane) {
+      case 0:
+        return new Point3(r1, r2, 0).sub(o);
+      case 1:
+        return new Point3(0, r1, r2).sub(o);
+      case 2:
+        return new Point3(r2, 0, r1).sub(o);
+    }
   }
 }

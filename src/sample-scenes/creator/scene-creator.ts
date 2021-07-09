@@ -30,6 +30,7 @@ export class SceneCreator {
   textures: ITexture[] = [];
   materials: IMaterial[] = [];
   shapes: IAbstractShape[] = [];
+  lights: IAbstractShape[] = [];
   camera: ICamera;
   background: Array3 = [1, 1, 1];
   name: string = "sample";
@@ -57,6 +58,10 @@ export class SceneCreator {
 
   get shapeId() {
     return this.shapes.length;
+  }
+
+  get lightId() {
+    return this.lights.length;
   }
 
   texture(type: TextureType, props: any, name = ""): ITexture {
@@ -92,7 +97,8 @@ export class SceneCreator {
     material: IMaterial,
     props: any,
     transforms: ITransformItem[] = [],
-    transient = false
+    transient = false,
+    isLight = false
   ): IAbstractShape {
     let shape = {
       ...props,
@@ -107,6 +113,7 @@ export class SceneCreator {
       };
     }
     if (!transient) this.shapes.push(shape);
+    if (isLight) this.lights.push(shape);
     return shape;
   }
 
@@ -143,7 +150,7 @@ export class SceneCreator {
     return this.material("dielectric", null, { refractiveIndex: ri });
   }
 
-  light(color: Array3) {
+  lightMaterial(color: Array3) {
     return this.material("diffuse-light", this.solidTexture(color), {});
   }
 
@@ -219,6 +226,7 @@ export class SceneCreator {
         textures: this.textures,
         materials: this.materials,
         shapes: this.shapes,
+        lights: this.lights,
       },
     };
   }

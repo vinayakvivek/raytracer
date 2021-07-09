@@ -2,7 +2,7 @@ import { AABB } from "../../core/aabb";
 import { Ray } from "../../core/ray";
 import { Intersection, setFaceNormal } from "../../models/intersection.model";
 import { ITranslate } from "../../models/shape.model";
-import { Vec3 } from "../../utils";
+import { Point3, Vec3 } from "../../utils";
 import { AbstractShape } from "../abstract-shape";
 import { TransformShape } from "./transform-shape";
 
@@ -36,5 +36,13 @@ export class Translate extends TransformShape {
       setFaceNormal(intersection, movedRay.direction);
     }
     return intersection;
+  }
+
+  pdfValue(o: Point3, v: Vec3): number {
+    return this.shape.pdfValue(o.clone().sub(this.offset), v);
+  }
+
+  random(o: Vec3) {
+    return this.shape.random(o.clone().sub(this.offset));
   }
 }

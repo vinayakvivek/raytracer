@@ -26,7 +26,7 @@ export class CornellBox extends SceneCreator {
     const red = this.diffuseMaterial([0.65, 0.05, 0.05]);
     const white = this.diffuseMaterial([0.73, 0.73, 0.73]);
     const green = this.diffuseMaterial([0.12, 0.45, 0.15]);
-    const light = this.material(
+    const lightMaterial = this.material(
       "diffuse-light",
       this.solidTexture([15, 15, 15]),
       {}
@@ -44,10 +44,14 @@ export class CornellBox extends SceneCreator {
     // light
     const lw = 105;
     const lh = 130;
-    this.shape("rectangle", light, { width: 105, height: 130, plane: 2 }, [
-      { type: "flip-face" },
-      this.translate(213, 554, 227),
-    ]);
+    this.shape(
+      "rectangle",
+      lightMaterial,
+      { width: 105, height: 130, plane: 2 },
+      [{ type: "flip-face" }, this.translate(213, 554, 227)],
+      false,
+      true
+    );
 
     this.shape("box", white, { size: [165, 330, 165] }, [
       this.translate(180, 0, 350),
