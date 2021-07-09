@@ -84,8 +84,16 @@ export class Rectangle extends MaterialShape {
       u: x / this.width,
       v: y / this.height,
     };
-    const n = this.normal;
-    const rec = { valid: true, t, p, n, material: this.material, uv };
+    const n = this.normal.clone();
+    const rec: Intersection = {
+      valid: true,
+      t,
+      p,
+      n,
+      material: this.material,
+      uv,
+      frontFace: true,
+    };
     setFaceNormal(rec, ray.direction);
     return rec;
   }

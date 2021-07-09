@@ -42,7 +42,10 @@ export class CornellBox extends SceneCreator {
     this.shape("rectangle", white, props, [this.translate(0, 0, 555)]);
 
     // light
+    const lw = 105;
+    const lh = 130;
     this.shape("rectangle", light, { width: 105, height: 130, plane: 2 }, [
+      { type: "flip-face" },
       this.translate(213, 554, 227),
     ]);
 

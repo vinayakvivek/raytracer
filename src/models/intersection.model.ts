@@ -17,11 +17,9 @@ export interface Intersection {
   material?: Material;
 }
 
-export const setFaceNormal = (intersection: Intersection, direction: Vec3) => {
-  intersection.frontFace = true;
-  const n = intersection.n;
-  if (direction.dot(n) > 0) {
-    n.negate();
-    intersection.frontFace = false;
+export const setFaceNormal = (rec: Intersection, direction: Vec3) => {
+  if (direction.dot(rec.n) > 0) {
+    rec.n.negate();
+    rec.frontFace = !rec.frontFace;
   }
 };

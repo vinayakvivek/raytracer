@@ -19,7 +19,7 @@ export class DiffuseLight extends Material {
     return { valid: false };
   }
 
-  emitted(uv: UV, p: Point3): Color {
-    return this.color.value(uv, p);
+  emitted(uv: UV, p: Point3, rec: Intersection): Color {
+    return rec.frontFace ? this.color.value(uv, p) : new Color(0, 0, 0);
   }
 }

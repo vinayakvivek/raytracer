@@ -19,7 +19,7 @@ export class Material extends Entity {
     throw new UnimplementedError();
   }
 
-  emitted(uv: UV, p: Point3): Color {
+  emitted(uv: UV, p: Point3, rec: Intersection): Color {
     return new Color();
   }
 }

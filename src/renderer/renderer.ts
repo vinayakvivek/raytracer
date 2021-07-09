@@ -52,7 +52,7 @@ export class Renderer {
     }
 
     const { p, n, material, uv } = intersection;
-    const emitted = material.emitted(uv, p);
+    const emitted = material.emitted(uv, p, intersection);
     const scatter = material.scatter(ray, intersection);
 
     if (!scatter.valid) {

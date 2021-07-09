@@ -56,7 +56,15 @@ export class Sphere extends MaterialShape {
     const p = ray.at(t);
     const n = this.normal(p);
     const uv = this.getUV(n);
-    const rec = { valid: true, t, p, n, material: this.material, uv };
+    const rec = {
+      valid: true,
+      t,
+      p,
+      n,
+      material: this.material,
+      uv,
+      frontFace: true,
+    };
     setFaceNormal(rec, ray.direction);
     return rec;
   }

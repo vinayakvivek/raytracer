@@ -12,6 +12,7 @@ import {
   ITransform,
   IConstantMedium,
   IGroupShape,
+  IFlipFace,
 } from "../models/shape.model";
 import { ShapeNotFoundError, InvalidShapeTypeError } from "../utils/errors";
 import { AbstractShape } from "./abstract-shape";
@@ -22,6 +23,7 @@ import { MovingSphere } from "./material-shapes/moving-sphere";
 import { Plane } from "./material-shapes/plane";
 import { Rectangle } from "./material-shapes/rectangle";
 import { Sphere } from "./material-shapes/sphere";
+import { FlipFace } from "./transform-shapes/flip-face";
 import { Rotate } from "./transform-shapes/rotate";
 import { TransformShape } from "./transform-shapes/transform-shape";
 import { Translate } from "./transform-shapes/translate";
@@ -76,6 +78,8 @@ export class ShapeFactory {
         return new Translate(data as ITranslate, shape);
       case "rotation":
         return new Rotate(data as IRotate, shape);
+      case "flip-face":
+        return new FlipFace(data as IFlipFace, shape);
       case "transform":
         const transforms = (<ITransform>data).transforms;
         let tShape = shape;

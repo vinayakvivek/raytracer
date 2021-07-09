@@ -33,7 +33,7 @@ export class BasicRenderer {
     const intersection = this.scene.world.intersect(ray, 0.001, Infinity);
     if (intersection.valid) {
       const { p, n, material, uv } = intersection;
-      const emitted = material.emitted(uv, p);
+      const emitted = material.emitted(uv, p, intersection);
       const scatter = material.scatter(ray, intersection);
       if (scatter.valid) {
         return this.rayColor(scatter.rayOut, depth - 1)
