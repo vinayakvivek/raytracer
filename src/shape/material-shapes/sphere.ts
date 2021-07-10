@@ -4,6 +4,7 @@ import { MaterialFactory } from "../../materials/factory";
 import { setFaceNormal, UV } from "../../models/intersection.model";
 import { ISphere } from "../../models/shape.model";
 import { Point3, Vec3 } from "../../utils";
+import { ONB } from "../../utils/onb";
 import { MaterialShape } from "./material-shape";
 
 export class Sphere extends MaterialShape {
@@ -71,5 +72,24 @@ export class Sphere extends MaterialShape {
 
   normal(p: Point3) {
     return p.clone().sub(this.center).divScalar(this.radius);
+  }
+
+  pdfValue(o: Point3, v: Vec3): number {
+    const rec = this.intersect(new Ray(o, v, 0), 0.001, Infinity);
+    if (!rec.valid) {
+      return 0;
+    }
+    const r = this.radius;
+    const d = this.center.clone().sub(o).lengthSq();
+    const cosThetaMax = Math.sqrt(1 - (r * r) / d);
+    const solidAngle = 2 * Math.PI * (1 - cosThetaMax);
+    return 1 / solidAngle;
+  }
+
+  random(o: Vec3) {
+    const direction = this.center.clone().sub(o);
+    const distSq = direction.lengthSq();
+    const uvw = new ONB(direction);
+    return uvw.local(Vec3.randomToSphere(this.radius, distSq));
   }
 }

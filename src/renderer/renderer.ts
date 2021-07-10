@@ -75,7 +75,7 @@ export class Renderer {
         .mult(scatter.attenuation);
     }
 
-    const lightPdf = new ShapePDF(this.scene.world.lights[0], p);
+    const lightPdf = new ShapePDF(this.scene.world.lights, p);
     const pdf = new MixturePDF(lightPdf, scatter.pdf);
 
     const scattered = new Ray(p, pdf.generate(), ray.time);

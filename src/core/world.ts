@@ -5,11 +5,11 @@ import { Ray } from "./ray";
 
 export class World {
   group: GroupShape;
-  lights: AbstractShape[];
+  lights: GroupShape;
 
   constructor(shapes: AbstractShape[], lights: AbstractShape[]) {
     this.group = new GroupShape(shapes);
-    this.lights = lights;
+    this.lights = new GroupShape(lights, false);
   }
 
   intersect(ray: Ray, tMin: number, tMax: number): Intersection {

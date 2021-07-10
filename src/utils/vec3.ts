@@ -209,6 +209,18 @@ class Vec3 {
     return new Vec3(x, y, z);
   }
 
+  static randomToSphere(radius: number, distSq: number) {
+    const r1 = Math.random();
+    const r2 = Math.random();
+    const z = 1 + r2 * (Math.sqrt(1 - (radius * radius) / distSq) - 1);
+
+    const phi = 2 * Math.PI * r1;
+    const f = Math.sqrt(1 - z * z);
+    const x = Math.cos(phi) * f;
+    const y = Math.sin(phi) * f;
+    return new Vec3(x, y, z);
+  }
+
   static max(v1: Vec3, v2: Vec3) {
     return new Vec3(
       Math.max(v1.x, v2.x),

@@ -44,28 +44,27 @@ export class CornellBox extends SceneCreator {
     // light
     const lw = 105;
     const lh = 130;
-    this.shape(
+    this.light(
       "rectangle",
       lightMaterial,
       { width: 105, height: 130, plane: 2 },
-      [
-        // { type: "flip-face" },
-        this.rotate("x", -90),
-        this.translate(213, 500, 227),
-      ],
-      false,
-      true
+      [{ type: "flip-face" }, this.translate(213, 554, 227)]
     );
 
     const aluminum = this.metalMaterial([0.8, 0.85, 0.88], 0.0);
-    this.shape("box", aluminum, { size: [165, 330, 165] }, [
+    this.shape("box", white, { size: [165, 330, 165] }, [
       this.translate(180, 0, 350),
       this.rotate("y", 15),
     ]);
 
-    this.shape("box", white, { size: [165, 165, 165] }, [
-      this.translate(130, 0, 40),
-      this.rotate("y", -15),
-    ]);
+    // this.shape("box", white, { size: [165, 165, 165] }, [
+    //   this.translate(130, 0, 40),
+    //   this.rotate("y", -15),
+    // ]);
+
+    this.light("sphere", this.glassMaterial(), {
+      center: [190, 90, 190],
+      radius: 90,
+    });
   }
 }

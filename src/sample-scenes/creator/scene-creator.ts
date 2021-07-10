@@ -113,6 +113,15 @@ export class SceneCreator {
     return shape;
   }
 
+  light(
+    type: ShapeType,
+    material: IMaterial,
+    props: any,
+    transforms: ITransformItem[] = []
+  ) {
+    this.shape(type, material, props, transforms, false, true);
+  }
+
   constantMedium(density: number, texture: ITexture, boundary: IAbstractShape) {
     const shape = <IConstantMedium>{
       type: "constant-medium",

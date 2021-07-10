@@ -16,9 +16,6 @@ export class FlipFace extends TransformShape {
     if (rec.valid) {
       // invert front face
       rec.frontFace = !rec.frontFace;
-      // if (Math.random() < 0.001) {
-      //   console.log("flip", rec.frontFace);
-      // }
     }
     return rec;
   }

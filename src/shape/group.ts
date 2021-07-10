@@ -3,6 +3,7 @@ import { AABB } from "../core/aabb";
 import { BvhNode } from "../core/bvh-node";
 import { Ray } from "../core/ray";
 import { Intersection } from "../models/intersection.model";
+import { Point3, Vec3 } from "../utils";
 import { AbstractShape } from "./abstract-shape";
 
 export class GroupShape extends AbstractShape {
@@ -11,10 +12,10 @@ export class GroupShape extends AbstractShape {
   unboundedShapes: AbstractShape[] = [];
   enableBvh = false;
 
-  constructor(shapes: AbstractShape[]) {
+  constructor(shapes: AbstractShape[], shouldCreateBvh = true) {
     super();
     this.shapes = shapes;
-    if (useBvh && this.createBvh()) {
+    if (shouldCreateBvh && useBvh && this.createBvh()) {
       this.boundingBox = this.bvhNode.boundingBox;
     } else {
       // if BVH is not enabled, all shapes are unbounded
@@ -47,5 +48,20 @@ export class GroupShape extends AbstractShape {
       }
     });
     return closest;
+  }
+
+  pdfValue(o: Point3, v: Vec3): number {
+    if (!this.shapes.length) return 0;
+    const w = 1 / this.shapes.length;
+    let sum = 0;
+    for (const shape of this.shapes) {
+      sum += w * shape.pdfValue(o, v);
+    }
+    return sum;
+  }
+
+  random(o: Vec3) {
+    const randIndex = Math.floor(Math.random() * this.shapes.length);
+    return this.shapes[randIndex].random(o);
   }
 }
