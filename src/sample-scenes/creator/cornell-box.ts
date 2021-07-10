@@ -48,7 +48,11 @@ export class CornellBox extends SceneCreator {
       "rectangle",
       lightMaterial,
       { width: 105, height: 130, plane: 2 },
-      [{ type: "flip-face" }, this.translate(213, 554, 227)],
+      [
+        // { type: "flip-face" },
+        this.rotate("x", -90),
+        this.translate(213, 500, 227),
+      ],
       false,
       true
     );
