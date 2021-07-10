@@ -5,7 +5,7 @@ import { Color } from "../utils";
 export interface Scatter {
   valid: boolean;
   attenuation?: Color;
-  rayOut?: Ray;
   pdf?: PDF;
   isSpecular?: boolean;
+  specularRay?: Ray;
 }

@@ -87,4 +87,15 @@ export class Rotate extends TransformShape {
     }
     return intersection;
   }
+
+  // pdfValue(o: Point3, v: Vec3): number {
+  //   const ro = this._rotated(o, false);
+  //   const rv = this._rotated(v, false);
+  //   return this.shape.pdfValue(ro, rv);
+  // }
+
+  // random(o: Vec3) {
+  //   const ro = this._rotated(o, false);
+  //   return this._rotated(this.shape.random(ro), true);
+  // }
 }

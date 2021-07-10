@@ -42,8 +42,9 @@ export class DielectricMaterial extends Material {
     }
     return {
       valid: true,
-      rayOut: new Ray(p, direction, rayIn.time),
+      specularRay: new Ray(p, direction, rayIn.time),
       attenuation: new Color(1, 1, 1),
+      isSpecular: true,
     };
   }
 }

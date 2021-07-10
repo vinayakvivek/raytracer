@@ -53,14 +53,15 @@ export class CornellBox extends SceneCreator {
       true
     );
 
-    this.shape("box", white, { size: [165, 330, 165] }, [
+    const aluminum = this.metalMaterial([0.8, 0.85, 0.88], 0.0);
+    this.shape("box", aluminum, { size: [165, 330, 165] }, [
       this.translate(180, 0, 350),
       this.rotate("y", 15),
     ]);
 
     this.shape("box", white, { size: [165, 165, 165] }, [
       this.translate(130, 0, 40),
-      this.rotate("y", -18),
+      this.rotate("y", -15),
     ]);
   }
 }

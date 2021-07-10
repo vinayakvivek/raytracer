@@ -69,6 +69,12 @@ export class Renderer {
       return emitted;
     }
 
+    if (scatter.isSpecular) {
+      return this._rayColor(scatter.specularRay, depth - 1)
+        .clone()
+        .mult(scatter.attenuation);
+    }
+
     const lightPdf = new ShapePDF(this.scene.world.lights[0], p);
     const pdf = new MixturePDF(lightPdf, scatter.pdf);
 

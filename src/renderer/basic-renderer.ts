@@ -36,7 +36,7 @@ export class BasicRenderer {
       const emitted = material.emitted(uv, p, intersection);
       const scatter = material.scatter(ray, intersection);
       if (scatter.valid) {
-        return this.rayColor(scatter.rayOut, depth - 1)
+        return this.rayColor(scatter.specularRay, depth - 1)
           .clone()
           .mult(scatter.attenuation)
           .add(emitted);

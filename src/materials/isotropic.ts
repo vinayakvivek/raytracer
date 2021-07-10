@@ -20,7 +20,7 @@ export class IsotropicMaterial extends Material {
     return {
       valid: true,
       attenuation: this.albedo.value(uv, p),
-      rayOut: new Ray(p, Vec3.randomInUnitSphere(), rayIn.time),
+      specularRay: new Ray(p, Vec3.randomInUnitSphere(), rayIn.time),
     };
   }
 }
