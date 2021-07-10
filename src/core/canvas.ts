@@ -78,6 +78,10 @@ class Canvas {
   setPixel(x: number, y: number, color: Color, a = 1.0) {
     const index = this._getIndex(x, y);
 
+    if (isNaN(color.x)) color.x = 0;
+    if (isNaN(color.y)) color.y = 0;
+    if (isNaN(color.z)) color.z = 0;
+
     // remove gamma correction
     const r = Math.sqrt(color.x);
     const g = Math.sqrt(color.y);

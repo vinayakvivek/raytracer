@@ -69,23 +69,16 @@ export class Renderer {
       return emitted;
     }
 
-    // const cp = new CosinePDF(n);
-    // const scattered = new Ray(p, cp.generate(), ray.time);
-    // const pdfVal = cp.value(scattered.direction);
-
-    const p0 = new ShapePDF(this.scene.world.lights[0], p);
-    const p1 = new CosinePDF(n);
-    const pdf = new MixturePDF(p0, p1);
+    const lightPdf = new ShapePDF(this.scene.world.lights[0], p);
+    const pdf = new MixturePDF(lightPdf, scatter.pdf);
 
     const scattered = new Ray(p, pdf.generate(), ray.time);
     const pdfVal = pdf.value(scattered.direction);
 
-    // const scattered = scatter.rayOut;
-
     return this._rayColor(scattered, depth - 1)
       .clone()
       .multScalar(material.scatteringPdf(ray, intersection, scattered) / pdfVal)
-      .multScaled(scatter.attenuation, 0.9)
+      .mult(scatter.attenuation)
       .add(emitted);
   }
 
