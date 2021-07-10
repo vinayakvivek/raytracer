@@ -1,5 +1,6 @@
 import { MaterialFactory } from "../materials/factory";
 import { IScene } from "../models/scene.model";
+import { AbstractShape } from "../shape/abstract-shape";
 import { ShapeFactory } from "../shape/factory";
 import { TextureFactory } from "../textures/factory";
 import { Color } from "../utils";
@@ -47,12 +48,12 @@ export class Scene {
       shapeFactory.createAndPush(shapeData);
     }
 
-    const lightsFactory = new ShapeFactory(materialFactory);
-    for (const shapeData of data.world.lights) {
-      lightsFactory.createAndPush(shapeData);
+    const lights: AbstractShape[] = [];
+    for (const id of data.world.lightIds) {
+      lights.push(shapeFactory.shapes[id]);
     }
 
-    this.world = new World(shapeFactory.shapes, lightsFactory.shapes);
+    this.world = new World(shapeFactory.shapes, lights);
     this.camera = new Camera(data.camera);
   };
 }

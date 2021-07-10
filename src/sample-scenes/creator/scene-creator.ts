@@ -30,7 +30,7 @@ export class SceneCreator {
   textures: ITexture[] = [];
   materials: IMaterial[] = [];
   shapes: IAbstractShape[] = [];
-  lights: IAbstractShape[] = [];
+  lightIds: number[] = [];
   camera: ICamera;
   background: Array3 = [1, 1, 1];
   name: string = "sample";
@@ -58,10 +58,6 @@ export class SceneCreator {
 
   get shapeId() {
     return this.shapes.length;
-  }
-
-  get lightId() {
-    return this.lights.length;
   }
 
   texture(type: TextureType, props: any, name = ""): ITexture {
@@ -113,7 +109,7 @@ export class SceneCreator {
       };
     }
     if (!transient) this.shapes.push(shape);
-    if (isLight) this.lights.push(shape);
+    if (isLight) this.lightIds.push(this.shapes.length - 1);
     return shape;
   }
 
@@ -226,7 +222,7 @@ export class SceneCreator {
         textures: this.textures,
         materials: this.materials,
         shapes: this.shapes,
-        lights: this.lights,
+        lightIds: this.lightIds,
       },
     };
   }

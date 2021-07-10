@@ -17,7 +17,7 @@ export interface IWorld {
   textures: ITexture[];
   materials: IMaterial[];
   shapes: IAbstractShape[];
-  lights: IAbstractShape[];
+  lightIds: number[];
 }
 
 export interface IScene {
